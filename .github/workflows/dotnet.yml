@@ -26,3 +26,21 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+  deploy:
+    needs: build
+    runs-on: windows-latest
+    environment: PROD
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+        token: ${{ secrets.GITTOKEN }}    
+    - uses: nuget/setup-nuget@v2
+      with:
+        nuget-version: '5.x'
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+    - name: Publish & Deploy
+      run: dotnet publish Server/MyVideoResume.Server.csproj /p:PublishProfile=webdeploy.pubxml /p:Password=${{secrets.DEPLOYPASSWORD}}
