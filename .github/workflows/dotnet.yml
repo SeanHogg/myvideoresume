@@ -42,5 +42,11 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
+    - name: Replace values in JSON file
+      uses: tnikFi/json-file-transform@v1
+      with:
+       files: '**/appsettings.json'
+       key-value-pairs: |
+        ConnectionStrings.Default=${{ secrets.DB_CONNECTION_STRING }}
     - name: Publish & Deploy
       run: dotnet publish Server/MyVideoResume.Server.csproj /p:PublishProfile=webdeploy.pubxml /p:Password=${{secrets.DEPLOYPASSWORD}}
