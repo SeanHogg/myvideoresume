@@ -1,4 +1,4 @@
-using System.Net.Http;
+﻿using System.Net.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -11,29 +11,36 @@ using Radzen;
 using Radzen.Blazor;
 
 
-namespace MyVideoResume.Client.Shared
+namespace MyVideoResume.Client.Layout;
+
+public partial class LoginLayout
 {
-    public partial class LoginLayout
+    [Inject]
+    protected IJSRuntime JSRuntime { get; set; }
+
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    protected DialogService DialogService { get; set; }
+
+    [Inject]
+    protected TooltipService TooltipService { get; set; }
+
+    [Inject]
+    protected ContextMenuService ContextMenuService { get; set; }
+
+    [Inject]
+    protected NotificationService NotificationService { get; set; }
+
+    [Inject]
+    protected SecurityService Security { get; set; }
+
+    public string CopyrightInfo
     {
-        [Inject]
-        protected IJSRuntime JSRuntime { get; set; }
-
-        [Inject]
-        protected NavigationManager NavigationManager { get; set; }
-
-        [Inject]
-        protected DialogService DialogService { get; set; }
-
-        [Inject]
-        protected TooltipService TooltipService { get; set; }
-
-        [Inject]
-        protected ContextMenuService ContextMenuService { get; set; }
-
-        [Inject]
-        protected NotificationService NotificationService { get; set; }
-
-        [Inject]
-        protected SecurityService Security { get; set; }
+        get
+        {
+            return $"MyVideoResume.Server v{typeof(Index).Assembly.GetName().Version.ToString()}, Copyright Ⓒ {DateTime.Now.Year}";
+        }
     }
 }

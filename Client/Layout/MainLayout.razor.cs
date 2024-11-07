@@ -10,65 +10,64 @@ using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
 
-namespace MyVideoResume.Client.Layout
+namespace MyVideoResume.Client.Layout;
+
+public partial class MainLayout
 {
-    public partial class MainLayout
+    [Inject]
+    protected IJSRuntime JSRuntime { get; set; }
+
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    protected DialogService DialogService { get; set; }
+
+    [Inject]
+    protected TooltipService TooltipService { get; set; }
+
+    [Inject]
+    protected ContextMenuService ContextMenuService { get; set; }
+
+    [Inject]
+    protected NotificationService NotificationService { get; set; }
+
+    private bool sidebarExpanded = true;
+
+    [Inject]
+    protected SecurityService Security { get; set; }
+
+    void SidebarToggleClick()
     {
-        [Inject]
-        protected IJSRuntime JSRuntime { get; set; }
-
-        [Inject]
-        protected NavigationManager NavigationManager { get; set; }
-
-        [Inject]
-        protected DialogService DialogService { get; set; }
-
-        [Inject]
-        protected TooltipService TooltipService { get; set; }
-
-        [Inject]
-        protected ContextMenuService ContextMenuService { get; set; }
-
-        [Inject]
-        protected NotificationService NotificationService { get; set; }
-
-        private bool sidebarExpanded = true;
-
-        [Inject]
-        protected SecurityService Security { get; set; }
-
-        void SidebarToggleClick()
-        {
-            sidebarExpanded = !sidebarExpanded;
-        }
-
-        protected void ProfileMenuClick(RadzenProfileMenuItem args)
-        {
-            if (args.Value == "Logout")
-            {
-                Security.Logout();
-            }
-        }
-
-        public string Copyright { get { return $"Copyright Ⓒ {DateTime.Now.Year}"; } }
-        public string CopyrightOwner { get { return $"MyVideoResu.ME v.{VersionNumber}"; } }
-
-        public bool ShowLogin
-        {
-            get
-            {
-                return !Security.IsAuthenticated();
-            }
-        }
-
-        public string VersionNumber
-        {
-            get
-            {
-                return typeof(Index).Assembly.GetName().Version.ToString();
-
-            }
-        }
-
+        sidebarExpanded = !sidebarExpanded;
     }
+
+    protected void ProfileMenuClick(RadzenProfileMenuItem args)
+    {
+        if (args.Value == "Logout")
+        {
+            Security.Logout();
+        }
+    }
+
+    public string Copyright { get { return $"Copyright Ⓒ {DateTime.Now.Year}"; } }
+    public string CopyrightOwner { get { return $"MyVideoResu.ME v.{VersionNumber}"; } }
+
+    public bool ShowLogin
+    {
+        get
+        {
+            return !Security.IsAuthenticated();
+        }
+    }
+
+    public string VersionNumber
+    {
+        get
+        {
+            return typeof(MainLayout).Assembly.GetName().Version.ToString();
+
+        }
+    }
+
 }
