@@ -1,4 +1,4 @@
-using System.Net.Http;
+﻿using System.Net.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -49,5 +49,26 @@ namespace MyVideoResume.Client.Layout
                 Security.Logout();
             }
         }
+
+        public string Copyright { get { return $"Copyright Ⓒ {DateTime.Now.Year}"; } }
+        public string CopyrightOwner { get { return $"MyVideoResu.ME v.{VersionNumber}"; } }
+
+        public bool ShowLogin
+        {
+            get
+            {
+                return !Security.IsAuthenticated();
+            }
+        }
+
+        public string VersionNumber
+        {
+            get
+            {
+                return typeof(Index).Assembly.GetName().Version.ToString();
+
+            }
+        }
+
     }
 }

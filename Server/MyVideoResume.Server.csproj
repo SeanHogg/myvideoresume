@@ -5,6 +5,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+		<Version>1.1.0.0</Version>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Radzen.Blazor" Version="*" />
@@ -19,8 +20,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.HeaderPropagation" Version="8.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="Properties\PublishProfiles\webdeploy.PublishSettings">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+		<None Update="Properties\PublishProfiles\webdeploy.PublishSettings">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 </Project>
