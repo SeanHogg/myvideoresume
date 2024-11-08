@@ -5,18 +5,23 @@
 <RadzenLayout style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body';">
     <RadzenHeader>
         <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="0">
-            <RadzenColumn Size="5">
+            <RadzenColumn Size="1">
                 <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
+            </RadzenColumn>
+            <RadzenColumn Size="4">
+                <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="0.5rem" class="rz-px-2">
+                    <RadzenMenu><RadzenMenuItem Text="General" Icon="home"></RadzenMenuItem></RadzenMenu>
+                </RadzenStack>
             </RadzenColumn>
             <RadzenColumn Size="7">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
-                    <RadzenAppearanceToggle DarkTheme="standard-dark" />
+                    <RadzenButton Text="Create Resume" Click="@(args => NavigateTo("resumes"))"></RadzenButton>
+                    <RadzenButton Text="Post Job" Click="@(args => NavigateTo("jobs"))"></RadzenButton>
                     <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
                         <ChildContent>
-
                             <RadzenProfileMenuItem Path="profile" Icon="settings" Text="Profile" />
-                            <RadzenProfileMenuItem Path="application-users" Icon="person" Text="Users" />
-                            <RadzenProfileMenuItem Path="application-roles" Icon="security" Text="Roles" />
+                            <RadzenProfileMenuItem Path="application-users" Icon="person" Text="Users" Visible="@Security.IsInRole("admin")" />
+                            <RadzenProfileMenuItem Path="application-roles" Icon="security" Text="Roles" Visible="@Security.IsInRole("admin")" />
                             <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new" />
                         </ChildContent>
                         <Template>
@@ -24,6 +29,7 @@
                             <RadzenGravatar Email="@Security.User?.Name" />
                         </Template>
                     </RadzenProfileMenu>
+                    <RadzenAppearanceToggle DarkTheme="standard-dark" />
                 </RadzenStack>
             </RadzenColumn>
         </RadzenRow>
@@ -31,24 +37,30 @@
     <RadzenBody Expanded="@sidebarExpanded">
         <RadzenRow class="rz-mx-auto rz-px-4 rz-pt-2 rz-pt-md-4 rz-pt-lg-6 rz-pt-xl-12 rz-pb-2 rz-pb-lg-12" Style="max-width: 1440px;">
             <RadzenColumn Size="12">
-            @Body
+                @Body
             </RadzenColumn>
         </RadzenRow>
     </RadzenBody>
     <RadzenSidebar @bind-Expanded="@sidebarExpanded" style="z-index: 2">
         <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
-            <RadzenImage Path="images/logo.png"  style="width: 48px; height: 48px;" AlternateText="Application logo"></RadzenImage>
-            <RadzenText Text="MyVideoResume" TextStyle="Radzen.Blazor.TextStyle.Subtitle1" class="rz-mb-0" style="color: var(--rz-sidebar-color);" />
+            <RadzenImage Path="images/logo.png" style="width: 48px; height: 48px;" AlternateText="Application logo"></RadzenImage>
+            <RadzenText Text="MyVideoResu.ME" TextStyle="Radzen.Blazor.TextStyle.Subtitle1" class="rz-mb-0" style="color: var(--rz-sidebar-color);" />
         </RadzenStack>
         <RadzenPanelMenu>
             <RadzenPanelMenuItem Text="Home" Path="" />
             <RadzenPanelMenuItem id="LoginMenu" Visible="@ShowLogin" Text="Login / Register" Path="/login" />
         </RadzenPanelMenu>
-        <RadzenStack AlignItems="Radzen.AlignItems.Center" Gap="0" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding);">
-            <RadzenText Text="@CopyrightOwner" TextStyle="Radzen.Blazor.TextStyle.Caption" TagName="Radzen.Blazor.TagName.P" TextAlign="Radzen.TextAlign.Center" />
-            <RadzenText Text="@Copyright" TextStyle="Radzen.Blazor.TextStyle.Caption" class="rz-mb-0" TagName="Radzen.Blazor.TagName.P" TextAlign="Radzen.TextAlign.Center" />
-        </RadzenStack>
     </RadzenSidebar>
 </RadzenLayout>
+<RadzenFooter>
+    <RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="0">
+        <RadzenColumn Size="12">
+            <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
+                <RadzenText Text="@Copyright" TextStyle="Radzen.Blazor.TextStyle.Caption" TagName="Radzen.Blazor.TagName.P" />
+                <RadzenText Text="@Version" TextStyle="Radzen.Blazor.TextStyle.Caption" TagName="Radzen.Blazor.TagName.P" />
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenFooter>
 <script type="text/javascript" src="https://myvideoresume.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/g2slup/b/8/c95134bc67d3a521bb3f4331beb9b804/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=6b2adf83"></script>
 

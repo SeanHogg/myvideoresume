@@ -22,27 +22,29 @@ namespace MyVideoResume.Server.Controllers
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IWebHostEnvironment env;
         private readonly IConfiguration configuration;
+        private readonly ILogger<AccountController> logger;
 
         public AccountController(IWebHostEnvironment env, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager, IConfiguration configuration)
+            RoleManager<ApplicationRole> roleManager, IConfiguration configuration, ILogger<AccountController> logger)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.env = env;
             this.configuration = configuration;
+            this.logger = logger;
         }
 
         private IActionResult RedirectWithError(string error, string redirectUrl = null)
         {
-             if (!string.IsNullOrEmpty(redirectUrl))
-             {
-                 return Redirect($"~/Login?error={error}&redirectUrl={Uri.EscapeDataString(redirectUrl.Replace("~", ""))}");
-             }
-             else
-             {
-                 return Redirect($"~/Login?error={error}");
-             }
+            if (!string.IsNullOrEmpty(redirectUrl))
+            {
+                return Redirect($"~/Login?error={error}&redirectUrl={Uri.EscapeDataString(redirectUrl.Replace("~", ""))}");
+            }
+            else
+            {
+                return Redirect($"~/Login?error={error}");
+            }
         }
 
         [HttpGet]
@@ -87,10 +89,11 @@ namespace MyVideoResume.Server.Controllers
 
                 if (!user.EmailConfirmed)
                 {
+                    await SendConfirmationEmail(user);
                     return RedirectWithError("User email not confirmed", redirectUrl);
                 }
 
-                var isTenantsAdmin = userName == "tenantsadmin";    
+                var isTenantsAdmin = userName == "tenantsadmin";
                 var isTwoFactor = await userManager.GetTwoFactorEnabledAsync(user);
                 if (!isTwoFactor && !isTenantsAdmin)
                 {
@@ -104,7 +107,7 @@ namespace MyVideoResume.Server.Controllers
                     var code = await userManager.GenerateTwoFactorTokenAsync(user, "Email");
 
                     var text = $@"Hi, <br /> <br />
-We received your request for a single-use code to use with your MyVideoResume account. <br /> <br />
+We received your request for a single-use code to use with your MyVideoResu.ME account. <br /> <br />
 Your single-use code is: {code} <br /> <br />
 If you didn't request this code, you can safely ignore this email. Someone else might have typed your email address by mistake.";
 
@@ -190,17 +193,7 @@ If you didn't request this code, you can safely ignore this email. Someone else 
             {
                 try
                 {
-                    var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, protocol: Request.Scheme);
-
-                    var text = $@"Hi, <br /> <br />
-We received your registration request for MyVideoResume. <br /> <br />
-To confirm your registration please click the following link: <a href=""{callbackUrl}"">confirm your registration</a> <br /> <br />
-If you didn't request this registration, you can safely ignore this email. Someone else might have typed your email address by mistake.";                    
-
-                    await SendEmailAsync(user.Email, "Confirm your registration", text);
-
+                    await SendConfirmationEmail(user);
 
                     return Ok();
                 }
@@ -213,6 +206,20 @@ If you didn't request this registration, you can safely ignore this email. Someo
             var message = string.Join(", ", result.Errors.Select(error => error.Description));
 
             return BadRequest(message);
+        }
+
+        private async Task SendConfirmationEmail(ApplicationUser user)
+        {
+            var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, protocol: Request.Scheme);
+
+            var text = $@"Hi, <br /> <br />
+We received your registration request for MyVideoResume. <br /> <br />
+To confirm your registration please click the following link: <a href=""{callbackUrl}"">confirm your registration</a> <br /> <br />
+If you didn't request this registration, you can safely ignore this email. Someone else might have typed your email address by mistake.";
+
+            await SendEmailAsync(user.Email, "Confirm your registration", text);
         }
 
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
@@ -332,25 +339,31 @@ If you didn't request this registration, you can safely ignore this email. Someo
 
         private async Task SendEmailAsync(string to, string subject, string body)
         {
-
-            var mailMessage = new System.Net.Mail.MailMessage();
-            mailMessage.From = new System.Net.Mail.MailAddress(configuration.GetValue<string>("Smtp:User"));
-            mailMessage.Body = body;
-            mailMessage.Subject = subject;
-            mailMessage.BodyEncoding = System.Text.Encoding.UTF8;
-            mailMessage.SubjectEncoding = System.Text.Encoding.UTF8;
-            mailMessage.IsBodyHtml = true;
-            mailMessage.To.Add(to);
-
-            var client = new System.Net.Mail.SmtpClient(configuration.GetValue<string>("Smtp:Host"))
+            try
             {
-                UseDefaultCredentials = false,
-                EnableSsl = configuration.GetValue<bool>("Smtp:Ssl"),
-                Port = configuration.GetValue<int>("Smtp:Port"),
-                Credentials = new System.Net.NetworkCredential(configuration.GetValue<string>("Smtp:User"), configuration.GetValue<string>("Smtp:Password"))
-            };
+                var mailMessage = new System.Net.Mail.MailMessage();
+                mailMessage.From = new System.Net.Mail.MailAddress(configuration.GetValue<string>("Smtp:Email"));
+                mailMessage.Body = body;
+                mailMessage.Subject = subject;
+                mailMessage.BodyEncoding = System.Text.Encoding.UTF8;
+                mailMessage.SubjectEncoding = System.Text.Encoding.UTF8;
+                mailMessage.IsBodyHtml = true;
+                mailMessage.To.Add(to);
 
-            await client.SendMailAsync(mailMessage);
+                var client = new System.Net.Mail.SmtpClient(configuration.GetValue<string>("Smtp:Host"))
+                {
+                    UseDefaultCredentials = false,
+                    EnableSsl = configuration.GetValue<bool>("Smtp:Ssl"),
+                    Port = configuration.GetValue<int>("Smtp:Port"),
+                    Credentials = new System.Net.NetworkCredential(configuration.GetValue<string>("Smtp:User"), configuration.GetValue<string>("Smtp:Password"))
+                };
+
+                await client.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message, ex);
+            }
         }
     }
 }

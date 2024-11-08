@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
@@ -36,11 +37,12 @@ public partial class LoginLayout
     [Inject]
     protected SecurityService Security { get; set; }
 
+
     public string CopyrightInfo
     {
         get
         {
-            return $"MyVideoResume.Server v{typeof(Index).Assembly.GetName().Version.ToString()}, Copyright Ⓒ {DateTime.Now.Year}";
+            return $"Copyright Ⓒ {DateTime.Now.Year} - MyVideoResu.ME - v{typeof(LoginLayout).Assembly.GetName().Version.ToString()}";
         }
     }
 }

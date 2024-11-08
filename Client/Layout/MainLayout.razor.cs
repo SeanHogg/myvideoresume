@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
@@ -50,8 +51,8 @@ public partial class MainLayout
         }
     }
 
-    public string Copyright { get { return $"Copyright Ⓒ {DateTime.Now.Year}"; } }
-    public string CopyrightOwner { get { return $"MyVideoResu.ME v.{VersionNumber}"; } }
+    public string Copyright { get { return $"Copyright Ⓒ {DateTime.Now.Year} - MyVideoResu.ME - "; } }
+    public string Version { get { return $"v.{VersionNumber}"; } }
 
     public bool ShowLogin
     {
@@ -68,6 +69,11 @@ public partial class MainLayout
             return typeof(MainLayout).Assembly.GetName().Version.ToString();
 
         }
+    }
+
+    public void NavigateTo(string path)
+    {
+        NavigationManager.NavigateTo(path);
     }
 
 }

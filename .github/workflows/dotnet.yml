@@ -48,5 +48,10 @@ jobs:
        files: '**/appsettings.json'
        key-value-pairs: |
         ConnectionStrings.Default=${{ secrets.DB_CONNECTION_STRING }}
+        Smtp.Host=${{ secrets.EMAIL_HOST }}
+        Smtp.Port=${{ secrets.EMAIL_PORT }}
+        Smtp.Ssl=${{ secrets.EMAIL_SSL }}
+        Smtp.User=${{ secrets.EMAIL_USER }}
+        Smtp.Password=${{ secrets.EMAIL_PASSWORD }}
     - name: Publish & Deploy
       run: dotnet publish Server/MyVideoResume.Server.csproj /p:PublishProfile=webdeploy.pubxml /p:Password=${{secrets.DEPLOYPASSWORD}}

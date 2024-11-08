@@ -69,6 +69,11 @@ namespace MyVideoResume.Client
             return Principal?.Identity.IsAuthenticated == true;
         }
 
+        public bool IsNotAuthenticated()
+        {
+            return Principal?.Identity.IsAuthenticated == false;
+        }
+
         public async Task<bool> InitializeAsync(AuthenticationState result)
         {
             Principal = result.User;
