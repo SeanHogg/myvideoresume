@@ -7,8 +7,37 @@ using MyVideoResume.Server.Data;
 using Microsoft.AspNetCore.Identity;
 using MyVideoResume.Server.Models;
 using Microsoft.AspNetCore.Components.Authorization;
+using Serilog.Events;
+using Serilog;
+using IdentityModel;
+using Serilog.Sinks.MSSqlServer.Sinks.MSSqlServer.Options;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
+//Logging
+var loggingConnectionString = builder.Configuration.GetConnectionString("Logging");
+var newRelicKey = builder.Configuration.GetValue<string>("NewRelic:LoggingKey");
+var loggerConfiguration = new LoggerConfiguration()
+#if DEBUG
+.MinimumLevel.Debug()
+#else
+.MinimumLevel.Warning()
+#endif
+
+.Enrich.FromLogContext()
+
+#if RELEASE
+.WriteTo.NewRelicLogs(endpointUrl: "https://log-api.newrelic.com/log/v1", applicationName: "MyVideoResu.ME", licenseKey: newRelicKey)
+#else
+.WriteTo.Async(c => c.Console())
+.WriteTo.Async(c => c.File($"Logs/logs{DateTime.Now.ToEpochTime()}.txt"))
+.WriteTo.MSSqlServer(connectionString: loggingConnectionString, sinkOptions: new Serilog.Sinks.MSSqlServer.MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true })
+#endif
+;
+
+Log.Logger = loggerConfiguration.CreateLogger();
+
+
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents().AddHubOptions(options => options.MaximumReceiveMessageSize = 10 * 1024 * 1024).AddInteractiveWebAssemblyComponents();
 builder.Services.AddControllers();
@@ -51,6 +80,9 @@ builder.Services.AddControllers().AddOData(o =>
     o.AddRouteComponents("odata/Identity", oDataBuilder.GetEdmModel()).Count().Filter().OrderBy().Expand().Select().SetMaxTop(null).TimeZone = TimeZoneInfo.Utc;
 });
 builder.Services.AddScoped<AuthenticationStateProvider, MyVideoResume.Client.ApplicationAuthenticationStateProvider>();
+
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -63,6 +95,8 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.MapControllers();

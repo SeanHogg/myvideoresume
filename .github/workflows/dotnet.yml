@@ -53,5 +53,6 @@ jobs:
         Smtp.Ssl=${{ secrets.EMAIL_SSL }}
         Smtp.User=${{ secrets.EMAIL_USER }}
         Smtp.Password=${{ secrets.EMAIL_PASSWORD }}
+        NewRelic.LoggingKey=${{ secrets.NEWRELIC_LOGGINGKEY }}
     - name: Publish & Deploy
       run: dotnet publish Server/MyVideoResume.Server.csproj /p:PublishProfile=webdeploy.pubxml /p:Password=${{secrets.DEPLOYPASSWORD}}

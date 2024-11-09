@@ -65,6 +65,8 @@ namespace MyVideoResume.Server.Controllers
 
             if (env.EnvironmentName == "Development" && userName == "admin" && password == "admin")
             {
+                logger.LogDebug("Admin Login");
+
                 var claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.Name, "admin"),
@@ -199,6 +201,7 @@ If you didn't request this code, you can safely ignore this email. Someone else 
                 }
                 catch (Exception ex)
                 {
+                    logger.LogError(ex.Message, ex);
                     return BadRequest(ex.Message);
                 }
             }
@@ -259,6 +262,7 @@ If you didn't request this registration, you can safely ignore this email. Someo
             }
             catch (Exception ex)
             {
+                logger.LogError(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
         }
