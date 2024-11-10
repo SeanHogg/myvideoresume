@@ -29,9 +29,9 @@ public partial class SentimentAnalysisTool
 
     private async Task<float> PredictSentimentAsync(string targetText)
     {
-        var uri = new Uri($"{NavigationManager.BaseUri}sentiment/sentimentprediction?sentimentText={targetText}");
-
-        float percentage = await Http.GetFromJsonAsync<float>(uri);
+        var uri = new Uri($"{NavigationManager.BaseUri}sentiment/sentimentprediction");
+        var response = await Http.PostAsJsonAsync<string>(uri, targetText);
+        float percentage = await response.ReadAsync<float>();
 
         return percentage;
     }

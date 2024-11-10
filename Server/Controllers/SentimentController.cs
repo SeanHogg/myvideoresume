@@ -16,9 +16,14 @@ public class SentimentController : Controller
         _predictionEnginePool = predictionEnginePool;
     }
 
-    [HttpGet("[action]")]
+    [HttpPost]
     [Route("sentimentprediction")]
-    public ActionResult<float> PredictSentiment([FromQuery] string sentimentText)
+    public ActionResult<float> PredictSentimentPost([FromBody] string sentimentText)
+    {
+        return ProcessSentimentPrediction(sentimentText);
+    }
+
+    private ActionResult<float> ProcessSentimentPrediction(string sentimentText)
     {
         // Predict sentiment using ML.NET model
         SampleObservation sampleData = new SampleObservation { Col0 = sentimentText };
