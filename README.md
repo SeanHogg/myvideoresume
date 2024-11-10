@@ -1,4 +1,4 @@
-# [MyVideoResu.ME](https://myvideoresu.me)
+﻿# [MyVideoResu.ME](https://myvideoresu.me)
 My Video Resume is an Open Source Platform that enhances your resume with Content (Video,Images, Links)
 
 [![.NET](https://github.com/SeanHogg/myvideoresume/actions/workflows/dotnet.yml/badge.svg)](https://github.com/SeanHogg/myvideoresume/actions/workflows/dotnet.yml)
@@ -6,10 +6,10 @@ My Video Resume is an Open Source Platform that enhances your resume with Conten
 ## Resume Tools
 - [Sentiment Analysis](https://myvideoresu.me/Tools/SentimentAnalysis). Allows you to verify that the content of your resume is positive.
 
-## ?? Resume Builder (Coming Soon)
-## ?? Resume Parser (Coming Soon)
+## ⚒️ Resume Builder (Coming Soon)
+## 🔍 Resume Parser (Coming Soon)
 
-## ?? Tech Stack
+## 📚 Tech Stack
 
 | <div style="width:140px">**Category**</div> | <div style="width:100px">**Choice**</div> | **Descriptions** |
 |---|---|---|
@@ -18,4 +18,4 @@ My Video Resume is an Open Source Platform that enhances your resume with Conten
 | **AI/ML** | [ML.NET](https://dotnet.microsoft.com/en-us/apps/machinelearning-ai/ml-dotnet) | An open source and cross-platform framework for AI & machine learning (ML). |
 | **Web Framework** | [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) | Blazor is a modern front-end web framework based on HTML, CSS, and C# that helps you build web apps fast. |
 | **Web UI Library** | [Radzen-Blazor](https://github.com/radzenhq/radzen-blazor) | A set of 90+ free and open source native Blazor UI controls. |
-| **PDF Reader** | [PDF.js](https://github.com/mozilla/pdf.js) | PDF.js reads content from PDF files and is used by the resume parser at its first step to read a resume PDF�s content. |
+| **PDF Reader** | [PDF.js](https://github.com/mozilla/pdf.js) | PDF.js reads content from PDF files and is used by the resume parser at its first step to read a resume PDF’s content. |

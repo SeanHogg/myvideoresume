@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
 		<NoWarn>CS0168,CS1998,BL9993,CS0649,CS0436,0436</NoWarn>
 		<NuGetAuditMode>direct</NuGetAuditMode>
@@ -7,6 +7,15 @@
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 		<Version>1.1.0.0</Version>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="ML\**" />
+	  <Content Remove="ML\**" />
+	  <EmbeddedResource Remove="ML\**" />
+	  <None Remove="ML\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Controllers\SentimentController.cs" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="IdentityModel" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.ML" Version="3.0.1" />
@@ -30,9 +39,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.HeaderPropagation" Version="8.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Update="ML\MLSentimentModel.zip">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
 		<None Update="Properties\PublishProfiles\webdeploy.PublishSettings">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

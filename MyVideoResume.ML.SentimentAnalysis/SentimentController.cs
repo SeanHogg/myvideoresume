@@ -3,7 +3,7 @@ using Microsoft.Extensions.ML;
 using Microsoft.AspNetCore.Mvc;
 using MyVideoResume.ML.SentimentAnalysis.DataModels;
 
-namespace MyVideoResume.Server.Controllers;
+namespace MyVideoResume.ML.SentimentAnalysis;
 
 [Route("[controller]")]
 public class SentimentController : Controller
