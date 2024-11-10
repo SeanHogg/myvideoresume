@@ -12,6 +12,8 @@ using Serilog;
 using IdentityModel;
 using Serilog.Sinks.MSSqlServer.Sinks.MSSqlServer.Options;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.ML;
+using MyVideoResume.ML.SentimentAnalysis.DataModels;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -58,6 +60,11 @@ builder.Services.AddControllers().AddOData(opt =>
     var oDataBuilderDataContext = new ODataConventionModelBuilder();
     opt.AddRouteComponents("odata/DataContext", oDataBuilderDataContext.GetEdmModel()).Count().Filter().OrderBy().Expand().Select().SetMaxTop(null).TimeZone = TimeZoneInfo.Utc;
 });
+
+// Register the PredictionEnginePool as a service in the IoC container for DI
+builder.Services.AddPredictionEnginePool<SampleObservation, SamplePrediction>()
+                    .FromFile(builder.Configuration["MLModel:MLModelFilePath"]); 
+
 builder.Services.AddScoped<MyVideoResume.Client.DataContextService>();
 builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = false }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddHeaderPropagation(o => o.Headers.Add("Cookie"));

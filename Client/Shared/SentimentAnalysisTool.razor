@@ -1,0 +1,17 @@
+﻿@inject HttpClient Http
+
+<RadzenRow Gap="5" RowGap="5">
+    <RadzenColumn>
+        <RadzenCard>
+            <RadzenRow>
+                <h2>Analyse Resume Sentiment</h2>
+            </RadzenRow>
+            <RadzenRow>
+                <p><textarea @oninput="UpdateScoreAsync" cols="48" rows="10" placeholder="Copy Paste Your resume"></textarea></p>
+            </RadzenRow>
+            <RadzenRow>
+                <HappinessScale Value=@happiness />
+            </RadzenRow>
+        </RadzenCard>
+    </RadzenColumn>
+</RadzenRow>

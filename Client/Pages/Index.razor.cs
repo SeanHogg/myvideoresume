@@ -1,4 +1,3 @@
-using System.Net.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
+using System.Net.Http.Json;
 
 namespace MyVideoResume.Client.Pages
 {
@@ -34,5 +34,7 @@ namespace MyVideoResume.Client.Pages
 
         [Inject]
         protected SecurityService Security { get; set; }
+
+
     }
 }

@@ -10,7 +10,7 @@
             </RadzenColumn>
             <RadzenColumn Size="4">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="0.5rem" class="rz-px-2">
-                   
+
                 </RadzenStack>
             </RadzenColumn>
             <RadzenColumn Size="7">
@@ -48,6 +48,9 @@
         <RadzenPanelMenu>
             <RadzenPanelMenuItem Text="Home" Path="" />
             <RadzenPanelMenuItem id="LoginMenu" Visible="@ShowLogin" Text="Login / Register" Path="/login" />
+            <RadzenPanelMenuItem Text="Tools">
+                <RadzenPanelMenuItem Text="Sentiment Analysis" Path="Tools/SentimentAnalysis" />
+            </RadzenPanelMenuItem>
         </RadzenPanelMenu>
     </RadzenSidebar>
 </RadzenLayout>
