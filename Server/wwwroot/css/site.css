@@ -95,7 +95,7 @@ a:focus {
     margin-bottom: 25px;
     padding-top: 0;
     border-radius: 1rem;
-    width: 100%;
+    width: 100% !important;
 }
 
     .sentiment h4 {
@@ -113,6 +113,7 @@ a:focus {
         position: relative;
         left: 22px;
         width: calc(100% - 68px);
+        padding-bottom:20px;
     }
 
         .sentiment .marker > div {

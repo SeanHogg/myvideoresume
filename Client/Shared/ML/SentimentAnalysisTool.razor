@@ -6,8 +6,8 @@
             <RadzenRow>
                 <h2>Analyse Resume Sentiment</h2>
             </RadzenRow>
-            <RadzenRow>
-                <p><textarea @oninput="UpdateScoreAsync" cols="25" class="sentiment" rows="10" placeholder="Copy Paste Your resume"></textarea></p>
+            <RadzenRow class="sentiment" style="padding-top: 25px; margin-top: 25px;"
+                <textarea @oninput="UpdateScoreAsync" cols="25" class="sentiment" rows="10" placeholder="Copy Paste Your resume"></textarea>
             </RadzenRow>
             <RadzenRow>
                 <HappinessScale Value=@happiness />
