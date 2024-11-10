@@ -9,16 +9,29 @@ using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
 using System.Net.Http.Json;
+using Blazored.LocalStorage;
 
 namespace MyVideoResume.Client.Shared.ML;
 
 public partial class SentimentAnalysisTool
 {
     [Inject]
+    protected ILogger<SentimentAnalysisTool> Logger { get; set; }
+
+    [Inject]
+    protected ILocalStorageService localStorage { get; set; }
+
+    [Inject]
+    protected IJSRuntime JS { get; set; }
+
+
+    [Inject]
     protected NavigationManager NavigationManager { get; set; }
 
     [Parameter]
     public float happiness { get; set; } = 50; // 0=worst, 100=best
+
+    public string resume { get; set; }
 
     private async Task UpdateScoreAsync(ChangeEventArgs e)
     {
@@ -29,10 +42,45 @@ public partial class SentimentAnalysisTool
 
     private async Task<float> PredictSentimentAsync(string targetText)
     {
+        var textResume = await localStorage.GetItemAsync<string>("textresume");
+        if (string.IsNullOrEmpty(targetText) && !string.IsNullOrWhiteSpace(textResume))
+        {
+            resume = textResume;
+            StateHasChanged();
+        }
+        else
+        {
+            resume = targetText;
+        }
+
         var uri = new Uri($"{NavigationManager.BaseUri}sentiment/sentimentprediction");
-        var response = await Http.PostAsJsonAsync<string>(uri, targetText);
+        var response = await Http.PostAsJsonAsync<string>(uri, resume);
         float percentage = await response.ReadAsync<float>();
 
+        try
+        {
+            await localStorage.SetItemAsync("textresume", resume);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message, ex);
+        }
         return percentage;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            resume = await localStorage.GetItemAsync<string>("textresume");
+            if (!string.IsNullOrEmpty(resume)) {
+                happiness = await PredictSentimentAsync(resume);
+            }
+        }
+        catch (InvalidOperationException ex)
+        {
+            Logger.LogError(ex.Message, ex);
+        }
+        await base.OnInitializedAsync();
     }
 }

@@ -8,15 +8,7 @@
 		<Version>1.1.0.0</Version>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="ML\**" />
-	  <Content Remove="ML\**" />
-	  <EmbeddedResource Remove="ML\**" />
-	  <None Remove="ML\**" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Compile Remove="Controllers\SentimentController.cs" />
-	</ItemGroup>
-	<ItemGroup>
+		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageReference Include="IdentityModel" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.ML" Version="3.0.1" />
 		<PackageReference Include="Microsoft.ML" Version="3.0.1" />

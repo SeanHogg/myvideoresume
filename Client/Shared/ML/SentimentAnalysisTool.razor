@@ -7,7 +7,7 @@
                 <h2>Analyse Resume Sentiment</h2>
             </RadzenRow>
             <RadzenRow class="sentiment" style="padding-top: 25px; margin-top: 25px;">
-                <textarea @oninput="UpdateScoreAsync" cols="25" class="sentiment" rows="10" placeholder="Copy Paste Your resume"></textarea>
+                <InputTextArea @oninput="UpdateScoreAsync" cols="25" class="sentiment" rows="10" placeholder="Copy Paste Your resume" @bind-Value="resume" />
             </RadzenRow>
             <RadzenRow>
                 <HappinessScale Value=@happiness />

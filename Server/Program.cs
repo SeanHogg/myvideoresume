@@ -7,14 +7,10 @@ using MyVideoResume.Server.Data;
 using Microsoft.AspNetCore.Identity;
 using MyVideoResume.Server.Models;
 using Microsoft.AspNetCore.Components.Authorization;
-using Serilog.Events;
 using Serilog;
 using IdentityModel;
-using Serilog.Sinks.MSSqlServer.Sinks.MSSqlServer.Options;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.ML;
-using MyVideoResume.ML.SentimentAnalysis.DataModels;
 using MyVideoResume.ML.SentimentAnalysis;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -42,7 +38,10 @@ Log.Logger = loggerConfiguration.CreateLogger();
 
 
 // Add services to the container.
-builder.Services.AddRazorComponents().AddInteractiveServerComponents().AddHubOptions(options => options.MaximumReceiveMessageSize = 10 * 1024 * 1024).AddInteractiveWebAssemblyComponents();
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents()
+    .AddHubOptions(options => options.MaximumReceiveMessageSize = 10 * 1024 * 1024)
+    .AddInteractiveWebAssemblyComponents();
 builder.Services.AddControllers();
 builder.Services.AddRadzenComponents();
 builder.Services.AddRadzenCookieThemeService(options =>
@@ -61,6 +60,8 @@ builder.Services.AddControllers().AddOData(opt =>
     var oDataBuilderDataContext = new ODataConventionModelBuilder();
     opt.AddRouteComponents("odata/DataContext", oDataBuilderDataContext.GetEdmModel()).Count().Filter().OrderBy().Expand().Select().SetMaxTop(null).TimeZone = TimeZoneInfo.Utc;
 });
+
+builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<MyVideoResume.Client.DataContextService>();
 builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = false }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));
@@ -110,6 +111,9 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
-app.MapRazorComponents<App>().AddInteractiveServerRenderMode().AddInteractiveWebAssemblyRenderMode().AddAdditionalAssemblies(typeof(MyVideoResume.Client._Imports).Assembly);
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddAdditionalAssemblies(typeof(MyVideoResume.Client._Imports).Assembly);
 app.Services.CreateScope().ServiceProvider.GetRequiredService<ApplicationIdentityDbContext>().Database.Migrate();
 app.Run();

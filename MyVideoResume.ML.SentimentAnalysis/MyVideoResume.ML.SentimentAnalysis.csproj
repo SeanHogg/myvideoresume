@@ -8,10 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="ML\MLSentimentModel.zip" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Content Include="ML\MLSentimentModel.zip">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "MyVideoResume.ML.SentimentAnalysis": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:54727;http://localhost:54728"
+    }
+  }
+}
