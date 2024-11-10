@@ -10,7 +10,7 @@ using Radzen;
 using Radzen.Blazor;
 using System.Net.Http.Json;
 
-namespace MyVideoResume.Client.Shared;
+namespace MyVideoResume.Client.Shared.ML;
 
 public partial class SentimentAnalysisTool
 {

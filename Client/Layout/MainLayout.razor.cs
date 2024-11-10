@@ -51,8 +51,6 @@ public partial class MainLayout
         }
     }
 
-    public string Copyright { get { return $"Copyright Ⓒ {DateTime.Now.Year} - MyVideoResu.ME - "; } }
-    public string Version { get { return $"v.{VersionNumber}"; } }
 
     public bool ShowLogin
     {
@@ -62,14 +60,7 @@ public partial class MainLayout
         }
     }
 
-    public string VersionNumber
-    {
-        get
-        {
-            return typeof(MainLayout).Assembly.GetName().Version.ToString();
 
-        }
-    }
 
     public void NavigateTo(string path)
     {

@@ -35,8 +35,8 @@
         </RadzenRow>
     </RadzenHeader>
     <RadzenBody Expanded="@sidebarExpanded">
-        <RadzenRow class="rz-mx-auto rz-px-4 rz-pt-2 rz-pt-md-4 rz-pt-lg-6 rz-pt-xl-12 rz-pb-2 rz-pb-lg-12" Style="max-width: 1440px;">
-            <RadzenColumn Size="12">
+        <RadzenRow class="rz-mx-auto rz-px-4 rz-pt-2 rz-pt-md-4 rz-pt-lg-6 rz-pt-xl-12 rz-pb-2 rz-pb-lg-12" Style="max-width: 1440px; height:95%">
+            <RadzenColumn Size="12" style="height:100%">
                 @Body
             </RadzenColumn>
         </RadzenRow>
@@ -57,10 +57,7 @@
 <RadzenFooter>
     <RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="0">
         <RadzenColumn Size="12">
-            <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
-                <RadzenText Text="@Copyright" TextStyle="Radzen.Blazor.TextStyle.Caption" TagName="Radzen.Blazor.TagName.P" />
-                <RadzenText Text="@Version" TextStyle="Radzen.Blazor.TextStyle.Caption" TagName="Radzen.Blazor.TagName.P" />
-            </RadzenStack>
+            <CopyrightInformation></CopyrightInformation>
         </RadzenColumn>
     </RadzenRow>
 </RadzenFooter>

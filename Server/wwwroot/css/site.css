@@ -137,4 +137,14 @@ a:focus {
     .sentiment p {
         font-size: 25px;
     }
+    .footerLink {
+        font-size: 9px !important;
+    }
+
+    :root {
+        --rz-footer-padding: .25rem;
+    }
+    .rz-stack {
+        gap: 0.45rem !important;
+    }
 }

@@ -36,13 +36,4 @@ public partial class LoginLayout
 
     [Inject]
     protected SecurityService Security { get; set; }
-
-
-    public string CopyrightInfo
-    {
-        get
-        {
-            return $"Copyright Ⓒ {DateTime.Now.Year} - MyVideoResu.ME - v{typeof(LoginLayout).Assembly.GetName().Version.ToString()}";
-        }
-    }
 }

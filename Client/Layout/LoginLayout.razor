@@ -17,13 +17,14 @@
                         <RadzenText TextStyle="Radzen.Blazor.TextStyle.Body1" class="rz-mb-12 rz-pb-0 rz-pb-md-12 rz-color-on-primary rz-display-none rz-display-sm-block">
                             Fill in your login credentials to proceed.
                         </RadzenText>
+                        <TermsOfUsePrivacyAgreement></TermsOfUsePrivacyAgreement>
                     </RadzenColumn>
                     <RadzenColumn Size="12" SizeSM="6" class="rz-p-12">
                         @Body
                     </RadzenColumn>
                 </RadzenRow>
             </RadzenCard>
-            <RadzenText Text="@CopyrightInfo" TextStyle="Radzen.Blazor.TextStyle.Caption" TextAlign="Radzen.TextAlign.Center" Style="width: 100%; margin-top: 20px" TagName="Radzen.Blazor.TagName.P" />
+            <CopyrightInformation></CopyrightInformation>
         </RadzenStack>
     </RadzenBody>
 </RadzenLayout>
