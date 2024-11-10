@@ -1,9 +1,7 @@
 ﻿﻿<div class="sentiment">
-    <p>😡🙁😐😃😍</p>
-
+    <RadzenSlider @bind-Value=@Value TValue="float" Disabled=true style="width:100%" />
     <div class="marker">
         <div style="left: @Value%;">
-            <div>▲</div>
             <label>@Value.ToString("0.0")%</label>
         </div>
     </div>
