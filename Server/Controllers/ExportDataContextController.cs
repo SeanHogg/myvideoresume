@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-using MyVideoResume.Server.Data;
+using MyVideoResume.Data;
 
 namespace MyVideoResume.Server.Controllers
 {
     public partial class ExportDataContextController : ExportController
     {
-        private readonly DataContextContext context;
+        private readonly DataContext context;
         private readonly DataContextService service;
 
-        public ExportDataContextController(DataContextContext context, DataContextService service)
+        public ExportDataContextController(DataContext context, DataContextService service)
         {
             this.service = service;
             this.context = context;

@@ -30,8 +30,8 @@ namespace MyVideoResume.Client.Pages
         [Inject]
         protected NotificationService NotificationService { get; set; }
 
-        protected IEnumerable<MyVideoResume.Server.Models.ApplicationRole> roles;
-        protected RadzenDataGrid<MyVideoResume.Server.Models.ApplicationRole> grid0;
+        protected IEnumerable<MyVideoResume.Data.Models.ApplicationRole> roles;
+        protected RadzenDataGrid<MyVideoResume.Data.Models.ApplicationRole> grid0;
         protected string error;
         protected bool errorVisible;
 
@@ -50,7 +50,7 @@ namespace MyVideoResume.Client.Pages
             roles = await Security.GetRoles();
         }
 
-        protected async Task DeleteClick(MyVideoResume.Server.Models.ApplicationRole role)
+        protected async Task DeleteClick(MyVideoResume.Data.Models.ApplicationRole role)
         {
             try
             {

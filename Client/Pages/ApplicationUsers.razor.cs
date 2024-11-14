@@ -30,8 +30,8 @@ namespace MyVideoResume.Client.Pages
         [Inject]
         protected NotificationService NotificationService { get; set; }
 
-        protected IEnumerable<MyVideoResume.Server.Models.ApplicationUser> users;
-        protected RadzenDataGrid<MyVideoResume.Server.Models.ApplicationUser> grid0;
+        protected IEnumerable<MyVideoResume.Data.Models.ApplicationUser> users;
+        protected RadzenDataGrid<MyVideoResume.Data.Models.ApplicationUser> grid0;
         protected string error;
         protected bool errorVisible;
 
@@ -50,14 +50,14 @@ namespace MyVideoResume.Client.Pages
             users = await Security.GetUsers();
         }
 
-        protected async Task RowSelect(MyVideoResume.Server.Models.ApplicationUser user)
+        protected async Task RowSelect(MyVideoResume.Data.Models.ApplicationUser user)
         {
             await DialogService.OpenAsync<EditApplicationUser>("Edit Application User", new Dictionary<string, object>{ {"Id", user.Id} });
 
             users = await Security.GetUsers();
         }
 
-        protected async Task DeleteClick(MyVideoResume.Server.Models.ApplicationUser user)
+        protected async Task DeleteClick(MyVideoResume.Data.Models.ApplicationUser user)
         {
             try
             {

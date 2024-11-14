@@ -11,15 +11,16 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace MyVideoResume.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationIdentityDbContext))]
-    partial class IdentityModelSnapshot : ModelSnapshot
+    [Migration("00000000000000_CreateIdentitySchema")]
+    partial class CreateIdentitySchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                  .HasAnnotation("ProductVersion", "3.0.0")
                  .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MyVideoResume.Server.Models.ApplicationRole", b =>
+            modelBuilder.Entity("MyVideoResume.Data.Models.ApplicationRole", b =>
                 {
                     b.Property<string>("Id");
 
@@ -33,12 +34,13 @@ namespace MyVideoResume.Server.Data.Migrations
                         .HasAnnotation("MaxLength", 256);
                     b.HasKey("Id");
 
+
                     b.HasIndex("NormalizedName")
 
                         .IsUnique()
+                        .IsUnique()
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
-
                     b.ToTable("AspNetRoles");
                 });
 
@@ -126,7 +128,7 @@ namespace MyVideoResume.Server.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MyVideoResume.Server.Models.ApplicationUser", b =>
+            modelBuilder.Entity("MyVideoResume.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
 
@@ -162,7 +164,6 @@ namespace MyVideoResume.Server.Data.Migrations
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -180,7 +181,7 @@ namespace MyVideoResume.Server.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("MyVideoResume.Server.Models.ApplicationRole")
+                    b.HasOne("MyVideoResume.Data.Models.ApplicationRole")
                         .WithMany("Claims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -188,7 +189,7 @@ namespace MyVideoResume.Server.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MyVideoResume.Server.Models.ApplicationUser")
+                    b.HasOne("MyVideoResume.Data.Models.ApplicationUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -196,7 +197,7 @@ namespace MyVideoResume.Server.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MyVideoResume.Server.Models.ApplicationUser")
+                    b.HasOne("MyVideoResume.Data.Models.ApplicationUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -204,7 +205,7 @@ namespace MyVideoResume.Server.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MyVideoResume.Server.Models.ApplicationUser")
+                    b.HasOne("MyVideoResume.Data.Models.ApplicationUser")
                         .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -212,12 +213,12 @@ namespace MyVideoResume.Server.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("MyVideoResume.Server.Models.ApplicationRole")
+                    b.HasOne("MyVideoResume.Data.Models.ApplicationRole")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyVideoResume.Server.Models.ApplicationUser")
+                    b.HasOne("MyVideoResume.Data.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

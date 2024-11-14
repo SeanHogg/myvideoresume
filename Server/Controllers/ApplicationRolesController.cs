@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using MyVideoResume.Server.Models;
+using MyVideoResume.Data.Models;
 
 namespace MyVideoResume.Server.Controllers
 {

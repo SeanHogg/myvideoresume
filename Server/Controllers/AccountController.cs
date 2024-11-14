@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using MyVideoResume.Server.Models;
+using MyVideoResume.Data.Models;
 
 namespace MyVideoResume.Server.Controllers
 {
@@ -35,6 +35,7 @@ namespace MyVideoResume.Server.Controllers
             this.logger = logger;
         }
 
+        #region Security
         private IActionResult RedirectWithError(string error, string redirectUrl = null)
         {
             if (!string.IsNullOrEmpty(redirectUrl))
@@ -369,5 +370,15 @@ If you didn't request this registration, you can safely ignore this email. Someo
                 logger.LogError(ex.Message, ex);
             }
         }
+        #endregion
+
+        #region Preferences
+        [HttpPost]
+        public JobPreferencesEntity JobPerferences(string userId)
+        {
+            return null;
+        }
+
+        #endregion
     }
 }

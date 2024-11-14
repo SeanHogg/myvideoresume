@@ -24,4 +24,14 @@
 	<ItemGroup>
 		<ServiceWorker Include="../Server/wwwroot/service-worker.js" PublishedContent="../Server/wwwroot/service-worker.published.js" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\MyVideoResume.Data\MyVideoResume.Data.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="..\Server\Models\ApplicationAuthenticationState.cs" Link="Models\ApplicationAuthenticationState.cs" />
+	  <Compile Update="..\Server\Models\ApplicationRole.cs" Link="Models\ApplicationRole.cs" />
+	  <Compile Update="..\Server\Models\ApplicationUser.cs" Link="Models\ApplicationUser.cs" />
+	  <Compile Update="..\Server\Models\ApplicationUser.Custom.cs" Link="Models\ApplicationUser.Custom.cs" />
+	  <Compile Update="..\Server\Models\CommonBase.cs" Link="Models\CommonBase.cs" />
+	</ItemGroup>
 </Project>

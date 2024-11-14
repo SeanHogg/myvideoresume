@@ -30,7 +30,7 @@ namespace MyVideoResume.Client.Pages
         [Inject]
         protected NotificationService NotificationService { get; set; }
 
-        protected MyVideoResume.Server.Models.ApplicationUser user;
+        protected MyVideoResume.Data.Models.ApplicationUser user;
         protected bool isBusy;
         protected bool errorVisible;
         protected string error;
@@ -40,7 +40,7 @@ namespace MyVideoResume.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            user = new MyVideoResume.Server.Models.ApplicationUser();
+            user = new MyVideoResume.Data.Models.ApplicationUser();
         }
 
         protected async Task FormSubmit()

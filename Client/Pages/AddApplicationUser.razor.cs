@@ -30,8 +30,8 @@ namespace MyVideoResume.Client.Pages
         [Inject]
         protected NotificationService NotificationService { get; set; }
 
-        protected IEnumerable<MyVideoResume.Server.Models.ApplicationRole> roles;
-        protected MyVideoResume.Server.Models.ApplicationUser user;
+        protected IEnumerable<MyVideoResume.Data.Models.ApplicationRole> roles;
+        protected MyVideoResume.Data.Models.ApplicationUser user;
         protected IEnumerable<string> userRoles = Enumerable.Empty<string>();
         protected string error;
         protected bool errorVisible;
@@ -41,12 +41,12 @@ namespace MyVideoResume.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            user = new MyVideoResume.Server.Models.ApplicationUser();
+            user = new MyVideoResume.Data.Models.ApplicationUser();
 
             roles = await Security.GetRoles();
         }
 
-        protected async Task FormSubmit(MyVideoResume.Server.Models.ApplicationUser user)
+        protected async Task FormSubmit(MyVideoResume.Data.Models.ApplicationUser user)
         {
             try
             {

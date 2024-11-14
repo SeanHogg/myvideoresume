@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 
-using MyVideoResume.Server.Models;
+using MyVideoResume.Data.Models;
 
 namespace MyVideoResume.Client
 {

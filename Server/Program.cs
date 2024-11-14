@@ -5,7 +5,7 @@ using Microsoft.OData.ModelBuilder;
 using Microsoft.AspNetCore.OData;
 using MyVideoResume.Server.Data;
 using Microsoft.AspNetCore.Identity;
-using MyVideoResume.Server.Models;
+using MyVideoResume.Data.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Serilog;
 using IdentityModel;
@@ -51,7 +51,7 @@ builder.Services.AddRadzenCookieThemeService(options =>
 });
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<MyVideoResume.Server.DataContextService>();
-builder.Services.AddDbContext<MyVideoResume.Server.Data.DataContextContext>(options =>
+builder.Services.AddDbContext<MyVideoResume.Data.DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });

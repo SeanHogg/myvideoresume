@@ -6,12 +6,11 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
-namespace MyVideoResume.Server.Models
-{
-    public partial class ApplicationRole : IdentityRole
-    {
-        [JsonIgnore]
-        public ICollection<ApplicationUser> Users { get; set; }
+namespace MyVideoResume.Data.Models;
 
-    }
+public partial class ApplicationRole : IdentityRole
+{
+    [JsonIgnore]
+    public ICollection<ApplicationUser> Users { get; set; }
+
 }

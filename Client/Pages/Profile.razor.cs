@@ -33,7 +33,8 @@ namespace MyVideoResume.Client.Pages
         protected string oldPassword = "";
         protected string newPassword = "";
         protected string confirmPassword = "";
-        protected MyVideoResume.Server.Models.ApplicationUser user;
+        protected MyVideoResume.Data.Models.ApplicationUser user;
+        protected MyVideoResume.Data.Models.JobPreferencesEntity jobPreferences;
         protected string error;
         protected bool errorVisible;
         protected bool successVisible;
@@ -44,6 +45,7 @@ namespace MyVideoResume.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             user = await Security.GetUserById($"{Security.User.Id}");
+            //jobPreferences = await 
         }
 
         protected async Task FormSubmit()
@@ -57,6 +59,15 @@ namespace MyVideoResume.Client.Pages
             {
                 errorVisible = true;
                 error = ex.Message;
+            }
+        }
+
+        protected async Task SavePreferences()
+        {
+            try { }
+            catch (Exception ex)
+            {
+
             }
         }
     }

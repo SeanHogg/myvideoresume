@@ -10,13 +10,13 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 
-using MyVideoResume.Server.Data;
+using MyVideoResume.Data;
 
 namespace MyVideoResume.Server
 {
     public partial class DataContextService
     {
-        DataContextContext Context
+        DataContext Context
         {
            get
            {
@@ -24,10 +24,10 @@ namespace MyVideoResume.Server
            }
         }
 
-        private readonly DataContextContext context;
+        private readonly DataContext context;
         private readonly NavigationManager navigationManager;
 
-        public DataContextService(DataContextContext context, NavigationManager navigationManager)
+        public DataContextService(DataContext context, NavigationManager navigationManager)
         {
             this.context = context;
             this.navigationManager = navigationManager;

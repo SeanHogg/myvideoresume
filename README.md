@@ -19,3 +19,31 @@ My Video Resume is an Open Source Platform that enhances your resume with Conten
 | **Web Framework** | [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) | Blazor is a modern front-end web framework based on HTML, CSS, and C# that helps you build web apps fast. |
 | **Web UI Library** | [Radzen-Blazor](https://github.com/radzenhq/radzen-blazor) | A set of 90+ free and open source native Blazor UI controls. |
 | **PDF Reader** | [PDF.js](https://github.com/mozilla/pdf.js) | PDF.js reads content from PDF files and is used by the resume parser at its first step to read a resume PDF’s content. |
+
+
+## Data (MyVideoResume.Server)
+The project uses Entity Framework (CodeFirst) Migrations. All EF Patterns are applicable. 
+
+`dotnet tool install --global dotnet-ef`
+
+Update Tools:
+`dotnet tool update --global dotnet-ef`
+
+The Following Contexts are available:
+
+* DataContext > uses the "Default" Connection String - CRUD actions in the primary Database (All Data including Auth tables)
+
+
+### Steps to Add Migration and to Update the Database
+1. Add Entities to DataContext.
+1. Change Working Directory to MyVideoResume.Server via the Commandline. (Verify you have the latest code and it compiles)
+1. Create a Migration:
+
+`dotnet ef migrations add "GiveYourMigrationANameHere" --output-dir "Migrations\MyVideoResume" --context DataContext`
+
+4. Update the Database 
+[If you have verified everything works locally. You should Push your latest changes, verify build and deploy is successful, then run]
+
+`dotnet ef database update --context DataContext`
+
+(if you need to remove a migration `dotnet ef migrations remove --context DataContext`) 

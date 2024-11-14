@@ -13,7 +13,8 @@ using Microsoft.AspNetCore.OData.Deltas;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using MyVideoResume.Server.Data;
-using MyVideoResume.Server.Models;
+using MyVideoResume.Data.Models;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace MyVideoResume.Server.Controllers
 {
@@ -23,12 +24,14 @@ namespace MyVideoResume.Server.Controllers
     {
         private readonly ApplicationIdentityDbContext context;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILogger<ApplicationUsersController> logger;
 
 
-        public ApplicationUsersController(ApplicationIdentityDbContext context, UserManager<ApplicationUser> userManager)
+        public ApplicationUsersController(ApplicationIdentityDbContext context, UserManager<ApplicationUser> userManager, ILogger<ApplicationUsersController> logger)
         {
             this.context = context;
             this.userManager = userManager;
+            this.logger = logger;
         }
 
         partial void OnUsersRead(ref IQueryable<ApplicationUser> users);
@@ -47,9 +50,18 @@ namespace MyVideoResume.Server.Controllers
         [HttpGet("{Id}")]
         public SingleResult<ApplicationUser> GetApplicationUser(string key)
         {
-            var user = context.Users.Where(i => i.Id == key);
+            try
+            {
+                var user = context.Users.Where(i => i.Id == key);
+                var result = SingleResult.Create(user);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message, ex);
+            }
 
-            return SingleResult.Create(user);
+            return null;
         }
 
         partial void OnUserDeleted(ApplicationUser user);
@@ -79,7 +91,7 @@ namespace MyVideoResume.Server.Controllers
         partial void OnUserUpdated(ApplicationUser user);
 
         [HttpPatch("{Id}")]
-        public async Task<IActionResult> Patch(string key, [FromBody]ApplicationUser data)
+        public async Task<IActionResult> Patch(string key, [FromBody] ApplicationUser data)
         {
             var user = await userManager.FindByIdAsync(key);
 
@@ -100,7 +112,7 @@ namespace MyVideoResume.Server.Controllers
             {
                 result = await userManager.RemoveFromRolesAsync(user, await userManager.GetRolesAsync(user));
 
-                if (result.Succeeded) 
+                if (result.Succeeded)
                 {
                     result = await userManager.AddToRolesAsync(user, data.Roles.Select(r => r.Name));
                 }

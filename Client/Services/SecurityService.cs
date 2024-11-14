@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 using Radzen;
 
-using MyVideoResume.Server.Models;
+using MyVideoResume.Data.Models;
 
 namespace MyVideoResume.Client
 {
@@ -30,17 +30,20 @@ namespace MyVideoResume.Client
 
         public ClaimsPrincipal Principal { get; private set; }
 
-        public SecurityService(NavigationManager navigationManager, IHttpClientFactory factory)
+        private readonly ILogger<SecurityService> _logger;
+
+        public SecurityService(NavigationManager navigationManager, IHttpClientFactory factory, ILogger<SecurityService> logger)
         {
             this.baseUri = new Uri($"{navigationManager.BaseUri}odata/Identity/");
             this.httpClient = factory.CreateClient("MyVideoResume.Server");
             this.navigationManager = navigationManager;
+            this._logger = logger;
         }
 
         public bool IsInRole(params string[] roles)
         {
 #if DEBUG
-            if (User.Name == "admin")
+            if (User?.Name == "admin")
             {
                 return true;
             }
@@ -98,7 +101,7 @@ namespace MyVideoResume.Client
 
         public async Task<ApplicationAuthenticationState> GetAuthenticationStateAsync()
         {
-            var uri =  new Uri($"{navigationManager.BaseUri}Account/CurrentUser");
+            var uri = new Uri($"{navigationManager.BaseUri}Account/CurrentUser");
 
             var response = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Post, uri));
 
@@ -180,16 +183,25 @@ namespace MyVideoResume.Client
 
         public async Task<ApplicationUser> GetUserById(string id)
         {
-            var uri = new Uri(baseUri, $"ApplicationUsers('{id}')?$expand=Roles");
-
-            var response = await httpClient.GetAsync(uri);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            try
             {
-                return null;
+                var uri = new Uri(baseUri, $"ApplicationUsers('{id}')?$expand=Roles");
+
+                var response = await httpClient.GetAsync(uri);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+
+                return await response.ReadAsync<ApplicationUser>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
             }
 
-            return await response.ReadAsync<ApplicationUser>();
+            return null;
         }
 
         public async Task<ApplicationUser> UpdateUser(string id, ApplicationUser user)
@@ -207,7 +219,7 @@ namespace MyVideoResume.Client
         }
         public async Task ChangePassword(string oldPassword, string newPassword)
         {
-            var uri =  new Uri($"{navigationManager.BaseUri}Account/ChangePassword");
+            var uri = new Uri($"{navigationManager.BaseUri}Account/ChangePassword");
 
             var content = new FormUrlEncodedContent(new Dictionary<string, string> {
                 { "oldPassword", oldPassword },
@@ -226,7 +238,7 @@ namespace MyVideoResume.Client
 
         public async Task Register(string userName, string password)
         {
-            var uri =  new Uri($"{navigationManager.BaseUri}Account/Register");
+            var uri = new Uri($"{navigationManager.BaseUri}Account/Register");
 
             var content = new FormUrlEncodedContent(new Dictionary<string, string> {
                 { "userName", userName },
@@ -245,7 +257,7 @@ namespace MyVideoResume.Client
 
         public async Task ResetPassword(string userName)
         {
-            var uri =  new Uri($"{navigationManager.BaseUri}Account/ResetPassword");
+            var uri = new Uri($"{navigationManager.BaseUri}Account/ResetPassword");
 
             var content = new FormUrlEncodedContent(new Dictionary<string, string> {
                 { "userName", userName }

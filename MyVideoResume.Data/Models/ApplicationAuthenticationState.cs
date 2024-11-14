@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MyVideoResume.Server.Models
+namespace MyVideoResume.Data.Models
 {
     public class ApplicationClaim
     {

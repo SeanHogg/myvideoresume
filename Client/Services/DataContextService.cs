@@ -18,17 +18,7 @@ namespace MyVideoResume.Client
 {
     public partial class DataContextService
     {
-        private readonly HttpClient httpClient;
-        private readonly Uri baseUri;
-        private readonly NavigationManager navigationManager;
 
-        public DataContextService(NavigationManager navigationManager, HttpClient httpClient, IConfiguration configuration)
-        {
-            this.httpClient = httpClient;
-
-            this.navigationManager = navigationManager;
-            this.baseUri = new Uri($"{navigationManager.BaseUri}odata/DataContext/");
-        }
 
     }
 }

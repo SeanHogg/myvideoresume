@@ -30,7 +30,7 @@ namespace MyVideoResume.Client.Pages
         [Inject]
         protected NotificationService NotificationService { get; set; }
 
-        protected MyVideoResume.Server.Models.ApplicationRole role;
+        protected MyVideoResume.Data.Models.ApplicationRole role;
         protected string error;
         protected bool errorVisible;
 
@@ -39,10 +39,10 @@ namespace MyVideoResume.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            role = new MyVideoResume.Server.Models.ApplicationRole();
+            role = new MyVideoResume.Data.Models.ApplicationRole();
         }
 
-        protected async Task FormSubmit(MyVideoResume.Server.Models.ApplicationRole role)
+        protected async Task FormSubmit(MyVideoResume.Data.Models.ApplicationRole role)
         {
             try
             {
