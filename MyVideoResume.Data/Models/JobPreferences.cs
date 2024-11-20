@@ -53,12 +53,11 @@ public enum PaySchedule
 
 public class JobPreferences : CommonBase
 {
-    public Industry Industry { get; set; }
+    public Industry Industry { get; set; } = Industry.Management;
     public Seniority Seniority { get; set; } = Seniority.Entry;
     public List<EmploymentType> EmploymentType { get; set; } = new List<EmploymentType>();
     public PaySchedule PaySchedule { get; set; } = PaySchedule.Yearly;
     public float MinimumSalary { get; set; }
-    [Required]
     public string UserId { get; set; }
 }
 

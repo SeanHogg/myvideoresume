@@ -1,5 +1,5 @@
 @page "/add-application-role"
-@attribute [Authorize]
+@attribute [Authorize(Roles = "admin")]
 
 <RadzenRow>
     <RadzenColumn SizeMD="12">

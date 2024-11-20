@@ -1,5 +1,5 @@
 @page "/application-users"
-@attribute [Authorize]
+@attribute [Authorize(Roles = "admin")]
 
 <PageTitle>Users</PageTitle>
 <RadzenStack>
@@ -23,6 +23,8 @@
                     <RadzenDataGridColumn TItem="MyVideoResume.Data.Models.ApplicationUser" Property="Email" Title="Email" />
                     <RadzenDataGridColumn TItem="MyVideoResume.Data.Models.ApplicationUser" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
                         <Template Context="user">
+                            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="edit" Size="ButtonSize.Small"
+                                          Variant="Variant.Flat" Shade="Shade.Lighter" Click="@(() => RowSelect(user))" @onclick:stopPropagation="true" />
                             <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small"
                                 Variant="Variant.Flat" Shade="Shade.Lighter" Click="@(() => DeleteClick(user))" @onclick:stopPropagation="true" />
                         </Template>

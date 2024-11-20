@@ -17,7 +17,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="System.Net.Http.Json" Version="8.0.1" />
-		<PackageReference Include="Radzen.Blazor" Version="*" />
+		<PackageReference Include="Radzen.Blazor" Version="5.6.0" />
 		<Compile Include="../Server/Models/**/*.cs" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
 	</ItemGroup>
@@ -26,6 +26,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\MyVideoResume.Data\MyVideoResume.Data.csproj" />
+	  <ProjectReference Include="..\MyVideoResume.Resume\MyVideoResume.Resume.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="..\Server\Models\ApplicationAuthenticationState.cs" Link="Models\ApplicationAuthenticationState.cs" />

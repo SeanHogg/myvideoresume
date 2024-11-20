@@ -1,21 +1,19 @@
-@page "/edit-application-user/{Id}"
-@attribute [Authorize]
+@page "/add-application-user"
+@attribute [Authorize(Roles = "admin")]
 
 <RadzenRow>
     <RadzenColumn SizeMD="12">
         <RadzenTemplateForm TItem="MyVideoResume.Data.Models.ApplicationUser" Data="@user" Visible="@(user != null)" Submit="@FormSubmit">
-            <RadzenAlert Title="Cannot update user" Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Danger" Visible="@errorVisible">@error</RadzenAlert>
+            <RadzenAlert Title="Cannot create user" Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Danger" Visible="@errorVisible">@error</RadzenAlert>
 
             <RadzenStack style="margin-bottom: 1rem;">
-                <RadzenFormField Text="User name" Variant="Variant.Outlined">
-                    <ChildContent>
-                        <RadzenTextBox Disabled="true" style="width: 100%" @bind-Value="@(user.UserName)" Name="UserName" />
-                    </ChildContent>
-                </RadzenFormField>
                 <RadzenFormField Text="Email" Variant="Variant.Outlined">
                     <ChildContent>
                         <RadzenTextBox style="width: 100%" @bind-Value="@(user.Email)" Name="Email" />
                     </ChildContent>
+                    <Helper>
+                        <RadzenRequiredValidator Component="Email" Text="Email is required" />
+                    </Helper>
                 </RadzenFormField>
                 <RadzenFormField Text="Roles" Variant="Variant.Outlined">
                     <ChildContent>
@@ -35,6 +33,7 @@
                         <RadzenPassword style="display: block; width: 100%" @bind-Value="@(user.ConfirmPassword)" Name="ConfirmPassword" />
                     </ChildContent>
                     <Helper>
+                        <RadzenRequiredValidator Component="ConfirmPassword" Text="ConfirmPassword is required" />
                         <RadzenCompareValidator Text="Passwords must match" Component="ConfirmPassword" Value="@user.Password" />
                     </Helper>
                 </RadzenFormField>

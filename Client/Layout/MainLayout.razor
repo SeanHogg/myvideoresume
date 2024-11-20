@@ -10,13 +10,11 @@
             </RadzenColumn>
             <RadzenColumn Size="4">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="0.5rem" class="rz-px-2">
-
+                    <SearchComponent></SearchComponent>
                 </RadzenStack>
             </RadzenColumn>
             <RadzenColumn Size="7">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
-                    <RadzenButton Text="Create Resume" Click="@(args => NavigateTo("resumes"))" Visible="@ShowLogin"></RadzenButton>
-                    <RadzenButton Text="Post Job" Click="@(args => NavigateTo("jobs"))" Visible="@ShowLogin"></RadzenButton>
                     <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
                         <ChildContent>
                             <RadzenProfileMenuItem Path="profile" Icon="manage_accounts" Text="My Account" />
@@ -53,6 +51,10 @@
             </RadzenPanelMenuItem>
             <RadzenPanelMenuItem id="LoginMenu" Visible="@ShowLogin" Text="Login / Register" Path="/login" />
         </RadzenPanelMenu>
+        <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
+            <RadzenButton Text="Create Resume" Click="@(args => NavigateTo("resumes"))"></RadzenButton>
+            <RadzenButton Text="Post Job" Click="@(args => NavigateTo("jobs"))"></RadzenButton>
+        </RadzenStack>
     </RadzenSidebar>
 </RadzenLayout>
 <RadzenFooter>
