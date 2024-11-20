@@ -15,14 +15,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="@NavigationManager.BaseUri" />
-    <RadzenTheme @rendermode="@InteractiveAuto" Theme="standard-dark" />
+    <RadzenTheme @rendermode="@InteractiveServer" Theme="standard-dark" />
     <link rel="stylesheet" href="css/site.css" />
     @*     <ImportMap />
     *@
     <link rel="icon" href="favicon.ico" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
-    <HeadOutlet @rendermode="@InteractiveAuto" />
+    <HeadOutlet @rendermode="@InteractiveServer" />
     <script type="text/javascript">
         if (!window.location.host.includes('localhost')) {
             (function(c, l, a, r, i, t, y) {
@@ -36,7 +36,7 @@
 </head>
 
 <body>
-    <Routes @rendermode="@InteractiveAuto" />
+    <Routes @rendermode="@InteractiveServer" />
     <script src="_framework/blazor.web.js"></script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
