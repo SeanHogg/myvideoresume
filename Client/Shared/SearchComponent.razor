@@ -1,10 +1,8 @@
 ﻿@inject NavigationManager NavigationManager
-
-    <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start">
-        <RadzenTextBox @bind-value=@SearchTerm placeholder="Search..." />
-    <RadzenButton Icon="search" Click=@(args => Search())></RadzenButton>
-    </RadzenStack>
-
+<div class="searchComponent">
+    <RadzenTextBox @bind-value=@SearchTerm placeholder="Search..." class="searchComponent" />
+    <RadzenButton Icon="search" Click=@(args => Search()) class="searchComponent"></RadzenButton>
+</div>
 @code {
     [Parameter]
     public string SearchTerm { get; set; } = "";

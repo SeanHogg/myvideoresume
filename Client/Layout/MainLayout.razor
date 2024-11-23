@@ -5,15 +5,13 @@
 <RadzenLayout style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body';">
     <RadzenHeader>
         <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="0">
-            <RadzenColumn Size="1">
+            <RadzenColumn Size="2">
                 <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
             </RadzenColumn>
-            <RadzenColumn Size="4">
-                <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="0.5rem" class="rz-px-2">
-                    <SearchComponent></SearchComponent>
-                </RadzenStack>
+            <RadzenColumn Size="5">
+                <SearchComponent></SearchComponent>
             </RadzenColumn>
-            <RadzenColumn Size="7">
+            <RadzenColumn Size="5">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
                     <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
                         <ChildContent>
