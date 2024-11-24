@@ -1,4 +1,4 @@
-@inherits LayoutComponentBase
+@inherits BaseComponent
 @inject CookieThemeService CookieThemeService
 <RadzenComponents />
 
@@ -16,6 +16,7 @@
                     <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
                         <ChildContent>
                             <RadzenProfileMenuItem Path="profile" Icon="manage_accounts" Text="My Account" />
+                            <RadzenProfileMenuItem Path="dashboard" Icon="manage_accounts" Text="Dashboard" />
                             <RadzenProfileMenuItem Path="application-users" Icon="person" Text="Users" Visible="@Security.IsInRole("admin")" />
                             <RadzenProfileMenuItem Path="application-roles" Icon="security" Text="Roles" Visible="@Security.IsInRole("admin")" />
                             <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new" />
@@ -42,16 +43,16 @@
             <a href="/"><RadzenImage Path="images/logo-login.png" AlternateText="MyVideoResu.me" style="width: 120px; height: 40px;"></RadzenImage></a>
         </RadzenStack>
         <RadzenPanelMenu>
-            <RadzenPanelMenuItem Text="Home" Path="" />
-            <RadzenPanelMenuItem Text="About" Path="about" />
+            <RadzenPanelMenuItem Text="Dashboard" Path="dashboard" />
             <RadzenPanelMenuItem Text="Tools">
                 <RadzenPanelMenuItem Text="Sentiment Analysis" Path="Tools/SentimentAnalysis" />
             </RadzenPanelMenuItem>
-            <RadzenPanelMenuItem id="LoginMenu" Visible="@ShowLogin" Text="Login / Register" Path="/login" />
+            <RadzenPanelMenuItem Text="About" Path="about" />
         </RadzenPanelMenu>
         <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
-            <RadzenButton Text="Create Resume" Click="@(args => NavigateTo("resumes"))"></RadzenButton>
-            <RadzenButton Text="Post Job" Click="@(args => NavigateTo("jobs"))"></RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Primary" Text="Login" Click="@(args => NavigateTo("login"))"></RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="Create Resume" Click="@(args => NavigateTo("resumes"))"></RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="Post Job" Click="@(args => NavigateTo("jobs"))"></RadzenButton>
         </RadzenStack>
     </RadzenSidebar>
 </RadzenLayout>

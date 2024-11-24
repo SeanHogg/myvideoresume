@@ -41,9 +41,12 @@ public partial class SearchResults
     [SupplyParameterFromQuery(Name = "Query")]
     private string? Query { get; set; }
 
+    [SupplyParameterFromQuery(Name = "Filter")]
+    private string? Filter { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JSRuntime.InvokeVoidAsync("BlazorSetTitle", Query);
+        await JSRuntime.InvokeVoidAsync("BlazorSetTitle", Query, Filter);
     }
 
 }
