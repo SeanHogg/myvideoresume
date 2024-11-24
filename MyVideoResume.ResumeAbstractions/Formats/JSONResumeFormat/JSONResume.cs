@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyVideoResume.Resume.Format.JSONResumeFormat;
+namespace MyVideoResume.ResumeAbstractions.Formats.JSONResumeFormat;
 
 public class JSONResume
 {

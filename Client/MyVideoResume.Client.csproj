@@ -26,7 +26,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\MyVideoResume.Data\MyVideoResume.Data.csproj" />
-	  <ProjectReference Include="..\MyVideoResume.Resume\MyVideoResume.Resume.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="..\Server\Models\ApplicationAuthenticationState.cs" Link="Models\ApplicationAuthenticationState.cs" />
@@ -36,6 +35,6 @@
 	  <Compile Update="..\Server\Models\CommonBase.cs" Link="Models\CommonBase.cs" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Pages\App\NewFolder\" />
+	  <Folder Include="Pages\App\Resume\" />
 	</ItemGroup>
 </Project>

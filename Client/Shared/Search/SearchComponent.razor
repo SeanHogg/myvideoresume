@@ -1,11 +1,13 @@
 ﻿@inject NavigationManager NavigationManager
 <div class="searchComponent">
-    <RadzenTextBox @bind-value=@SearchTerm placeholder="Search..." class="searchComponent" />
+    <RadzenTextBox @bind-value=@QuerySelected placeholder="Search..." class="searchComponent" />
     <RadzenButton Icon="search" Click=@(args => Search()) class="searchComponent" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Base"></RadzenButton>
 </div>
 @code {
     [Parameter]
-    public string SearchTerm { get; set; } = "";
+    public string FilterSelected { get; set; }
+    [Parameter]
+    public string QuerySelected { get; set; } = "";
 
     protected override void OnInitialized()
     {
@@ -13,6 +15,6 @@
 
     void Search()
     {
-        NavigationManager.NavigateTo($"/search-results?query={SearchTerm}");
+        NavigationManager.NavigateTo($"/search-results?query={QuerySelected}&filter={FilterSelected}");
     }
 }

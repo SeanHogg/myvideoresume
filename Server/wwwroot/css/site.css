@@ -163,3 +163,7 @@ a {
         position: relative !important;
     }
 }
+
+.filterComponent .rz-dropdown {
+    width: 170px;
+}

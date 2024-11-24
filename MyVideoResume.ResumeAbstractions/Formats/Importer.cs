@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MyVideoResume.Resume.Format;
+namespace MyVideoResume.ResumeAbstractions.Formats;
 
 public class Importer<T> where T : class, new()
 {

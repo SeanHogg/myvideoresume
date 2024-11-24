@@ -1,6 +1,6 @@
 @page "/add-application-role"
 @attribute [Authorize(Roles = "admin")]
-
+@inherits BaseComponent
 <RadzenRow>
     <RadzenColumn SizeMD="12">
         <RadzenTemplateForm TItem="MyVideoResume.Data.Models.ApplicationRole" Data="@role" Visible="@(role != null)" Submit="@FormSubmit">

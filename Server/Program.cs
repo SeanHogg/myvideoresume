@@ -11,6 +11,9 @@ using Serilog;
 using IdentityModel;
 using MyVideoResume.ML.SentimentAnalysis;
 using Blazored.LocalStorage;
+using MyVideoResume.Server.Services;
+using MyVideoResume.Client.Services;
+using MyVideoResume.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -50,7 +53,7 @@ builder.Services.AddRadzenCookieThemeService(options =>
     options.Duration = TimeSpan.FromDays(365);
 });
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<MyVideoResume.Server.DataContextService>();
+builder.Services.AddScoped<DataContextService>();
 builder.Services.AddDbContext<MyVideoResume.Data.DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
@@ -63,13 +66,13 @@ builder.Services.AddControllers().AddOData(opt =>
 
 builder.Services.AddBlazoredLocalStorage();
 
-builder.Services.AddScoped<MyVideoResume.Client.DataContextService>();
+builder.Services.AddScoped<DataContextService>();
 builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = false }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddSentimentAnalysis(builder);
-builder.Services.AddScoped<MyVideoResume.Client.SecurityService>();
+builder.Services.AddScoped<SecurityService>();
 builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
@@ -85,7 +88,7 @@ builder.Services.AddControllers().AddOData(o =>
     oDataBuilder.EntitySet<ApplicationRole>("ApplicationRoles");
     o.AddRouteComponents("odata/Identity", oDataBuilder.GetEdmModel()).Count().Filter().OrderBy().Expand().Select().SetMaxTop(null).TimeZone = TimeZoneInfo.Utc;
 });
-builder.Services.AddScoped<AuthenticationStateProvider, MyVideoResume.Client.ApplicationAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
 
 builder.Host.UseSerilog();
 

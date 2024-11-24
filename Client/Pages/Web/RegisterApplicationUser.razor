@@ -1,7 +1,4 @@
-@page "/register-application-user"
-@attribute [Authorize]
-
-<PageTitle>Register Application User</PageTitle>
+@page "/register-application-user"@inherits BaseComponent@attribute [Authorize]<PageTitle>Register Application User</PageTitle>
 <RadzenRow>
     <RadzenColumn SizeMD="12">
         <RadzenTemplateForm Data="@user" TItem="MyVideoResume.Data.Models.ApplicationUser"

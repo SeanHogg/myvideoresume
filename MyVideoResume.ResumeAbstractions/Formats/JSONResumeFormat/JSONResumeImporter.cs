@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace MyVideoResume.Resume.Format.JSONResumeFormat;
+namespace MyVideoResume.ResumeAbstractions.Formats.JSONResumeFormat;
 
 public class JSONResumeImporter : Importer<JSONResume>
 {

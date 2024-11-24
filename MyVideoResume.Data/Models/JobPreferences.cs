@@ -29,20 +29,23 @@ public enum Industry
     Government
 }
 
-public enum Seniority
+public enum ExperienceLevel
 {
     Entry,
     Junior,
     Mid,
     Senior,
-    LeadExecutive
+    LeadExecutive,
+    None
 }
 
-public enum EmploymentType
+public enum JobType
 {
     FullTime,
     PartTime,
     Freelance,
+    Contractor,
+    Temporary,
     Internship
 }
 
@@ -54,8 +57,8 @@ public enum PaySchedule
 public class JobPreferences : CommonBase
 {
     public Industry Industry { get; set; } = Industry.Management;
-    public Seniority Seniority { get; set; } = Seniority.Entry;
-    public List<EmploymentType> EmploymentType { get; set; } = new List<EmploymentType>();
+    public ExperienceLevel Seniority { get; set; } = ExperienceLevel.Entry;
+    public List<JobType> EmploymentType { get; set; } = new List<JobType>();
     public PaySchedule PaySchedule { get; set; } = PaySchedule.Yearly;
     public float MinimumSalary { get; set; }
     public string UserId { get; set; }

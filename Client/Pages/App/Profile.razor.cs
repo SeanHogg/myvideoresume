@@ -12,23 +12,6 @@ namespace MyVideoResume.Client.Pages.App;
 
 public partial class Profile
 {
-    [Inject]
-    protected IJSRuntime JSRuntime { get; set; }
-
-    [Inject]
-    protected NavigationManager NavigationManager { get; set; }
-
-    [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
-    protected TooltipService TooltipService { get; set; }
-
-    [Inject]
-    protected ContextMenuService ContextMenuService { get; set; }
-
-    [Inject]
-    protected NotificationService NotificationService { get; set; }
 
     protected string oldPassword = "";
     protected string newPassword = "";
@@ -39,8 +22,6 @@ public partial class Profile
     protected bool errorVisible;
     protected bool successVisible;
 
-    [Inject]
-    protected SecurityService Security { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

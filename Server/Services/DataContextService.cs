@@ -12,61 +12,60 @@ using Radzen;
 
 using MyVideoResume.Data;
 
-namespace MyVideoResume.Server
+namespace MyVideoResume.Services;
+
+public partial class DataContextService
 {
-    public partial class DataContextService
+    DataContext Context
     {
-        DataContext Context
+       get
+       {
+         return this.context;
+       }
+    }
+
+    private readonly DataContext context;
+    private readonly NavigationManager navigationManager;
+
+    public DataContextService(DataContext context, NavigationManager navigationManager)
+    {
+        this.context = context;
+        this.navigationManager = navigationManager;
+    }
+
+    public void Reset() => Context.ChangeTracker.Entries().Where(e => e.Entity != null).ToList().ForEach(e => e.State = EntityState.Detached);
+
+    public void ApplyQuery<T>(ref IQueryable<T> items, Query query = null)
+    {
+        if (query != null)
         {
-           get
-           {
-             return this.context;
-           }
-        }
-
-        private readonly DataContext context;
-        private readonly NavigationManager navigationManager;
-
-        public DataContextService(DataContext context, NavigationManager navigationManager)
-        {
-            this.context = context;
-            this.navigationManager = navigationManager;
-        }
-
-        public void Reset() => Context.ChangeTracker.Entries().Where(e => e.Entity != null).ToList().ForEach(e => e.State = EntityState.Detached);
-
-        public void ApplyQuery<T>(ref IQueryable<T> items, Query query = null)
-        {
-            if (query != null)
+            if (!string.IsNullOrEmpty(query.Filter))
             {
-                if (!string.IsNullOrEmpty(query.Filter))
+                if (query.FilterParameters != null)
                 {
-                    if (query.FilterParameters != null)
-                    {
-                        items = items.Where(query.Filter, query.FilterParameters);
-                    }
-                    else
-                    {
-                        items = items.Where(query.Filter);
-                    }
+                    items = items.Where(query.Filter, query.FilterParameters);
                 }
-
-                if (!string.IsNullOrEmpty(query.OrderBy))
+                else
                 {
-                    items = items.OrderBy(query.OrderBy);
-                }
-
-                if (query.Skip.HasValue)
-                {
-                    items = items.Skip(query.Skip.Value);
-                }
-
-                if (query.Top.HasValue)
-                {
-                    items = items.Take(query.Top.Value);
+                    items = items.Where(query.Filter);
                 }
             }
-        }
 
+            if (!string.IsNullOrEmpty(query.OrderBy))
+            {
+                items = items.OrderBy(query.OrderBy);
+            }
+
+            if (query.Skip.HasValue)
+            {
+                items = items.Skip(query.Skip.Value);
+            }
+
+            if (query.Top.HasValue)
+            {
+                items = items.Take(query.Top.Value);
+            }
+        }
     }
+
 }

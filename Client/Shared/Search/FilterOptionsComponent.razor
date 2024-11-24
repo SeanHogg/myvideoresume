@@ -1,14 +1,75 @@
-﻿
-@inject NavigationManager NavigationManager
-
+﻿@inject NavigationManager NavigationManager
+<div class="filterComponent">
 <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center">
-    <RadzenButton Variant="Variant.Outlined" BadgeStyle="BadgeStyle.Secondary" Text="Engineer" Click=@(args => Search("Engineer")) />
+    <RadzenButton Variant="Variant.Outlined" BadgeStyle="BadgeStyle.Secondary" Text="All" Click=@(args => Search("All")) />
+    <RadzenDropDown AllowClear=true TValue="string" Change=@(args => Search($"{args}")) @bind-Value=@FilterSelected Data=@DatePosted Placeholder="Date Posted" TextProperty="Value" ValueProperty="Key"></RadzenDropDown>
+    <RadzenDropDown AllowClear=true TValue="string" Change=@(args => Search($"{args}")) @bind-Value=@FilterSelected Data=@Remote Placeholder="Remote" TextProperty="Value" ValueProperty="Key"></RadzenDropDown>
+    <RadzenDropDown AllowClear=true TValue="string" Change=@(args => Search($"{args}")) @bind-Value=@FilterSelected Data=@JobType Placeholder="Job Type" TextProperty="Value" ValueProperty="Key"></RadzenDropDown>
+    <RadzenDropDown AllowClear=true TValue="string" Change=@(args => Search($"{args}")) @bind-Value=@FilterSelected Data=@ExperienceLevel Placeholder="Experience Level" TextProperty="Value" ValueProperty="Key"></RadzenDropDown>
+    @*     <RadzenSplitButton Click=@(args => SearchOption(args)) Text="Date Posted" Variant="Variant.Outlined" @bind-Value="@FilterSelected">
+    <ChildContent>
+    <RadzenSplitButtonItem Text="Last 24 Hours" Value="24Hrs" />
+    <RadzenSplitButtonItem Text="Last 3 Days" Value="3Days" />
+    <RadzenSplitButtonItem Text="Last 7 Days" Value="7Days" />
+    <RadzenSplitButtonItem Text="Last 14 Days" Value="14Days" />
+    </ChildContent>
+    </RadzenSplitButton>
+    <RadzenSplitButton Click=@(args => SearchOption(args)) Text="Experience Level" Variant="Variant.Outlined" @bind-Value="@FilterSelected">
+    <ChildContent>
+    <RadzenSplitButtonItem Text="Entry" Value="Entry" />
+    <RadzenSplitButtonItem Text="Junior" Value="Junior" />
+    <RadzenSplitButtonItem Text="Mid" Value="Mid" />
+    <RadzenSplitButtonItem Text="Senior" Value="Senior" />
+    <RadzenSplitButtonItem Text="Executive Leader" Value="LeadExecutive" />
+    <RadzenSplitButtonItem Text="None Needed" Value="None" />
+    </ChildContent>
+    </RadzenSplitButton>
+    *@
 </RadzenStack>
-
+</div>
 
 @code {
-    void Search(string filter)
+    SortedList<string, string> DatePosted = new SortedList<string, string> { 
+        { "24Hrs","Last 24 Hours" }, 
+        { "3Days","Last 3 Days" },
+        { "7Days","Last 7 Days"  },
+        { "14Days","Last 14 Days"  }};
+    SortedList<string, string> Remote = new SortedList<string, string> { 
+        {  "Remote","Remote" }, 
+        { "Hybrid","Hybrid" }};
+    SortedList<string, string> JobType = new SortedList<string, string> {
+        {  "Fulltime","Full-time" },
+        { "Parttime","Part-time" },
+        { "Contract","Contract"  },
+        { "Freelance","Freelance"  },
+        { "Temporary","Temporary"  }, 
+        { "Internship","Internship"  }};
+    SortedList<string, string> ExperienceLevel = new SortedList<string, string> {
+        {  "Entry","Entry" },
+        { "Junior","Junior" },
+        { "Mid","Mid"  },
+        { "Senior","Senior"  },
+        { "LeadExecutive","Executive Leader"  },
+        { "None","None Needed"  }
+    };
+
+    [Parameter]
+    public string FilterSelected { get; set; }
+    [Parameter]
+    public string QuerySelected { get; set; } = "";
+
+
+    void Search(string item)
     {
-        NavigationManager.NavigateTo($"/search-results?filter={filter}");
+        FilterSelected = item;
+        NavigationManager.NavigateTo($"/search-results?query={QuerySelected}&filter={FilterSelected}");
+    }
+
+    void SearchOption(RadzenSplitButtonItem item)
+    {
+        if (item != null)
+        {
+            Search(item.Value);
+        }
     }
 }

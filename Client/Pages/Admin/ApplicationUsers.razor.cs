@@ -12,31 +12,10 @@ namespace MyVideoResume.Client.Pages.Admin;
 
 public partial class ApplicationUsers
 {
-    [Inject]
-    protected IJSRuntime JSRuntime { get; set; }
-
-    [Inject]
-    protected NavigationManager NavigationManager { get; set; }
-
-    [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
-    protected TooltipService TooltipService { get; set; }
-
-    [Inject]
-    protected ContextMenuService ContextMenuService { get; set; }
-
-    [Inject]
-    protected NotificationService NotificationService { get; set; }
-
     protected IEnumerable<MyVideoResume.Data.Models.ApplicationUser> users;
     protected RadzenDataGrid<MyVideoResume.Data.Models.ApplicationUser> grid0;
     protected string error;
     protected bool errorVisible;
-
-    [Inject]
-    protected SecurityService Security { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

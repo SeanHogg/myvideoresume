@@ -8,50 +8,49 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 using MyVideoResume.Data.Models;
 
-namespace MyVideoResume.Client
+namespace MyVideoResume.Client.Services;
+
+public class ApplicationAuthenticationStateProvider : AuthenticationStateProvider
 {
-    public class ApplicationAuthenticationStateProvider : AuthenticationStateProvider
+    private readonly SecurityService securityService;
+    private ApplicationAuthenticationState authenticationState;
+
+    public ApplicationAuthenticationStateProvider(SecurityService securityService)
     {
-        private readonly SecurityService securityService;
-        private ApplicationAuthenticationState authenticationState;
+        this.securityService = securityService;
+    }
 
-        public ApplicationAuthenticationStateProvider(SecurityService securityService)
+    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+    {
+        var identity = new ClaimsIdentity();
+
+        try
         {
-            this.securityService = securityService;
+            var state = await GetApplicationAuthenticationStateAsync();
+
+            if (state.IsAuthenticated)
+            {
+                identity = new ClaimsIdentity(state.Claims.Select(c => new Claim(c.Type, c.Value)), "MyVideoResume.Server");
+            }
+        }
+        catch (HttpRequestException ex)
+        {
         }
 
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+        var result = new AuthenticationState(new ClaimsPrincipal(identity));
+
+        await securityService.InitializeAsync(result);
+
+        return result;
+    }
+
+    private async Task<ApplicationAuthenticationState> GetApplicationAuthenticationStateAsync()
+    {
+        if (authenticationState == null)
         {
-            var identity = new ClaimsIdentity();
-
-            try
-            {
-                var state = await GetApplicationAuthenticationStateAsync();
-
-                if (state.IsAuthenticated)
-                {
-                    identity = new ClaimsIdentity(state.Claims.Select(c => new Claim(c.Type, c.Value)), "MyVideoResume.Server");
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-            }
-
-            var result = new AuthenticationState(new ClaimsPrincipal(identity));
-
-            await securityService.InitializeAsync(result);
-
-            return result;
+            authenticationState = await securityService.GetAuthenticationStateAsync();
         }
 
-        private async Task<ApplicationAuthenticationState> GetApplicationAuthenticationStateAsync()
-        {
-            if (authenticationState == null)
-            {
-                authenticationState = await securityService.GetAuthenticationStateAsync();
-            }
-
-            return authenticationState;
-        }
+        return authenticationState;
     }
 }

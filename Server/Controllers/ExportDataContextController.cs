@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 using MyVideoResume.Data;
+using MyVideoResume.Server.Services;
+using MyVideoResume.Services;
 
 namespace MyVideoResume.Server.Controllers
 {

@@ -14,11 +14,10 @@ using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 using Radzen;
 
-namespace MyVideoResume.Client
+namespace MyVideoResume.Services;
+
+public partial class DataContextService
 {
-    public partial class DataContextService
-    {
 
 
-    }
 }

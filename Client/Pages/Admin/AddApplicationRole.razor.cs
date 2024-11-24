@@ -7,35 +7,15 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 using Radzen.Blazor;
+using MyVideoResume.Client.Services;
 
 namespace MyVideoResume.Client.Pages.Admin;
 
 public partial class AddApplicationRole
 {
-    [Inject]
-    protected IJSRuntime JSRuntime { get; set; }
-
-    [Inject]
-    protected NavigationManager NavigationManager { get; set; }
-
-    [Inject]
-    protected DialogService DialogService { get; set; }
-
-    [Inject]
-    protected TooltipService TooltipService { get; set; }
-
-    [Inject]
-    protected ContextMenuService ContextMenuService { get; set; }
-
-    [Inject]
-    protected NotificationService NotificationService { get; set; }
-
     protected MyVideoResume.Data.Models.ApplicationRole role;
     protected string error;
     protected bool errorVisible;
-
-    [Inject]
-    protected SecurityService Security { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
