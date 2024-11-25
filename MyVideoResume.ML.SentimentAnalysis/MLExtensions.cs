@@ -14,7 +14,7 @@ public static class IServiceCollectionExtensions
 {
     public static IServiceCollection AddSentimentAnalysis(this IServiceCollection services, WebApplicationBuilder builder)
     {
-        var path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), builder.Configuration["MLModel:MLModelFilePath"]);
+        var path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), builder.Configuration["AI:MLModelFilePath"]);
 
         services.AddPredictionEnginePool<SampleObservation, SamplePrediction>()
         .FromFile(path);

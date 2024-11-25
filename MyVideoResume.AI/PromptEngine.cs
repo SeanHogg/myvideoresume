@@ -33,9 +33,9 @@ public class PromptEngine
         try
         {
 #if DEBUG
-            workingDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(PromptEngine).Assembly.Location), "..\\..\\..\\..\\MyVideoResume.AI\\models\\", _configuration.GetValue<string>("MLModel:SLMModelFilePath")));
+            workingDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(PromptEngine).Assembly.Location), "..\\..\\..\\..\\MyVideoResume.AI\\models\\", _configuration.GetValue<string>("AI:SLMModelFilePath")));
 #else
-            workingDirectory = _configuration.GetValue<string>("MLModel:SLMModelFilePath");
+            workingDirectory = _configuration.GetValue<string>("AI:SLMModelFilePath");
 #endif
             var modelPath = workingDirectory;
             if (model == null)
