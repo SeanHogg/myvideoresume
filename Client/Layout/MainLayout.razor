@@ -26,6 +26,7 @@
                         </Template>
                     </RadzenProfileMenu>
                     <RadzenAppearanceToggle DarkTheme="standard-dark" />
+                    <RadzenLink Icon="accessibility" Path="Login" Text="Sign In" Visible="@Security.IsNotAuthenticated()" />
                 </RadzenStack>
             </RadzenColumn>
         </RadzenRow>
@@ -50,7 +51,6 @@
             <RadzenPanelMenuItem Text="About" Path="about" Icon="question_mark" />
         </RadzenPanelMenu>
         <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
-            <RadzenButton ButtonStyle="ButtonStyle.Primary" Text="Login" Click="@(args => NavigateTo("login"))"></RadzenButton>
             <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="Create Resume" Click="@(args => NavigateTo("resumes"))"></RadzenButton>
             <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="Post Job" Click="@(args => NavigateTo("jobs"))"></RadzenButton>
         </RadzenStack>
