@@ -48,7 +48,7 @@ public class PromptEngine
             var tokens = tokenizer.Encode(fullPrompt);
 
             var generatorParams = new GeneratorParams(model);
-            generatorParams.SetSearchOption("max_length", 2048);
+            generatorParams.SetSearchOption("max_length", 2500);
             generatorParams.SetSearchOption("past_present_share_buffer", false);
             generatorParams.SetInputSequences(tokens);
 
