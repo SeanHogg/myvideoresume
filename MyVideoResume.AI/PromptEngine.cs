@@ -28,10 +28,10 @@ public class PromptEngine
     public PromptResult Process(string prompt, string question)
     {
         var result = new PromptResult();
+        var workingDirectory = string.Empty;
 
         try
         {
-            var workingDirectory = string.Empty;
 #if DEBUG
             workingDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(PromptEngine).Assembly.Location), "..\\..\\..\\..\\MyVideoResume.AI\\models\\", _configuration.GetValue<string>("MLModel:SLMModelFilePath")));
 #else
@@ -65,7 +65,7 @@ public class PromptEngine
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.Message, ex);
+            _logger.LogError($"{ex.Message} - working dir: {workingDirectory}", ex);
         }
 
         return result;
