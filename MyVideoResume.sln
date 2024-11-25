@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{CE9FC5A1-3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVideoResume.ResumeAbstractions", "MyVideoResume.ResumeAbstractions\MyVideoResume.ResumeAbstractions.csproj", "{CD619972-A420-4CD1-A5D8-6B69C1A438B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVideoResume.AI", "MyVideoResume.AI\MyVideoResume.AI.csproj", "{42A6942C-9BB6-4658-A92F-D9AA355DE1A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{CD619972-A420-4CD1-A5D8-6B69C1A438B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD619972-A420-4CD1-A5D8-6B69C1A438B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD619972-A420-4CD1-A5D8-6B69C1A438B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42A6942C-9BB6-4658-A92F-D9AA355DE1A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42A6942C-9BB6-4658-A92F-D9AA355DE1A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42A6942C-9BB6-4658-A92F-D9AA355DE1A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42A6942C-9BB6-4658-A92F-D9AA355DE1A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{D88FA3F1-D0EF-4DF8-9AB6-83487F87931D} = {CE9FC5A1-34C1-42DC-9523-0895D4CCA068}
 		{25EC4A39-DFB0-472C-83E3-1F7F705CFDAB} = {CE9FC5A1-34C1-42DC-9523-0895D4CCA068}
 		{CD619972-A420-4CD1-A5D8-6B69C1A438B1} = {CE9FC5A1-34C1-42DC-9523-0895D4CCA068}
+		{42A6942C-9BB6-4658-A92F-D9AA355DE1A2} = {D88FA3F1-D0EF-4DF8-9AB6-83487F87931D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C40737A8-E03A-4EFD-8B5A-8013DA6AB507}

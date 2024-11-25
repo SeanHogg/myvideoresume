@@ -14,6 +14,7 @@ using Blazored.LocalStorage;
 using MyVideoResume.Server.Services;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Services;
+using MyVideoResume.AI;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -71,7 +72,11 @@ builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessa
 builder.Services.AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
+
+//AI & ML 
 builder.Services.AddSentimentAnalysis(builder);
+builder.Services.AddAIPromptEngine(builder);
+
 builder.Services.AddScoped<SecurityService>();
 builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
 {

@@ -1,6 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
 <div class="filterComponent">
-<RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center">
     <RadzenButton Variant="Variant.Outlined" BadgeStyle="BadgeStyle.Secondary" Text="All" Click=@(args => Search("All")) />
     <RadzenDropDown AllowClear=true TValue="string" Change=@(args => Search($"{args}")) @bind-Value=@FilterSelected Data=@DatePosted Placeholder="Date Posted" TextProperty="Value" ValueProperty="Key"></RadzenDropDown>
     <RadzenDropDown AllowClear=true TValue="string" Change=@(args => Search($"{args}")) @bind-Value=@FilterSelected Data=@Remote Placeholder="Remote" TextProperty="Value" ValueProperty="Key"></RadzenDropDown>
@@ -25,7 +24,6 @@
     </ChildContent>
     </RadzenSplitButton>
     *@
-</RadzenStack>
 </div>
 
 @code {

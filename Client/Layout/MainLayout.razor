@@ -9,7 +9,6 @@
                 <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
             </RadzenColumn>
             <RadzenColumn Size="5">
-                <SearchComponent></SearchComponent>
             </RadzenColumn>
             <RadzenColumn Size="5">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
@@ -42,12 +41,13 @@
         <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
             <a href="/"><RadzenImage Path="images/logo-login.png" AlternateText="MyVideoResu.me" style="width: 120px; height: 40px;"></RadzenImage></a>
         </RadzenStack>
-        <RadzenPanelMenu>
-            <RadzenPanelMenuItem Text="Dashboard" Path="dashboard" />
-            <RadzenPanelMenuItem Text="Tools">
-                <RadzenPanelMenuItem Text="Sentiment Analysis" Path="Tools/SentimentAnalysis" />
+        <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)">
+            <RadzenPanelMenuItem Text="Dashboard" Path="dashboard" Icon="dashboard" />
+            <RadzenPanelMenuItem Text="Tools" Icon="handyman">
+                <RadzenPanelMenuItem Text="Sentiment Analysis" Path="Tools/SentimentAnalysis" Icon="mood" />
+                <RadzenPanelMenuItem Text="Summarize Resume" Path="Tools/SummarizeResume" Icon="query_stats" />
             </RadzenPanelMenuItem>
-            <RadzenPanelMenuItem Text="About" Path="about" />
+            <RadzenPanelMenuItem Text="About" Path="about" Icon="question_mark" />
         </RadzenPanelMenu>
         <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
             <RadzenButton ButtonStyle="ButtonStyle.Primary" Text="Login" Click="@(args => NavigateTo("login"))"></RadzenButton>

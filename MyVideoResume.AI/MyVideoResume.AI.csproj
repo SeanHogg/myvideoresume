@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Version>1.1.0.0</Version>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="models\Phi-3-mini-4k-instruct-onnx\**" />
+    <EmbeddedResource Remove="models\Phi-3-mini-4k-instruct-onnx\**" />
+    <None Remove="models\Phi-3-mini-4k-instruct-onnx\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="models\" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
+		<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.19.0" />
+		<PackageReference Include="Microsoft.ML.OnnxRuntimeGenAI" Version="0.3.0" />
+		<PackageReference Include="Microsoft.ML.OnnxRuntimeGenAI.Cuda" Version="0.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\MyVideoResume.Data\MyVideoResume.Data.csproj" />
+	</ItemGroup>
+
+
+</Project>
