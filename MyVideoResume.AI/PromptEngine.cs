@@ -6,21 +6,8 @@ using MyVideoResume.Data.Dtos;
 namespace MyVideoResume.AI;
 
 public interface IPromptEngine {
-    PromptResult Process(string question);
-    PromptResult Process(string prompt, string question);
-}
-
-public class OpenAIPromptEngine : IPromptEngine
-{
-    public PromptResult Process(string question)
-    {
-        throw new NotImplementedException();
-    }
-
-    public PromptResult Process(string prompt, string question)
-    {
-        throw new NotImplementedException();
-    }
+    Task<PromptResult> Process(string question);
+    Task<PromptResult> Process(string prompt, string question);
 }
 
 public class PromptEngine : IPromptEngine
@@ -37,13 +24,13 @@ public class PromptEngine : IPromptEngine
         _logger = logger;
         _configuration = configuration;
     }
-    public PromptResult Process(string question)
+    public async Task<PromptResult> Process(string question)
     {
         var systemPrompt = "You are an AI assistant that helps people find information. Answer questions using a direct style. Do not share more information that the requested by the users.";
-        return Process(systemPrompt, question);
+        return await Process(systemPrompt, question);
     }
 
-    public PromptResult Process(string prompt, string question)
+    public async Task<PromptResult> Process(string prompt, string question)
     {
         var result = new PromptResult();
         var workingDirectory = string.Empty;

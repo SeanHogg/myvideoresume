@@ -16,10 +16,10 @@ public class PromptController : Controller
 
     [HttpPost]
     [Route("summarize")]
-    public ActionResult<PromptResult> SummarizeResumePost([FromBody] string resumeText)
+    public async Task<ActionResult<PromptResult>> SummarizeResumePost([FromBody] string resumeText)
     {
-        var prompt = "You are an AI Assistant that helps people summarize thier resume by focusing on thier work history and accomplishments. Summarize the content into a paragraph.";
-        var result = Engine.Process(prompt, resumeText);
+        var prompt = "You are an AI Assistant that helps people summarize thier resume.";
+        var result = await Engine.Process(prompt, resumeText);
         return result;
     }
 }
