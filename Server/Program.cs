@@ -11,7 +11,6 @@ using Serilog;
 using IdentityModel;
 using MyVideoResume.ML.SentimentAnalysis;
 using Blazored.LocalStorage;
-using MyVideoResume.Server.Services;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Services;
 using MyVideoResume.AI;

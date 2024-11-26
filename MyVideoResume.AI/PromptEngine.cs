@@ -1,20 +1,38 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.ML.OnnxRuntimeGenAI;
 using MyVideoResume.Data.Dtos;
 
 namespace MyVideoResume.AI;
 
+public interface IPromptEngine {
+    PromptResult Process(string question);
+    PromptResult Process(string prompt, string question);
+}
 
-public class PromptEngine
+public class OpenAIPromptEngine : IPromptEngine
 {
-    private readonly ILogger<PromptController> _logger;
+    public PromptResult Process(string question)
+    {
+        throw new NotImplementedException();
+    }
+
+    public PromptResult Process(string prompt, string question)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class PromptEngine : IPromptEngine
+{
+    private readonly ILogger<PromptEngine> _logger;
 
     private Model model = null;
     private Tokenizer tokenizer = null;
 
     private readonly IConfiguration _configuration;
 
-    public PromptEngine(ILogger<PromptController> logger, IConfiguration configuration)
+    public PromptEngine(ILogger<PromptEngine> logger, IConfiguration configuration)
     {
         _logger = logger;
         _configuration = configuration;

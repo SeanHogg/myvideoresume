@@ -6,9 +6,9 @@ namespace MyVideoResume.AI;
 [Route("[controller]")]
 public class PromptController : Controller
 {
-    public PromptEngine Engine { get; set; }
+    public IPromptEngine Engine { get; set; }
 
-    public PromptController(PromptEngine engine)
+    public PromptController(IPromptEngine engine)
     {
         // Get the ML Model Engine injected, for scoring
         Engine = engine;

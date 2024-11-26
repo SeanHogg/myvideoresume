@@ -19,7 +19,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -41,7 +41,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
     - name: Replace values in JSON file
       uses: tnikFi/json-file-transform@v1
       with:
@@ -55,5 +55,6 @@ jobs:
         Smtp.Password=${{ secrets.EMAIL_PASSWORD }}
         NewRelic.LoggingKey=${{ secrets.NEWRELIC_LOGGINGKEY }}
         AI.SLMModelFilePath=${{ secrets.AI_MODEL_PATH }}
+        AI.OpenAIKey=${{ secrets.AI_OPENAI_APIKEY }}
     - name: Publish & Deploy
       run: dotnet publish Server/MyVideoResume.Server.csproj /p:PublishProfile=webdeploy.pubxml /p:Password=${{secrets.DEPLOYPASSWORD}}
