@@ -5,11 +5,11 @@
                 <h2>Summarize Resume</h2>
             </RadzenRow>
             <RadzenRow class="sentiment" style="padding-top: 25px; margin-top: 25px;">
-                <InputTextArea cols="25" class="sentiment" rows="10" placeholder="Copy Paste Your resume" @bind-Value="Resume" />
+                <InputTextArea cols="25" class="sentiment" rows="10" placeholder="Copy & Paste Your Resume" @bind-Value="Resume" />
                 <RadzenButton Click=SummarizeAsync IsBusy=@Busy>Summarize</RadzenButton>
             </RadzenRow>
             <RadzenRow>
-                <InputTextArea cols="25" class="sentiment" rows="10" @bind-Value="Result" />
+                <InputTextArea cols="25" class="sentiment" rows="10" @bind-Value="Result" placeholder="Results" />
             </RadzenRow>
         </RadzenCard>
     </RadzenColumn>

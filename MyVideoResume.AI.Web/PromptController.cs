@@ -22,4 +22,15 @@ public class PromptController : Controller
         var result = await Engine.Process(prompt, resumeText);
         return result;
     }
+
+    [HttpPost]
+    [Route("match")]
+    public async Task<ActionResult<PromptResult>> JobResumeMatchPost([FromBody] JobMatchRequest request)
+    {
+        var prompt = "You are an AI Assistant that helps people match thier Resume to a Job Description.";
+        var userInput = $"Resume: {request.Resume}";
+        var userJobInput = $"Job Description: {request.Job}";
+        var result = await Engine.Process(prompt, new[] { userInput, userJobInput });
+        return result;
+    }
 }

@@ -12,6 +12,6 @@ using System.Net.Http.Json;
 
 namespace MyVideoResume.Client.Pages.Tools;
 
-public partial class SummarizeResume
+public partial class JobResumeMatch
 {
 }

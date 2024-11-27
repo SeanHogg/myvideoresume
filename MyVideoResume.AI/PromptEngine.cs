@@ -5,8 +5,10 @@ using MyVideoResume.Data.Dtos;
 
 namespace MyVideoResume.AI;
 
-public interface IPromptEngine {
+public interface IPromptEngine
+{
     Task<PromptResult> Process(string question);
+    Task<PromptResult> Process(string prompt, string[] question);
     Task<PromptResult> Process(string prompt, string question);
 }
 
@@ -32,13 +34,18 @@ public class PromptEngine : IPromptEngine
 
     public async Task<PromptResult> Process(string prompt, string question)
     {
+        return await Process(prompt, new[] { question });
+    }
+
+    public async Task<PromptResult> Process(string prompt, string[] questions)
+    {
         var result = new PromptResult();
         var workingDirectory = string.Empty;
 
         try
         {
 #if DEBUG
-            workingDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(PromptEngine).Assembly.Location), "..\\..\\..\\..\\MyVideoResume.AI\\models\\", _configuration.GetValue<string>("AI:SLMModelFilePath"))); 
+            workingDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(PromptEngine).Assembly.Location), "..\\..\\..\\..\\MyVideoResume.AI\\models\\", _configuration.GetValue<string>("AI:SLMModelFilePath")));
 #else
             workingDirectory = _configuration.GetValue<string>("AI:SLMModelFilePath");
 #endif
@@ -49,7 +56,13 @@ public class PromptEngine : IPromptEngine
                 tokenizer = new Tokenizer(model);
             }
 
-            var fullPrompt = $"<|system|>{prompt}<|end|><|user|>{question}<|end|><|assistant|>";
+            var userQuestions = string.Empty;
+            foreach (var question in questions)
+            {
+                userQuestions += $"<|user|>{question}<|end|>";
+            }
+
+            var fullPrompt = $"<|system|>{prompt}<|end|>{userQuestions}<|assistant|>";
             var tokens = tokenizer.Encode(fullPrompt);
 
             var generatorParams = new GeneratorParams(model);

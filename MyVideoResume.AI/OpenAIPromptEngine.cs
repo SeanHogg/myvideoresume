@@ -26,6 +26,11 @@ public class OpenAIPromptEngine : IPromptEngine
 
     public async Task<PromptResult> Process(string prompt, string question)
     {
+        return await Process(prompt, new[] { question });
+    }
+
+    public async Task<PromptResult> Process(string prompt, string[] questions)
+    {
         if (client == null)
         {
             var key = _configuration.GetValue<string>("AI:OpenAIKey");
@@ -34,10 +39,13 @@ public class OpenAIPromptEngine : IPromptEngine
 
         var c = ChatMessage.CreateSystemMessage(prompt);
 
-        List<ChatMessage> chatHistory = new()
-    {
-        c, ChatMessage.CreateUserMessage(question)
-    };
+        List<ChatMessage> chatHistory = new() { c };
+
+        foreach (var message in questions)
+        {
+            chatHistory.Add(ChatMessage.CreateUserMessage(message));
+        }
+
         var chatResult = await client.CompleteChatAsync(chatHistory);
         var result = new PromptResult() { Result = chatResult.Value.Content[0].Text };
         return result;
