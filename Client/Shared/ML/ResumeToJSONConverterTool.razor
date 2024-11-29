@@ -14,7 +14,7 @@
             </RadzenCard>
             <RadzenCard>
                 <RadzenButton Click=@(args => DownloadFile()) Disabled=@DisableDownload>Download File</RadzenButton>
-                <button id="copyButton" click="copyToClipboard()" class="rz-button rz-button-md rz-variant-filled rz-primary rz-shade-default">Copy To Clipboard</button>
+                <button id="copyButton" onclick="copyToClipboard()" class="rz-button rz-button-md rz-variant-filled rz-primary rz-shade-default">Copy To Clipboard</button>
             </RadzenCard>
             <RadzenCard>
                 <Markdown Id="resumeJson">@Result</Markdown>
@@ -65,12 +65,11 @@
     }
 </script>
 <script>
-    async function copyToClipboard()
+    function copyToClipboard()
     {
-        debugger;
       try {
-        var text = document.getElementById("resumeJson").innerHTML();
-        await navigator.clipboard.writeText(text);
+        var text = document.getElementById("resumeJson").innerText;
+        navigator.clipboard.writeText(text);
         console.log('Text copied to clipboard');
       }
       catch (err) {
