@@ -5,8 +5,12 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Services;
+using MyVideoResume.Documents;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+builder.Services.AddBlazorBootstrap();
+
 builder.Services.AddRadzenComponents();
 builder.Services.AddRadzenCookieThemeService(options =>
 {

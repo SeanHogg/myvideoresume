@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVideoResume.AI", "MyVideo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVideoResume.AI.Web", "MyVideoResume.AI.Web\MyVideoResume.AI.Web.csproj", "{C3063466-DFDF-438B-90AB-3CA076CDC488}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVideoResume.Documents", "MyVideoResume.Documents\MyVideoResume.Documents.csproj", "{669B4F01-8AC1-4E04-B7D5-33FEF0D5A9A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{C3063466-DFDF-438B-90AB-3CA076CDC488}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3063466-DFDF-438B-90AB-3CA076CDC488}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3063466-DFDF-438B-90AB-3CA076CDC488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{669B4F01-8AC1-4E04-B7D5-33FEF0D5A9A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{669B4F01-8AC1-4E04-B7D5-33FEF0D5A9A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{669B4F01-8AC1-4E04-B7D5-33FEF0D5A9A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{669B4F01-8AC1-4E04-B7D5-33FEF0D5A9A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{CD619972-A420-4CD1-A5D8-6B69C1A438B1} = {CE9FC5A1-34C1-42DC-9523-0895D4CCA068}
 		{42A6942C-9BB6-4658-A92F-D9AA355DE1A2} = {D88FA3F1-D0EF-4DF8-9AB6-83487F87931D}
 		{C3063466-DFDF-438B-90AB-3CA076CDC488} = {D88FA3F1-D0EF-4DF8-9AB6-83487F87931D}
+		{669B4F01-8AC1-4E04-B7D5-33FEF0D5A9A2} = {CE9FC5A1-34C1-42DC-9523-0895D4CCA068}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C40737A8-E03A-4EFD-8B5A-8013DA6AB507}

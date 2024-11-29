@@ -14,6 +14,7 @@ using Blazored.LocalStorage;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Services;
 using MyVideoResume.AI;
+using MyVideoResume.Documents;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -40,12 +41,20 @@ var loggerConfiguration = new LoggerConfiguration()
 Log.Logger = loggerConfiguration.CreateLogger();
 
 
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = long.MaxValue;
+});
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddHubOptions(options => options.MaximumReceiveMessageSize = 10 * 1024 * 1024)
     .AddInteractiveWebAssemblyComponents();
 builder.Services.AddControllers();
+
+builder.Services.AddBlazorBootstrap();
+
 builder.Services.AddRadzenComponents();
 builder.Services.AddRadzenCookieThemeService(options =>
 {
@@ -65,6 +74,8 @@ builder.Services.AddControllers().AddOData(opt =>
 });
 
 builder.Services.AddBlazoredLocalStorage();
+
+builder.Services.AddScoped<DocumentProcessor>();
 
 builder.Services.AddScoped<DataContextService>();
 builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = false }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));

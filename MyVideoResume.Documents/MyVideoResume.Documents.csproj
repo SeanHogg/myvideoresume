@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
@@ -8,9 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\MyVideoResume.AI\MyVideoResume.AI.csproj" />
-	  <ProjectReference Include="..\MyVideoResume.Documents\MyVideoResume.Documents.csproj" />
+	  <PackageReference Include="Docnet.Core" Version="2.6.0" />
 	</ItemGroup>
-
-
 </Project>

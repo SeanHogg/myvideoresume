@@ -16,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="@NavigationManager.BaseUri" />
     <RadzenTheme @rendermode="@InteractiveServer" Theme="standard-dark" />
+    <link href="_content/Blazor.Bootstrap/blazor.bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/site.css" />
     @*     <ImportMap />
     *@
@@ -40,6 +41,7 @@
     <script src="_framework/blazor.web.js"></script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="_content/Blazor.Bootstrap/blazor.bootstrap.js"></script>
 </body>
 
 </html>

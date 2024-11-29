@@ -1,0 +1,80 @@
+﻿@using BlazorBootstrap
+
+<RadzenRow Gap="5" RowGap="5" style="margin-bottom:25px">
+    <RadzenColumn>
+        <RadzenCard>
+            <RadzenRow>
+                <h2>Resume Parser (Convert PDF to JSON)</h2>
+            </RadzenRow>
+            <RadzenCard Variant="Variant.Outlined">
+                <RadzenUpload Url="prompt/parse" Progress=@TrackProgress Complete=@CompleteUpload Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
+                <RadzenProgressBar Value=@progress class="rz-mt-6" Visible=@showProgress />
+                <RadzenButton Text="Cancel" Click=@(args => CancelUpload()) class="rz-mt-4" Visible=@showProgress />
+                <RadzenLabel Visible=@showComplete class="rz-mt-6" Text=@completionMessage />
+            </RadzenCard>
+            <RadzenCard>
+                <RadzenButton Click=@(args => DownloadFile()) Disabled=@DisableDownload>Download File</RadzenButton>
+                <button id="copyButton" click="copyToClipboard()" class="rz-button rz-button-md rz-variant-filled rz-primary rz-shade-default">Copy To Clipboard</button>
+            </RadzenCard>
+            <RadzenCard>
+                <Markdown Id="resumeJson">@Result</Markdown>
+            </RadzenCard>
+        </RadzenCard>
+    </RadzenColumn>
+</RadzenRow>
+
+<style>
+    #ddUpload {
+        left: 0;
+        --rz-upload-button-bar-background-color: transparent;
+        --rz-upload-button-bar-padding: 0;
+    }
+
+        #ddUpload .rz-fileupload-buttonbar .rz-fileupload-choose {
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            padding: 100px 0;
+        }
+</style>
+
+<script>
+    function saveTextAsFile(textToWrite, fileNameToSaveAs)
+    {
+        var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+        var downloadLink = document.createElement("a");
+        downloadLink.download = fileNameToSaveAs;
+        downloadLink.innerHTML = "Download File";
+        if (window.webkitURL != null)
+        {
+            // Chrome allows the link to be clicked
+            // without actually adding it to the DOM.
+            downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+        }
+        else
+        {
+            // Firefox requires the link to be added to the DOM
+            // before it can be clicked.
+            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+            downloadLink.onclick = destroyClickedElement;
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+        }
+
+        downloadLink.click();
+    }
+</script>
+<script>
+    async function copyToClipboard()
+    {
+        debugger;
+      try {
+        var text = document.getElementById("resumeJson").innerHTML();
+        await navigator.clipboard.writeText(text);
+        console.log('Text copied to clipboard');
+      }
+      catch (err) {
+        console.error('Failed to copy: ', err);
+      }
+    }
+</script>
