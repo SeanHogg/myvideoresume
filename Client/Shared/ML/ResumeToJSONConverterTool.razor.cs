@@ -59,6 +59,7 @@ public partial class ResumeToJSONConverterTool
             Result = data.result.ToString();
             DisableDownload = false;
         }
+        progress = 100;
 
         showProgress = false;
         showComplete = true;
@@ -76,7 +77,7 @@ public partial class ResumeToJSONConverterTool
     {
         showProgress = true;
         showComplete = false;
-        progress = args.Progress;
+        progress = args.Progress - 10;
 
         // cancel upload
         args.Cancel = cancelUpload;

@@ -13,8 +13,8 @@
                 <RadzenLabel Visible=@showComplete class="rz-mt-6" Text=@completionMessage />
             </RadzenCard>
             <RadzenCard>
-                <RadzenButton Click=@(args => DownloadFile()) Disabled=@DisableDownload>Download File</RadzenButton>
-                <button id="copyButton" onclick="copyToClipboard()" class="rz-button rz-button-md rz-variant-filled rz-primary rz-shade-default">Copy To Clipboard</button>
+                <RadzenButton Click=@(args => DownloadFile()) Disabled=@DisableDownload>Download JSON Resume</RadzenButton>
+                <button id="copyButton" onclick="copyToClipboard()" class="rz-button rz-button-md rz-variant-filled rz-primary rz-shade-default">Copy JSON Resume To Clipboard</button>
             </RadzenCard>
             <RadzenCard>
                 <Markdown Id="resumeJson">@Result</Markdown>
@@ -70,7 +70,6 @@
       try {
         var text = document.getElementById("resumeJson").innerText;
         navigator.clipboard.writeText(text);
-        console.log('Text copied to clipboard');
       }
       catch (err) {
         console.error('Failed to copy: ', err);
