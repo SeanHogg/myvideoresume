@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.ML.OnnxRuntimeGenAI;
-using MyVideoResume.Data.Dtos;
+using MyVideoResume.Abstractions;
 
 namespace MyVideoResume.AI;
 

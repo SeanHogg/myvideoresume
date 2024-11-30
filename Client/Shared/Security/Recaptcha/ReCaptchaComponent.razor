@@ -1,0 +1,51 @@
+﻿@page "/ReCAPTCHAv3"
+
+@inject IJSRuntime JSRuntime
+@inject RecaptchaService Service
+
+<PageTitle>reCAPTCHAv3</PageTitle>
+
+
+<div class="form-group mt-3">
+    @if (response != null)
+    {
+        <label class="control-label"><strong>Result</strong></label>
+        <div class="form-group">
+            <label class="control-label">Status</label>
+            <input type="text" class="form-control" value="@response.success.ToString()" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Score</label>
+            <input type="text" class="form-control" value="@response.score" />
+        </div>
+    }
+
+    <label class="control-label">reCAPTCHA token</label>
+    <textarea rows="4" cols="50" readonly class="form-control">
+        @token
+    </textarea>
+
+
+</div>
+
+@code {
+
+    string token = "";
+    RecaptchaResponse? response;
+
+    private async Task HandleValidSubmit()
+    {
+        response = await Service.Verify(token);
+        StateHasChanged();
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            token = await JSRuntime.InvokeAsync<string>("runCaptcha");
+            StateHasChanged();
+        }
+    }
+
+}

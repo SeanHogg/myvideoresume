@@ -1,4 +1,4 @@
-﻿namespace MyVideoResume.Data.Dtos;
+﻿namespace MyVideoResume.Abstractions;
 
 public class JobMatchRequest
 {

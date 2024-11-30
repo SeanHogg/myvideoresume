@@ -18,7 +18,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
 		<PackageReference Include="System.Net.Http.Json" Version="9.0.0" />
-		<PackageReference Include="Radzen.Blazor" Version="5.6.7" />
+		<PackageReference Include="Radzen.Blazor" Version="5.6.10" />
 		<Compile Include="../Server/Models/**/*.cs" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
 	</ItemGroup>
@@ -37,6 +37,6 @@
 	  <Compile Update="..\Server\Models\CommonBase.cs" Link="Models\CommonBase.cs" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Pages\App\Resume\" />
+	  <Folder Include="Pages\App\Companies\Recruiter\" />
 	</ItemGroup>
 </Project>

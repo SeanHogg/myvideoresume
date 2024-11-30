@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 using Radzen;
 using System.Net.Http.Json;
 using Blazored.LocalStorage;
-using MyVideoResume.Data.Dtos;
+using MyVideoResume.Abstractions;
 using Microsoft.Identity.Client;
 
 namespace MyVideoResume.Client.Shared.ML;

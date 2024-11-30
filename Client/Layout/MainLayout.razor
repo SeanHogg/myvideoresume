@@ -14,7 +14,7 @@
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
                     <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
                         <ChildContent>
-                            <RadzenProfileMenuItem Path="profile" Icon="manage_accounts" Text="My Account" />
+                            <RadzenProfileMenuItem Path="user/settings" Icon="manage_accounts" Text="My Account" />
                             <RadzenProfileMenuItem Path="dashboard" Icon="manage_accounts" Text="Dashboard" />
                             <RadzenProfileMenuItem Path="application-users" Icon="person" Text="Users" Visible="@Security.IsInRole("admin")" />
                             <RadzenProfileMenuItem Path="application-roles" Icon="security" Text="Roles" Visible="@Security.IsInRole("admin")" />
@@ -44,6 +44,8 @@
         </RadzenStack>
         <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)">
             <RadzenPanelMenuItem Text="Dashboard" Path="dashboard" Icon="dashboard" />
+            <RadzenPanelMenuItem Text="Jobs" Path="jobs" Icon="database" />
+            <RadzenPanelMenuItem Text="People" Path="people" Icon="contacts" />
             <RadzenPanelMenuItem Text="Tools" Icon="handyman">
                 <RadzenPanelMenuItem Text="Sentiment Analysis" Path="Tools/SentimentAnalysis" Icon="mood" />
                 <RadzenPanelMenuItem Text="Summarize Resume" Path="Tools/SummarizeResume" Icon="query_stats" />
@@ -51,7 +53,9 @@
                 <RadzenPanelMenuItem Text="PDF to JSON" Path="Tools/pdftojson" Icon="convert_to_text" />
                 
             </RadzenPanelMenuItem>
-            <RadzenPanelMenuItem Text="About" Path="about" Icon="question_mark" />
+            <RadzenPanelMenuItem Text="Tasks" Path="tasks" Icon="task_alt" />
+            <RadzenPanelMenuItem Text="Outreach" Path="feed" Icon="campaign" />
+            <RadzenPanelMenuItem Text="About" Path="about" Icon="info" />
         </RadzenPanelMenu>
         <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
             <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="Create Resume" Click="@(args => NavigateTo("resumes"))"></RadzenButton>

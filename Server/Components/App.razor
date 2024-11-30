@@ -1,4 +1,5 @@
 @inject NavigationManager NavigationManager
+@inject IConfiguration Configuration
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,6 +39,18 @@
 
 <body>
     <Routes @rendermode="@InteractiveServer" />
+    <script src=@($"https://www.google.com/recaptcha/api.js?render={Configuration.GetValue<string>("Security:Captcha_SiteKey")}")></script>
+    <script>
+        runCaptcha = function (actionName) {
+            return new Promise((resolve, reject) => {
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('@($"{Configuration.GetValue<string>("Security:Captcha_SiteKey")}")', { action: 'submit' }).then(function (token) {
+                        resolve(token);
+                    });
+                });
+            });
+        };
+    </script>
     <script src="_framework/blazor.web.js"></script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
@@ -47,6 +60,7 @@
 </html>
 
 @code {
+
     [CascadingParameter]
     private HttpContext HttpContext { get; set; }
 

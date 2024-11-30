@@ -1,0 +1,18 @@
+﻿@using MyVideoResume.ResumeAbstractions.Formats.JSONResumeFormat
+
+
+<div class="searchComponent">
+    <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center">
+@*         <RadzenTextBox @bind-value=@QuerySelected placeholder="Search..." class="searchComponent" />
+        <RadzenButton Icon="search" Click=@(args => Search()) class="searchComponent" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Base"></RadzenButton>
+        <FilterOptionsComponent></FilterOptionsComponent>
+ *@    </RadzenStack>
+</div>
+@code {
+    [Parameter]
+    public JSONResume Resume { get; set; }
+
+    protected override void OnInitialized()
+    {
+    }
+}

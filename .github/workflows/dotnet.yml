@@ -56,5 +56,7 @@ jobs:
         NewRelic.LoggingKey=${{ secrets.NEWRELIC_LOGGINGKEY }}
         AI.SLMModelFilePath=${{ secrets.AI_MODEL_PATH }}
         AI.OpenAIKey=${{ secrets.AI_OPENAI_APIKEY }}
+        Security.Captcha_SecretKey=${{ secrets.CAPTCHA_SECRETKEY }}
+        Security.Captcha_SiteKey=${{ secrets.CAPTCHA_SITEKEY }}
     - name: Publish & Deploy
       run: dotnet publish Server/MyVideoResume.Server.csproj /p:PublishProfile=webdeploy.pubxml /p:Password=${{secrets.DEPLOYPASSWORD}}

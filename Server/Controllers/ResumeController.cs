@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyVideoResume.Data.Models;
+using MyVideoResume.Data.Models.Resume;
+using MyVideoResume.ResumeAbstractions;
 
 namespace MyVideoResume.Server.Controllers;
 
@@ -7,13 +8,13 @@ namespace MyVideoResume.Server.Controllers;
 public class ResumeController : Controller
 {
     [HttpGet]
-    public ResumeEntity Get(string userId)
+    public ResumeDocumentEntity Get(string userId)
     {
         return null;
     }
 
     [HttpPost]
-    public ResumeEntity Post(string userId, [FromBody] Resume preferences)
+    public ResumeDocumentEntity Post(string userId, [FromBody] ResumeDocument preferences)
     {
         return null;
     }

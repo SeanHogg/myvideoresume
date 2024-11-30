@@ -1,4 +1,4 @@
-@page "/register-application-user"@inherits BaseComponent@attribute [Authorize]<PageTitle>Register</PageTitle>
+@page "/register-application-user"@inherits BaseComponent@attribute [Authorize]<PageTitle>Register</PageTitle>
 <RadzenRow>
     <RadzenColumn SizeMD="12">
         <RadzenTemplateForm Data="@user" TItem="MyVideoResume.Data.Models.ApplicationUser"
@@ -29,8 +29,7 @@
                     <Helper>
                         <RadzenRequiredValidator Component="ConfirmPassword" Text="ConfirmPassword is required" />
                     </Helper>
-                </RadzenFormField>
-            </RadzenStack>
+                </RadzenFormField>            </RadzenStack>
             <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
                     <TermsOfUsePrivacyAgreement></TermsOfUsePrivacyAgreement>
                     <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Register" IsBusy="@isBusy" BusyText="Registering ..." Variant="Variant.Flat" />
@@ -38,4 +37,4 @@
             </RadzenStack>
         </RadzenTemplateForm>
     </RadzenColumn>
-</RadzenRow>
+</RadzenRow>

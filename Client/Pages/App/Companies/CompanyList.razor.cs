@@ -10,8 +10,8 @@ using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
 
-namespace MyVideoResume.Client.Pages.App;
+namespace MyVideoResume.Client.Pages.App.Companies;
 
-public partial class JobsListing
+public partial class CompanyList
 {
 }

@@ -2,14 +2,14 @@
 @page "/login"
 @inherits BaseComponent
 <PageTitle>MyVideoResu.ME - Login</PageTitle>
-<RadzenText Text="Login" TextStyle="Radzen.Blazor.TextStyle.H5" class="mb-4" TagName="Radzen.Blazor.TagName.H2" />
+<RadzenText Text="Sign In" TextStyle="Radzen.Blazor.TextStyle.H5" class="mb-4" TagName="Radzen.Blazor.TagName.H2" />
 <RadzenRow>
     <RadzenColumn SizeMD="12">
         <RadzenTemplateForm Action="@($"account/login?redirectUrl={redirectUrl}")" Data="@("login")"
             Method="post">
             <RadzenAlert Shade="Radzen.Shade.Lighter" Variant="Radzen.Variant.Flat" Size="Radzen.AlertSize.Small" AlertStyle="Radzen.AlertStyle.Danger" Visible="@errorVisible">@error</RadzenAlert>
             <RadzenAlert Shade="Radzen.Shade.Lighter" Variant="Radzen.Variant.Flat" Size="Radzen.AlertSize.Small" AlertStyle="Radzen.AlertStyle.Info" Visible="@infoVisible">@info</RadzenAlert>
-            <RadzenLogin AllowResetPassword="true" AllowRegister="true" FormFieldVariant="Variant.Outlined"
+            <RadzenLogin AllowResetPassword="true" RegisterText="Sign Up" LoginText="Sign In" AllowRegister="true" FormFieldVariant="Variant.Outlined"
                     ResetPassword="@ResetPassword"
                     Register="@Register"
             />

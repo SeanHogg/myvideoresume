@@ -6,6 +6,7 @@ using Blazored.LocalStorage;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Services;
 using MyVideoResume.Documents;
+using MyVideoResume.Client.Shared.Security.Recaptcha;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddRadzenCookieThemeService(options =>
     options.Duration = TimeSpan.FromDays(365);
 });
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddSingleton<RecaptchaService>();
 builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<DataContextService>();
 builder.Services.AddAuthorizationCore();

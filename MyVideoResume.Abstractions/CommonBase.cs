@@ -1,4 +1,4 @@
-﻿namespace MyVideoResume.Data.Models;
+﻿namespace MyVideoResume.Abstractions;
 
 public class CommonBase
 {

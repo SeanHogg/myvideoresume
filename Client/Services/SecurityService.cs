@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Radzen;
 using MyVideoResume.Data.Models;
+using MyVideoResume.Client.Shared.Security.Recaptcha;
 
 namespace MyVideoResume.Client.Services;
 
@@ -24,19 +25,28 @@ public partial class SecurityService
 
     private readonly NavigationManager navigationManager;
 
+    private readonly RecaptchaService recaptchaService;
+
     public ApplicationUser User { get; private set; } = new ApplicationUser { Name = "Anonymous" };
 
     public ClaimsPrincipal Principal { get; private set; }
 
     private readonly ILogger<SecurityService> _logger;
 
-    public SecurityService(NavigationManager navigationManager, IHttpClientFactory factory, ILogger<SecurityService> logger)
+    public SecurityService(NavigationManager navigationManager, IHttpClientFactory factory, ILogger<SecurityService> logger, RecaptchaService recaptchaService)
     {
         this.baseUri = new Uri($"{navigationManager.BaseUri}odata/Identity/");
         this.httpClient = factory.CreateClient("MyVideoResume.Server");
         this.navigationManager = navigationManager;
         this._logger = logger;
+        this.recaptchaService = recaptchaService;
     }
+
+    public async Task<RecaptchaResponse> VerifyRecaptcha(string token)
+    {
+        return await recaptchaService.Verify(token);
+    }
+
 
     public bool IsInRole(params string[] roles)
     {

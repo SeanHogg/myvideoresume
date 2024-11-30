@@ -36,7 +36,7 @@ public partial class Login
 
     protected async Task Register()
     {
-        var result = await DialogService.OpenAsync<RegisterApplicationUser>("Register Application User");
+        var result = await DialogService.OpenAsync<RegisterApplicationUser>("Create Account");
 
         if (result == true)
         {

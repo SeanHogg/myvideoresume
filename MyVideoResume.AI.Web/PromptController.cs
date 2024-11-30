@@ -1,7 +1,5 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
-using MyVideoResume.Data.Dtos;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyVideoResume.Abstractions;
 using MyVideoResume.Documents;
 
 namespace MyVideoResume.AI;

@@ -8,12 +8,10 @@ using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 using Radzen.Blazor;
 
-namespace MyVideoResume.Client.Pages.App;
+namespace MyVideoResume.Client.Pages.App.Account;
 
-public partial class Profile
+public partial class AccountSettings
 {
-    [Parameter]
-    public string? UserId { get; set; }
 
     protected string oldPassword = "";
     protected string newPassword = "";

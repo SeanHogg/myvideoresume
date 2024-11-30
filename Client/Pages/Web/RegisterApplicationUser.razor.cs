@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Radzen;
-using Radzen.Blazor;
+using MyVideoResume.Client.Shared.Security.Recaptcha;
 
 namespace MyVideoResume.Client.Pages.Web;
 
@@ -17,6 +12,23 @@ public partial class RegisterApplicationUser
     protected bool errorVisible;
     protected string error;
 
+    [Inject] IConfiguration Configuration { get; set; }
+    [Inject] ILogger<RegisterApplicationUser> Logger { get; set; }
+
+
+    protected bool isCaptchaValid;
+    string token = "";
+    RecaptchaResponse? response;
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            token = await JSRuntime.InvokeAsync<string>("runCaptcha");
+            StateHasChanged();
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         user = new Data.Models.ApplicationUser();
@@ -26,11 +38,21 @@ public partial class RegisterApplicationUser
     {
         try
         {
+            if (Configuration.GetValue<bool>("Security:IsCaptchaEnabled"))
+            {
+                response = await Security.VerifyRecaptcha(token);
+                isCaptchaValid = response.success;
+            }
+            else
+                isCaptchaValid = true;
+
             isBusy = true;
 
-            await Security.Register(user.Email, user.Password);
-
-            DialogService.Close(true);
+            if (isCaptchaValid)
+            {
+                await Security.Register(user.Email, user.Password);
+                DialogService.Close(true);
+            }
         }
         catch (Exception ex)
         {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using MyVideoResume.Data.Models;
+using MyVideoResume.Data.Models.Resume;
 
 namespace MyVideoResume.Data;
 
@@ -28,7 +29,8 @@ public partial class DataContext : DbContext
     {
         configurationBuilder.Conventions.Add(_ => new BlankTriggerAddingConvention());
     }
-
+    public DbSet<UserAccountEntity> UserAccounts { get; set; } = default!;
     public DbSet<JobPreferencesEntity> JobPreferences { get; set; } = default!;
+    public DbSet<ResumeDocumentEntity> Resumes { get; set; } = default!;
 
 }

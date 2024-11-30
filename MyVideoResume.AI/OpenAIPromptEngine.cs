@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MyVideoResume.Data.Dtos;
+using MyVideoResume.Abstractions;
 using MyVideoResume.Data.Models;
 using OpenAI.Chat;
 

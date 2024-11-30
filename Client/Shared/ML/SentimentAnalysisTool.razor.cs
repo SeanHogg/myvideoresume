@@ -53,12 +53,12 @@ public partial class SentimentAnalysisTool
             resume = targetText;
         }
 
-        var uri = new Uri($"{NavigationManager.BaseUri}sentiment/sentimentprediction");
-        var response = await Http.PostAsJsonAsync<string>(uri, resume);
-        float percentage = await response.ReadAsync<float>();
-
+        float percentage = 0;
         try
         {
+            var uri = new Uri($"{NavigationManager.BaseUri}sentiment/sentimentprediction");
+            var response = await Http.PostAsJsonAsync<string>(uri, resume);
+            percentage = await response.ReadAsync<float>();
             await localStorage.SetItemAsync("textresume", resume);
         }
         catch (Exception ex)
@@ -73,7 +73,8 @@ public partial class SentimentAnalysisTool
         try
         {
             resume = await localStorage.GetItemAsync<string>("textresume");
-            if (!string.IsNullOrEmpty(resume)) {
+            if (!string.IsNullOrEmpty(resume))
+            {
                 happiness = await PredictSentimentAsync(resume);
             }
         }

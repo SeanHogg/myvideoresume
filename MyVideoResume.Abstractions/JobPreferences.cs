@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace MyVideoResume.Data.Models;
+﻿namespace MyVideoResume.Abstractions;
 
 public enum Industry
 {
@@ -62,12 +59,4 @@ public class JobPreferences : CommonBase
     public PaySchedule PaySchedule { get; set; } = PaySchedule.Yearly;
     public float MinimumSalary { get; set; }
     public string UserId { get; set; }
-}
-
-[Table("JobPreferences")]
-public class JobPreferencesEntity : JobPreferences
-{
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid Id { get; set; }
 }
