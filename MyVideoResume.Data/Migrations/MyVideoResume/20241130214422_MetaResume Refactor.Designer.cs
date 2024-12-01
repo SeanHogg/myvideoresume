@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyVideoResume.Data;
 
 #nullable disable
 
-namespace MyVideoResume.Server.Data.Migrations.MyVideoResume
+namespace MyVideoResume.Data.Migrations.MyVideoResume
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241130214422_MetaResume Refactor")]
+    partial class MetaResumeRefactor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,59 +70,6 @@ namespace MyVideoResume.Server.Data.Migrations.MyVideoResume
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("MyVideoResume.Data.Models.Resume.MetaDataEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("MetaResumeEntityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("MetaType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReferenceId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MetaResumeEntityId");
-
-                    b.ToTable("MetaData", t =>
-                        {
-                            t.HasTrigger("MetaData_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-                });
-
             modelBuilder.Entity("MyVideoResume.Data.Models.Resume.MetaResumeEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -128,9 +78,6 @@ namespace MyVideoResume.Server.Data.Migrations.MyVideoResume
 
                     b.Property<string>("BasicsId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("ResumeInformationId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserAccountEntityId")
                         .HasColumnType("uniqueidentifier");
@@ -143,62 +90,11 @@ namespace MyVideoResume.Server.Data.Migrations.MyVideoResume
 
                     b.HasIndex("BasicsId");
 
-                    b.HasIndex("ResumeInformationId");
-
                     b.HasIndex("UserAccountEntityId");
 
                     b.ToTable("MetaResumes", t =>
                         {
                             t.HasTrigger("MetaResumes_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-                });
-
-            modelBuilder.Entity("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedTime")
-                        .HasColumnType("datetime2");
-
-                    b.PrimitiveCollection<string>("EmploymentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Industry")
-                        .HasColumnType("int");
-
-                    b.Property<float>("MinimumSalary")
-                        .HasColumnType("real");
-
-                    b.Property<int>("PaySchedule")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ResumeSerialized")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ResumeType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ResumeInformation", t =>
-                        {
-                            t.HasTrigger("ResumeInformation_Trigger");
                         });
 
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
@@ -741,32 +637,17 @@ namespace MyVideoResume.Server.Data.Migrations.MyVideoResume
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("MyVideoResume.Data.Models.Resume.MetaDataEntity", b =>
-                {
-                    b.HasOne("MyVideoResume.Data.Models.Resume.MetaResumeEntity", null)
-                        .WithMany("MetaData")
-                        .HasForeignKey("MetaResumeEntityId");
-                });
-
             modelBuilder.Entity("MyVideoResume.Data.Models.Resume.MetaResumeEntity", b =>
                 {
                     b.HasOne("MyVideoResume.ResumeAbstractions.Formats.JSONResumeFormat.Basics", "Basics")
                         .WithMany()
                         .HasForeignKey("BasicsId");
 
-                    b.HasOne("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", "ResumeInformation")
-                        .WithMany()
-                        .HasForeignKey("ResumeInformationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MyVideoResume.Data.Models.UserAccountEntity", null)
                         .WithMany("Resumes")
                         .HasForeignKey("UserAccountEntityId");
 
                     b.Navigation("Basics");
-
-                    b.Navigation("ResumeInformation");
                 });
 
             modelBuilder.Entity("MyVideoResume.Data.Models.UserAccountEntity", b =>
@@ -877,8 +758,6 @@ namespace MyVideoResume.Server.Data.Migrations.MyVideoResume
                     b.Navigation("Interests");
 
                     b.Navigation("Languages");
-
-                    b.Navigation("MetaData");
 
                     b.Navigation("Projects");
 

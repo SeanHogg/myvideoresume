@@ -22,5 +22,5 @@ public class UserAccountEntity: CommonBase
 
     public JobPreferencesEntity JobPreferences { get; set; }
 
-    public List<JSONResumeFormatEntity> Resumes { get; set; }
+    public List<MetaResumeEntity> Resumes { get; set; }
 }

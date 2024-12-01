@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
+using MyVideoResume.Client.Shared.Resume;
 using Radzen;
 using Radzen.Blazor;
 
@@ -18,7 +19,7 @@ public partial class Dashboard
     [Inject]
     protected ILogger<Dashboard> Console { get; set; }
 
-    RadzenUpload upload;
+    public ResumeUploadToJsonComponent ResumeUploadToJsonComponent { get; set; }
     RadzenUpload uploadDD;
 
     int progress;
@@ -27,15 +28,8 @@ public partial class Dashboard
     string completionMessage;
     bool cancelUpload = false;
 
-    void CompleteUpload(UploadCompleteEventArgs args)
+    async Task UploadCompletedHandler(string result)
     {
-        if (!args.Cancelled)
-            completionMessage = "Upload Complete!";
-        else
-            completionMessage = "Upload Cancelled!";
-
-        showProgress = false;
-        showComplete = true;
     }
 
     void TrackProgress(UploadProgressArgs args)

@@ -1,0 +1,78 @@
+﻿@using System.Dynamic
+@using System.Text.Json
+@using MyVideoResume.Extensions
+
+<RadzenCard Variant="Variant.Outlined">
+    <RadzenUpload id="ddUpload" @ref="Upload" ChooseText="Drag and drop here or click to choose files" Auto="false" Url="prompt/parse" Progress=@TrackProgress Complete=@CompleteUpload Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
+    <RadzenButton ButtonStyle="ButtonStyle.Danger" Text="Upload File" Click=@UploadFile class="rz-mt-4" />
+    <RadzenProgressBar Value=@progress class="rz-mt-6" Visible=@showProgress />
+    <RadzenButton Text="Cancel" Click=@(args => CancelUpload()) class="rz-mt-4" Visible=@showProgress />
+    <RadzenLabel Visible=@showComplete class="rz-mt-6" Text=@completionMessage />
+</RadzenCard>
+
+@code {
+    public RadzenUpload Upload { get; set; }
+
+    [Parameter] public bool DisableDownload { get; set; } = true;
+    [Parameter] public string Result { get; set; } = "Upload Resume";
+    [Parameter] public EventCallback<string> UploadCompleted { get; set; }
+
+    int progress;
+    bool showProgress;
+    bool showComplete;
+    string completionMessage;
+    bool cancelUpload = false;
+
+    async Task TrackProgress(UploadProgressArgs args)
+    {
+        showProgress = true;
+        showComplete = false;
+        progress = args.Progress - 10;
+
+        // cancel upload
+        args.Cancel = cancelUpload;
+
+        // reset cancel flag
+        cancelUpload = false;
+    }
+
+    void CancelUpload()
+    {
+        cancelUpload = true;
+    }
+
+    async Task UploadFile()
+    {
+        if (Upload.HasValue)
+            await Upload.Upload();
+
+    }
+
+
+    async Task CompleteUpload(UploadCompleteEventArgs args)
+    {
+        if (!args.Cancelled)
+            completionMessage = "Upload Complete!";
+        else
+            completionMessage = "Upload Cancelled!";
+
+        if (!string.IsNullOrWhiteSpace(args.RawResponse))
+        {
+            dynamic data = JsonSerializer.Deserialize<ExpandoObject>(args.RawResponse);
+            if (Util.HasProperty(data, "result"))
+            {
+                Result = data.result?.ToString();
+                DisableDownload = false;
+            }
+        }
+        progress = 100;
+
+        showProgress = false;
+        showComplete = true;
+
+        if (UploadCompleted.HasDelegate)
+            await UploadCompleted.InvokeAsync(Result);
+
+        await Upload.ClearFiles();
+    }
+}

@@ -8,13 +8,13 @@ namespace MyVideoResume.Server.Controllers;
 public class ResumeController : Controller
 {
     [HttpGet]
-    public ResumeDocumentEntity Get(string userId)
+    public MetaResumeEntity Get(string userId)
     {
         return null;
     }
 
     [HttpPost]
-    public ResumeDocumentEntity Post(string userId, [FromBody] ResumeDocument preferences)
+    public MetaResumeEntity Post(string userId, [FromBody] ResumeInformation preferences)
     {
         return null;
     }

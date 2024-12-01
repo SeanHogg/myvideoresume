@@ -155,12 +155,12 @@ a {
         gap: 0.45rem !important;
     }
 
-    .searchComponent input {
-        width: 110px !important;
-    }
-
     .searchComponent button {
         position: relative !important;
+    }
+
+    .searchFilterOptions {
+        display: none;
     }
 }
 

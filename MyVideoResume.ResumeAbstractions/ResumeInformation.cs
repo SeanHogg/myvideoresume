@@ -11,7 +11,7 @@ public enum ResumeType
     JSONResumeFormat
 }
 
-public class ResumeDocument : CommonBase
+public class ResumeInformation : CommonBase
 {
     public string UserId { get; set; }
 

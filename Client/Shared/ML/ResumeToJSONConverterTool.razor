@@ -6,12 +6,7 @@
             <RadzenRow>
                 <h2>Resume Parser (Convert PDF to JSON)</h2>
             </RadzenRow>
-            <RadzenCard Variant="Variant.Outlined">
-                <RadzenUpload Url="prompt/parse" Progress=@TrackProgress Complete=@CompleteUpload Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
-                <RadzenProgressBar Value=@progress class="rz-mt-6" Visible=@showProgress />
-                <RadzenButton Text="Cancel" Click=@(args => CancelUpload()) class="rz-mt-4" Visible=@showProgress />
-                <RadzenLabel Visible=@showComplete class="rz-mt-6" Text=@completionMessage />
-            </RadzenCard>
+            <ResumeUploadToJsonComponent @ref=ResumeUploadToJsonComponent UploadCompleted=@UploadCompletedHandler></ResumeUploadToJsonComponent>
             <RadzenCard>
                 <RadzenButton Click=@(args => DownloadFile()) Disabled=@DisableDownload>Download JSON Resume</RadzenButton>
                 <button id="copyButton" onclick="copyToClipboard()" class="rz-button rz-button-md rz-variant-filled rz-primary rz-shade-default">Copy JSON Resume To Clipboard</button>

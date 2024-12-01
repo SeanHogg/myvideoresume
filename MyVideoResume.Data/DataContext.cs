@@ -31,6 +31,7 @@ public partial class DataContext : DbContext
     }
     public DbSet<UserAccountEntity> UserAccounts { get; set; } = default!;
     public DbSet<JobPreferencesEntity> JobPreferences { get; set; } = default!;
-    public DbSet<ResumeDocumentEntity> Resumes { get; set; } = default!;
+    public DbSet<MetaResumeEntity> Resumes { get; set; } = default!;
+    public DbSet<MetaDataEntity> MetaData { get; set; } = default!;
 
 }

@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Dynamic;
 using System.Text.Json;
 using MyVideoResume.Data.Models;
+using MyVideoResume.Client.Shared.Resume;
 
 namespace MyVideoResume.Client.Shared.ML;
 
@@ -34,37 +35,12 @@ public partial class ResumeToJSONConverterTool
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
 
-    public string Result { get; set; } = "Upload Resume";
-    public bool Busy { get; set; }
-    public string Resume { get; set; }
-
     public bool DisableDownload { get; set; } = true;
+    public string Result { get; set; } = "Upload";
 
-    int progress;
-    bool showProgress;
-    bool showComplete;
-    string completionMessage;
-    bool cancelUpload = false;
 
-    async Task CompleteUpload(UploadCompleteEventArgs args)
-    {
-        if (!args.Cancelled)
-            completionMessage = "Upload Complete!";
-        else
-            completionMessage = "Upload Cancelled!";
+    public ResumeUploadToJsonComponent ResumeUploadToJsonComponent { get; set; }
 
-        if (!string.IsNullOrWhiteSpace(args.RawResponse))
-        {
-            dynamic data = JsonSerializer.Deserialize<ExpandoObject>(args.RawResponse);
-            Result = data.result.ToString();
-            DisableDownload = false;
-        }
-        progress = 100;
-
-        showProgress = false;
-        showComplete = true;
-
-    }
 
     private async Task DownloadFile()
     {
@@ -73,21 +49,10 @@ public partial class ResumeToJSONConverterTool
         await JS.InvokeVoidAsync("saveTextAsFile", temp, "JsonResume");
     }
 
-    async Task TrackProgress(UploadProgressArgs args)
+    private async Task UploadCompletedHandler(string result)
     {
-        showProgress = true;
-        showComplete = false;
-        progress = args.Progress - 10;
-
-        // cancel upload
-        args.Cancel = cancelUpload;
-
-        // reset cancel flag
-        cancelUpload = false;
+        Result = result;
+        DisableDownload = false;
     }
 
-    void CancelUpload()
-    {
-        cancelUpload = true;
-    }
 }

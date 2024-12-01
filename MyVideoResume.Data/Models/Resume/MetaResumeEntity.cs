@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using MyVideoResume.ResumeAbstractions;
 using MyVideoResume.ResumeAbstractions.Formats.JSONResumeFormat;
 using MyVideoResume.Abstractions;
+using MyVideoResume.ResumeAbstractions.Formats.MyVideoResumeFormat;
 
 namespace MyVideoResume.Data.Models.Resume;
 
-[Table("JSONResumes")]
-public class JSONResumeFormatEntity : ResumeFormatEntity<JSONResume> { }
-
-public class ResumeFormatEntity<T>: CommonBase
+[Table("MetaResumes")]
+public class MetaResumeEntity : JSONResume
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,5 +16,9 @@ public class ResumeFormatEntity<T>: CommonBase
 
     public string UserId { get; set; }
 
-    public T ResumeStructure { get; set; }
+    public List<MetaDataEntity> MetaData { get; set; }
+
+    public ResumeInformationEntity ResumeInformation { get; set; }
+
 }
+
