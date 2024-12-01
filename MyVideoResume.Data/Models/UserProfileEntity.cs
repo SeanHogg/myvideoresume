@@ -26,8 +26,8 @@ public class UserProfileEntity: CommonBase
 
     public List<ApplicantToJobEntity> JobApplications { get; set; }
 
-    public Address? MailingAddress { get; set; }
+    public AddressEntity? MailingAddress { get; set; }
 
-    public Address? BillingAddress { get; set; }
+    public AddressEntity? BillingAddress { get; set; }
 
 }

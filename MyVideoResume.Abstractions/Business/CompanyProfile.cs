@@ -17,10 +17,6 @@ public class CompanyProfile : CommonBase
 
     public string Phone { get; set; }
 
-    public Address MailingAddress { get; set; }
-
-    public Address? BillingAddress { get; set; }
-
     public DateTime TermsOfUseAgreementAcceptedDateTime { get; set; }
     public string? TermsOfUserAgreementVersion { get; set; }
 
