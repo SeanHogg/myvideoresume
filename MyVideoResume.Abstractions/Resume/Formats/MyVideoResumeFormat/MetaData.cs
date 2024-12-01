@@ -1,4 +1,4 @@
-﻿using MyVideoResume.Abstractions;
+﻿using MyVideoResume.Abstractions.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MyVideoResume.ResumeAbstractions.Formats.MyVideoResumeFormat;
+namespace MyVideoResume.Abstractions.Resume.Formats.MyVideoResumeFormat;
 
 public enum MetaType
 {

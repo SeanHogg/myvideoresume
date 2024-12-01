@@ -16,6 +16,7 @@ using MyVideoResume.Services;
 using MyVideoResume.AI;
 using MyVideoResume.Documents;
 using MyVideoResume.Client.Shared.Security.Recaptcha;
+using MyVideoResume.Application.Resume;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -55,13 +56,14 @@ builder.Services.AddRazorComponents()
 builder.Services.AddControllers();
 
 builder.Services.AddBlazorBootstrap();
-
+builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddRadzenComponents();
 builder.Services.AddRadzenCookieThemeService(options =>
 {
     options.Name = "MyVideoResumeTheme";
     options.Duration = TimeSpan.FromDays(365);
 });
+
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<DataContextService>();
 builder.Services.AddDbContext<MyVideoResume.Data.DataContext>(options =>
@@ -74,12 +76,11 @@ builder.Services.AddControllers().AddOData(opt =>
     opt.AddRouteComponents("odata/DataContext", oDataBuilderDataContext.GetEdmModel()).Count().Filter().OrderBy().Expand().Select().SetMaxTop(null).TimeZone = TimeZoneInfo.Utc;
 });
 
-builder.Services.AddBlazoredLocalStorage();
 
-builder.Services.AddScoped<DocumentProcessor>();
+builder.Services.AddSingleton<DocumentProcessor>();
 builder.Services.AddSingleton<RecaptchaService>();
-
-builder.Services.AddScoped<DataContextService>();
+builder.Services.AddSingleton<IResumePromptEngine, ResumePromptEngine>();
+builder.Services.AddScoped<SecurityService>();
 builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = false }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddAuthentication();
@@ -89,7 +90,6 @@ builder.Services.AddAuthorization();
 builder.Services.AddSentimentAnalysis(builder);
 builder.Services.AddAIPromptEngine(builder);
 
-builder.Services.AddScoped<SecurityService>();
 builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));

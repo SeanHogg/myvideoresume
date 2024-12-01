@@ -4,6 +4,7 @@ using Radzen;
 using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using MyVideoResume.Abstractions;
+using MyVideoResume.AI;
 
 namespace MyVideoResume.Client.Shared.ML;
 
@@ -34,7 +35,7 @@ public partial class SummarizeResumeTool
     {
         try
         {
-            var uri = new Uri($"{NavigationManager.BaseUri}prompt/summarize");
+            var uri = new Uri($"{NavigationManager.BaseUri}resume/summarize");
             Http.Timeout = TimeSpan.FromMinutes(10);
             Busy = true;
             var response = await Http.PostAsJsonAsync<string>(uri, Resume);

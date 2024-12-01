@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Services;
-using MyVideoResume.Documents;
 using MyVideoResume.Client.Shared.Security.Recaptcha;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

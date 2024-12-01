@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyVideoResume.ResumeAbstractions;
+namespace MyVideoResume.Abstractions.Resume;
 
 public class ResumeSearchResult
 {

@@ -26,8 +26,8 @@
 		<ServiceWorker Include="../Server/wwwroot/service-worker.js" PublishedContent="../Server/wwwroot/service-worker.published.js" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\MyVideoResume.AI\MyVideoResume.AI.csproj" />
 	  <ProjectReference Include="..\MyVideoResume.Data\MyVideoResume.Data.csproj" />
-	  <ProjectReference Include="..\MyVideoResume.Documents\MyVideoResume.Documents.csproj" />
 	  <ProjectReference Include="..\MyVideoResume.Extensions\MyVideoResume.Extensions.csproj" />
 	</ItemGroup>
 	<ItemGroup>

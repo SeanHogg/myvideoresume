@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MyVideoResume.ResumeAbstractions.Formats.JSONResumeFormat;
+namespace MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat;
 
 public class JSONResume
 {

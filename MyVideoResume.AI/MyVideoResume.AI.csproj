@@ -8,17 +8,14 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="models\Phi-3-mini-4k-instruct-onnx\**" />
-    <EmbeddedResource Remove="models\Phi-3-mini-4k-instruct-onnx\**" />
-    <None Remove="models\Phi-3-mini-4k-instruct-onnx\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="models\" />
+    <Compile Remove="Models\Phi-3-mini-4k-instruct-onnx\**" />
+    <EmbeddedResource Remove="Models\Phi-3-mini-4k-instruct-onnx\**" />
+    <None Remove="Models\Phi-3-mini-4k-instruct-onnx\**" />
   </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
 		<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.20.1" />
 		<PackageReference Include="Microsoft.ML.OnnxRuntimeGenAI" Version="0.5.2" />
 		<PackageReference Include="Microsoft.ML.OnnxRuntimeGenAI.Cuda" Version="0.5.2" />
@@ -26,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\MyVideoResume.Data\MyVideoResume.Data.csproj" />
+	  <ProjectReference Include="..\MyVideoResume.Documents\MyVideoResume.Documents.csproj" />
 	</ItemGroup>
 
 

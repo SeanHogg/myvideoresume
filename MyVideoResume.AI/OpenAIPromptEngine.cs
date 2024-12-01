@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MyVideoResume.Abstractions;
-using MyVideoResume.Data.Models;
 using OpenAI.Chat;
 
 namespace MyVideoResume.AI;

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.ML.OnnxRuntimeGenAI;
-using MyVideoResume.Abstractions;
 
 namespace MyVideoResume.AI;
 
@@ -10,16 +9,16 @@ public interface IPromptEngine
     Task<PromptResult> Process(string question);
     Task<PromptResult> Process(string prompt, string[] question);
     Task<PromptResult> Process(string prompt, string question);
+
 }
 
 public class PromptEngine : IPromptEngine
 {
-    private readonly ILogger<PromptEngine> _logger;
+    protected readonly ILogger<PromptEngine> _logger;
+    protected readonly IConfiguration _configuration;
 
     private Model model = null;
     private Tokenizer tokenizer = null;
-
-    private readonly IConfiguration _configuration;
 
     public PromptEngine(ILogger<PromptEngine> logger, IConfiguration configuration)
     {

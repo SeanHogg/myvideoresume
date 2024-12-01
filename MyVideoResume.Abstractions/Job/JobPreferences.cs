@@ -1,4 +1,6 @@
-﻿namespace MyVideoResume.Abstractions;
+﻿using MyVideoResume.Abstractions.Core;
+
+namespace MyVideoResume.Abstractions;
 
 public enum Industry
 {

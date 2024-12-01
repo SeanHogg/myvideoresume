@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyVideoResume.ResumeAbstractions;
+using MyVideoResume.Abstractions.Resume;
 
 namespace MyVideoResume.Data.Models.Resume
 {

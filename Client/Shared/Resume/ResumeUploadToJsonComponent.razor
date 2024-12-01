@@ -3,7 +3,7 @@
 @using MyVideoResume.Extensions
 
 <RadzenCard Variant="Variant.Outlined">
-    <RadzenUpload id="ddUpload" @ref="Upload" ChooseText="Drag and drop here or click to choose files" Auto="false" Url="prompt/parse" Progress=@TrackProgress Complete=@CompleteUpload Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
+    <RadzenUpload id="ddUpload" @ref="Upload" ChooseText="Drag and drop here or click to choose files" Auto="false" Url=@Url Progress=@TrackProgress Complete=@CompleteUpload Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
     <RadzenButton ButtonStyle="ButtonStyle.Danger" Text="Upload File" Click=@UploadFile class="rz-mt-4" />
     <RadzenProgressBar Value=@progress class="rz-mt-6" Visible=@showProgress />
     <RadzenButton Text="Cancel" Click=@(args => CancelUpload()) class="rz-mt-4" Visible=@showProgress />
@@ -16,6 +16,7 @@
     [Parameter] public bool DisableDownload { get; set; } = true;
     [Parameter] public string Result { get; set; } = "Upload Resume";
     [Parameter] public EventCallback<string> UploadCompleted { get; set; }
+    [Parameter] public string Url { get; set; } = "resume/parse";
 
     int progress;
     bool showProgress;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyVideoResume.Abstractions;
+namespace MyVideoResume.AI;
 
 public class PromptResult
 {

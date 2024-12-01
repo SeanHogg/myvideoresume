@@ -1,14 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using MyVideoResume.ResumeAbstractions;
-using MyVideoResume.ResumeAbstractions.Formats.JSONResumeFormat;
-using MyVideoResume.Abstractions;
-using MyVideoResume.ResumeAbstractions.Formats.MyVideoResumeFormat;
 
 namespace MyVideoResume.Data.Models.Resume;
 
 [Table("MetaResumes")]
-public class MetaResumeEntity : JSONResume
+public class MetaResumeEntity : Abstractions.Resume.Formats.JSONResumeFormat.JSONResume
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,6 +15,7 @@ public class MetaResumeEntity : JSONResume
     public List<MetaDataEntity> MetaData { get; set; }
 
     public ResumeInformationEntity ResumeInformation { get; set; }
+    public ResumeTemplateEntity? ResumeTemplate { get; set; }
 
 }
 

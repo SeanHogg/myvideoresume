@@ -24,6 +24,7 @@
 		<ProjectReference Include="..\Client\MyVideoResume.Client.csproj" />
 		<ProjectReference Include="..\MyVideoResume.Abstractions\MyVideoResume.Abstractions.csproj" />
 		<ProjectReference Include="..\MyVideoResume.AI.Web\MyVideoResume.AI.Web.csproj" />
+		<ProjectReference Include="..\MyVideoResume.Application\MyVideoResume.Application.csproj" />
 		<ProjectReference Include="..\MyVideoResume.Data\MyVideoResume.Data.csproj" />
 		<ProjectReference Include="..\MyVideoResume.ML.SentimentAnalysis\MyVideoResume.ML.SentimentAnalysis.csproj" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />

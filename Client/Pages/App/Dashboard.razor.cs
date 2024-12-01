@@ -30,6 +30,7 @@ public partial class Dashboard
 
     async Task UploadCompletedHandler(string result)
     {
+        //Navigate 
     }
 
     void TrackProgress(UploadProgressArgs args)

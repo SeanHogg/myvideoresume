@@ -5,6 +5,8 @@ using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using MyVideoResume.Abstractions;
 using Microsoft.Identity.Client;
+using MyVideoResume.Abstractions.Job;
+using MyVideoResume.AI;
 
 namespace MyVideoResume.Client.Shared.ML;
 
@@ -36,7 +38,7 @@ public partial class JobResumeMatchTool
     {
         try
         {
-            var uri = new Uri($"{NavigationManager.BaseUri}prompt/match");
+            var uri = new Uri($"{NavigationManager.BaseUri}resume/match");
             Http.Timeout = TimeSpan.FromMinutes(10);
             Busy = true;
             var request = new JobMatchRequest() { Job = JobDescription, Resume = Resume };

@@ -1,17 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Radzen;
-using System.Net.Http.Json;
 using Blazored.LocalStorage;
-using MyVideoResume.Abstractions;
-using Radzen.Blazor;
-using System;
-using MyVideoResume.Documents;
-using System.Reflection.Metadata;
-using System.Net.Http;
-using System.Dynamic;
-using System.Text.Json;
-using MyVideoResume.Data.Models;
 using MyVideoResume.Client.Shared.Resume;
 
 namespace MyVideoResume.Client.Shared.ML;

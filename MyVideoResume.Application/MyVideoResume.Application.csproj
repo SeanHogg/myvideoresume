@@ -4,10 +4,17 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<Version>1.1.0.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Docnet.Core" Version="2.6.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\MyVideoResume.Abstractions\MyVideoResume.Abstractions.csproj" />
+	  <ProjectReference Include="..\MyVideoResume.AI\MyVideoResume.AI.csproj" />
+	  <ProjectReference Include="..\MyVideoResume.Documents\MyVideoResume.Documents.csproj" />
 	</ItemGroup>
 
 </Project>

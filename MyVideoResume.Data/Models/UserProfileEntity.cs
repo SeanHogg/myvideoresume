@@ -1,4 +1,5 @@
-﻿using MyVideoResume.Abstractions;
+﻿using MyVideoResume.Abstractions.Core;
+using MyVideoResume.Data.Models.Jobs;
 using MyVideoResume.Data.Models.Resume;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,8 @@ using System.Threading.Tasks;
 
 namespace MyVideoResume.Data.Models;
 
-[Table("UserAccounts")]
-
-public class UserAccountEntity: CommonBase
+[Table("UserProfiles")]
+public class UserProfileEntity: CommonBase
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,4 +23,11 @@ public class UserAccountEntity: CommonBase
     public JobPreferencesEntity JobPreferences { get; set; }
 
     public List<MetaResumeEntity> Resumes { get; set; }
+
+    public List<ApplicantToJobEntity> JobApplications { get; set; }
+
+    public Address? MailingAddress { get; set; }
+
+    public Address? BillingAddress { get; set; }
+
 }
