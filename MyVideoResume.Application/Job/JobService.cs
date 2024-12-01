@@ -1,6 +1,6 @@
 ﻿using MyVideoResume.Data.Models;
 
-namespace MyVideoResume.Server.Services;
+namespace MyVideoResume.Application.Job;
 
 public interface IJobService {
 

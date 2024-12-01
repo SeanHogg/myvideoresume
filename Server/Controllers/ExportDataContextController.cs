@@ -1,12 +1,6 @@
-using System;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-
 using MyVideoResume.Data;
-using MyVideoResume.Server.Services;
 using MyVideoResume.Services;
+using MyVideoResume.Server.Data;
 
 namespace MyVideoResume.Server.Controllers
 {

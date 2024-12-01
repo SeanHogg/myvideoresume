@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyVideoResume.Abstractions;
+using MyVideoResume.Abstractions.Job;
 using MyVideoResume.Data.Models;
 
 namespace MyVideoResume.Server.Controllers;

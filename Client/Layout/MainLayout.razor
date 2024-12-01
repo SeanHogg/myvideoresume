@@ -8,9 +8,7 @@
             <RadzenColumn Size="2">
                 <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
             </RadzenColumn>
-            <RadzenColumn Size="2">
-            </RadzenColumn>
-            <RadzenColumn Size="8">
+            <RadzenColumn Size="10">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
                     <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
                         <ChildContent>
@@ -46,6 +44,7 @@
             <RadzenPanelMenuItem Text="Dashboard" Path="dashboard" Icon="dashboard" />
             <RadzenPanelMenuItem Text="Resumes" Path="people/resumes" Icon="contract" />
             <RadzenPanelMenuItem Text="Jobs" Path="jobs" Icon="database" />
+            <RadzenPanelMenuItem Text="Companies" Path="companies" Icon="store" />
             <RadzenPanelMenuItem Text="People" Path="people" Icon="contacts" />
             <RadzenPanelMenuItem Text="Tools" Icon="handyman">
                 <RadzenPanelMenuItem Text="Sentiment Analysis" Path="Tools/SentimentAnalysis" Icon="mood" />

@@ -16,12 +16,12 @@ namespace MyVideoResume.Services;
 
 public partial class DataContextService
 {
-    DataContext Context
+    public DataContext Context
     {
-       get
-       {
-         return this.context;
-       }
+        get
+        {
+            return context;
+        }
     }
 
     private readonly DataContext context;

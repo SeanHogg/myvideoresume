@@ -1,4 +1,5 @@
-﻿using MyVideoResume.Abstractions.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using MyVideoResume.Abstractions.Core;
 using MyVideoResume.Data.Models.Jobs;
 using MyVideoResume.Data.Models.Resume;
 using System;
@@ -20,14 +21,17 @@ public class UserProfileEntity: CommonBase
 
     public string UserId { get; set; }
 
+    [DeleteBehavior(DeleteBehavior.NoAction)]
     public JobPreferencesEntity JobPreferences { get; set; }
 
     public List<MetaResumeEntity> Resumes { get; set; }
 
     public List<ApplicantToJobEntity> JobApplications { get; set; }
 
+    [DeleteBehavior(DeleteBehavior.NoAction)]
     public AddressEntity? MailingAddress { get; set; }
 
+    [DeleteBehavior(DeleteBehavior.NoAction)]
     public AddressEntity? BillingAddress { get; set; }
 
 }

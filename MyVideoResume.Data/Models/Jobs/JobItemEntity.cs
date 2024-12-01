@@ -1,13 +1,8 @@
-﻿using MyVideoResume.Abstractions.Business;
+﻿using Microsoft.EntityFrameworkCore;
 using MyVideoResume.Abstractions.Job;
 using MyVideoResume.Data.Models.Business;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyVideoResume.Data.Models.Jobs;
 
@@ -20,5 +15,14 @@ public class JobItemEntity : JobItem
 
     public CompanyProfileEntity Company { get; set; }
 
+    [DeleteBehavior(DeleteBehavior.NoAction)]
+    public AddressEntity Address { get; set; }
+
+    public BonusEntity Bonus { get; set; }
+    public EquityEntity Equity { get; set; }
+
+    public SalaryEntity Salary { get; set; }
+
+    public int HiringTarget { get; set; }
 
 }

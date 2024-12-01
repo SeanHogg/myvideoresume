@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using MyVideoResume.Data.Models;
+using MyVideoResume.Application;
+using MyVideoResume.Services;
 
 namespace MyVideoResume.Server.Controllers;
 
@@ -21,18 +15,20 @@ public partial class AccountController : Controller
     private readonly UserManager<ApplicationUser> userManager;
     private readonly RoleManager<ApplicationRole> roleManager;
     private readonly IWebHostEnvironment env;
-    private readonly IConfiguration configuration;
     private readonly ILogger<AccountController> logger;
+    private readonly EmailService emailService;
+    private readonly DataContextService dataContextService;
 
     public AccountController(IWebHostEnvironment env, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
-        RoleManager<ApplicationRole> roleManager, IConfiguration configuration, ILogger<AccountController> logger)
+        RoleManager<ApplicationRole> roleManager, ILogger<AccountController> logger, EmailService emailService, DataContextService dataContext)
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
         this.roleManager = roleManager;
         this.env = env;
-        this.configuration = configuration;
         this.logger = logger;
+        this.emailService = emailService;
+        this.dataContextService = dataContext;
     }
 
     #region Security
@@ -114,7 +110,7 @@ We received your request for a single-use code to use with your MyVideoResu.ME a
 Your single-use code is: {code} <br /> <br />
 If you didn't request this code, you can safely ignore this email. Someone else might have typed your email address by mistake.";
 
-                await SendEmailAsync(user.Email, "Your single-use code", text);
+                await emailService.SendEmailAsync(user.Email, "Your single-use code", text);
 
                 return Redirect($"~/SecurityCode?email={Uri.EscapeDataString(user.Email)}");
             }
@@ -135,6 +131,19 @@ If you didn't request this code, you can safely ignore this email. Someone else 
         if (!result.Succeeded)
         {
             return RedirectWithError("Invalid security code");
+        }
+        else
+        {
+            //Verify they have a User Profile
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profile = dataContextService.Context.UserProfiles.FirstOrDefault(x => x.UserId == id);
+            if (profile == null)
+            {
+                var jobPreferences = new JobPreferencesEntity() { UserId = id, CreationDate = DateTime.UtcNow, UpdateTime = DateTime.UtcNow };
+                dataContextService.Context.JobPreferences.Add(jobPreferences);
+                dataContextService.Context.UserProfiles.Add(new UserProfileEntity() { UserId = id, CreationDate = DateTime.UtcNow, UpdateTime = DateTime.UtcNow, JobPreferences = jobPreferences });
+                dataContextService.Context.SaveChanges();
+            }
         }
 
         return Redirect("~/");
@@ -223,7 +232,7 @@ We received your registration request for MyVideoResume. <br /> <br />
 To confirm your registration please click the following link: <a href=""{callbackUrl}"">confirm your registration</a> <br /> <br />
 If you didn't request this registration, you can safely ignore this email. Someone else might have typed your email address by mistake.";
 
-        await SendEmailAsync(user.Email, "Confirm your registration", text);
+        await emailService.SendEmailAsync(user.Email, "Confirm your registration", text);
     }
 
     public async Task<IActionResult> ConfirmEmail(string userId, string code)
@@ -257,7 +266,7 @@ If you didn't request this registration, you can safely ignore this email. Someo
 
             var body = string.Format(@"<a href=""{0}"">{1}</a>", callbackUrl, "Please confirm your password reset.");
 
-            await SendEmailAsync(user.Email, "Confirm your password reset", body);
+            await emailService.SendEmailAsync(user.Email, "Confirm your password reset", body);
 
             return Ok();
         }
@@ -283,7 +292,7 @@ If you didn't request this registration, you can safely ignore this email. Someo
 
         if (result.Succeeded)
         {
-            await SendEmailAsync(user.Email, "New password", $"<p>Your new password is: {password}</p><p>Please change it after login.</p>");
+            await emailService.SendEmailAsync(user.Email, "New password", $"<p>Your new password is: {password}</p><p>Please change it after login.</p>");
 
             return Redirect("~/Login?info=Password reset successful. You will receive an email with your new password.");
         }
@@ -342,34 +351,7 @@ If you didn't request this registration, you can safely ignore this email. Someo
         return new string(chars.ToArray());
     }
 
-    private async Task SendEmailAsync(string to, string subject, string body)
-    {
-        try
-        {
-            var mailMessage = new System.Net.Mail.MailMessage();
-            mailMessage.From = new System.Net.Mail.MailAddress(configuration.GetValue<string>("Smtp:Email"));
-            mailMessage.Body = body;
-            mailMessage.Subject = subject;
-            mailMessage.BodyEncoding = System.Text.Encoding.UTF8;
-            mailMessage.SubjectEncoding = System.Text.Encoding.UTF8;
-            mailMessage.IsBodyHtml = true;
-            mailMessage.To.Add(to);
 
-            var client = new System.Net.Mail.SmtpClient(configuration.GetValue<string>("Smtp:Host"))
-            {
-                UseDefaultCredentials = false,
-                EnableSsl = configuration.GetValue<bool>("Smtp:Ssl"),
-                Port = configuration.GetValue<int>("Smtp:Port"),
-                Credentials = new System.Net.NetworkCredential(configuration.GetValue<string>("Smtp:User"), configuration.GetValue<string>("Smtp:Password"))
-            };
-
-            await client.SendMailAsync(mailMessage);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex.Message, ex);
-        }
-    }
     #endregion
 
 }

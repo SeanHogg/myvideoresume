@@ -17,6 +17,7 @@ using MyVideoResume.AI;
 using MyVideoResume.Documents;
 using MyVideoResume.Client.Shared.Security.Recaptcha;
 using MyVideoResume.Application.Resume;
+using MyVideoResume.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -79,6 +80,7 @@ builder.Services.AddControllers().AddOData(opt =>
 
 builder.Services.AddSingleton<DocumentProcessor>();
 builder.Services.AddSingleton<RecaptchaService>();
+builder.Services.AddSingleton<EmailService>();
 builder.Services.AddSingleton<IResumePromptEngine, ResumePromptEngine>();
 builder.Services.AddScoped<SecurityService>();
 builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = false }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));
