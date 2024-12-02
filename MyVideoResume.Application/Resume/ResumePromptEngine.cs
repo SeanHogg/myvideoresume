@@ -33,7 +33,7 @@ public class ResumePromptEngine : OpenAIPromptEngine, IResumePromptEngine
     public async Task<PromptResult> ResumeParseJSON(IFormFile file)
     {
 
-        var prompt = @"you are a resume parser assistant. 
+        var prompt = @"you are a resume parser assistant. Respond with no formatting.
 
 I need you to parse the resume into the following JSON format:
 

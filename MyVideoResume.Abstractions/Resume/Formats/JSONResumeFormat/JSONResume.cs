@@ -32,7 +32,7 @@ public class JSONResume
 public class Basics
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Name { get; set; }
     public string Label { get; set; }
@@ -47,7 +47,7 @@ public class Basics
 public class Location
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Address { get; set; }
     public string City { get; set; }
@@ -59,7 +59,7 @@ public class Location
 public class Work
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Name { get; set; }
     public string Position { get; set; }
@@ -73,7 +73,7 @@ public class Work
 public class Volunteer
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Organization { get; set; }
     public string Position { get; set; }
@@ -87,7 +87,7 @@ public class Volunteer
 public class Education
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Institution { get; set; }
     public string Area { get; set; }
@@ -102,7 +102,7 @@ public class Education
 public class Award
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Title { get; set; }
     public string Date { get; set; }
@@ -113,7 +113,7 @@ public class Award
 public class Certificate
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Name { get; set; }
     public string Date { get; set; }
@@ -124,7 +124,7 @@ public class Certificate
 public class Publication
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Name { get; set; }
     public string Publisher { get; set; }
@@ -136,7 +136,7 @@ public class Publication
 public class Skill
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Name { get; set; }
     public string Level { get; set; }
@@ -146,7 +146,7 @@ public class Skill
 public class LanguageItem
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Language { get; set; }
     public string Fluency { get; set; }
@@ -155,7 +155,7 @@ public class LanguageItem
 public class Interest
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Name { get; set; }
     public List<string> Keywords { get; set; }
@@ -164,7 +164,7 @@ public class Interest
 public class ReferenceItem
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Name { get; set; }
     public string Reference { get; set; }
@@ -173,7 +173,7 @@ public class ReferenceItem
 public class Project
 {
     [JsonIgnore]
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
 
     public string Name { get; set; }
     public string StartDate { get; set; }

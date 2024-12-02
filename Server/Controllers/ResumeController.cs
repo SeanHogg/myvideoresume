@@ -92,7 +92,9 @@ public class ResumeController : Controller
 
                 //Lets Verify if the user is logged in.. If so, we'll create a resume.
                 var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                result = await _resumeService.CreateResume(id, result.Result);
+                //Remove the Markdown from the Response
+                var resume = result.Result;
+                result = await _resumeService.CreateResume(id, resume);
             }
         }
         catch (Exception ex)

@@ -40,7 +40,10 @@ public partial class ResumeToJSONConverterTool
 
     private async Task UploadCompletedHandler(string result)
     {
-        Result = result;
+        var temp = "```json";
+        temp += result;
+        temp += "```";
+        Result = temp;
         DisableDownload = false;
     }
 

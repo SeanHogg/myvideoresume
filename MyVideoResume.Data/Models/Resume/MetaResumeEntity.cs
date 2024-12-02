@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat;
+using Riok.Mapperly.Abstractions;
 
 namespace MyVideoResume.Data.Models.Resume;
 
 [Table("MetaResumes")]
-public class MetaResumeEntity : Abstractions.Resume.Formats.JSONResumeFormat.JSONResume
+public class MetaResumeEntity : JSONResume
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
