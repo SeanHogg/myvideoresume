@@ -10,6 +10,12 @@
             </RadzenColumn>
             <RadzenColumn Size="10">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
+                    <RadzenMenu Responsive="false">
+                        <RadzenMenuItem Icon="add_circle">
+                            <RadzenMenuItem Text="Create Job" Path="jobs" Icon="note_add"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Create Resume" Path="resumes/builder" Icon="video_call"></RadzenMenuItem>
+                        </RadzenMenuItem>
+                    </RadzenMenu>
                     <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
                         <ChildContent>
                             <RadzenProfileMenuItem Path="account/settings" Icon="manage_accounts" Text="My Account" />
@@ -19,16 +25,9 @@
                             <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new" />
                         </ChildContent>
                         <Template>
-                            @Security.User?.Name
                             <RadzenGravatar Email="@Security.User?.Name" />
                         </Template>
                     </RadzenProfileMenu>
-                    <RadzenMenu>
-                        <RadzenMenuItem Icon="add_circle">
-                            <RadzenMenuItem Text="Create Job" Path="jobs" Icon="note_add"></RadzenMenuItem>
-                            <RadzenMenuItem Text="Create Resume" Path="people/resume/builder" Icon="video_call"></RadzenMenuItem>
-                        </RadzenMenuItem>
-                    </RadzenMenu>
                     <RadzenAppearanceToggle DarkTheme="standard-dark" />
                     <RadzenLink Icon="login" Path="Login" Text=" Sign In" Visible="@Security.IsNotAuthenticated()" />
                 </RadzenStack>
@@ -48,7 +47,7 @@
         </RadzenStack>
         <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)">
             <RadzenPanelMenuItem Text="Dashboard" Path="dashboard" Icon="dashboard" />
-            <RadzenPanelMenuItem Text="Resumes" Path="people/resumes" Icon="contract" />
+            <RadzenPanelMenuItem Text="Resumes" Path="resumes" Icon="contract" />
             <RadzenPanelMenuItem Text="Jobs" Path="jobs" Icon="database" />
             <RadzenPanelMenuItem Text="Companies" Path="companies" Icon="store" />
             <RadzenPanelMenuItem Text="People" Path="people" Icon="contacts" />
