@@ -26,8 +26,7 @@ public class JobItem : CommonBase
     public List<Industry> Industry { get; set; }
     public List<ExperienceLevel> Seniority { get; set; } 
     public List<JobType> EmploymentType { get; set; } = new List<JobType>();
-    public WorkSetting WorkSetting { get; set; } = WorkSetting.Onsite;
-
+    public WorkSetting WorkSetting { get; set; } 
     public DateTime GoLiveDate { get; set; }
     public DateTime ExpirationDate { get; set; }
 

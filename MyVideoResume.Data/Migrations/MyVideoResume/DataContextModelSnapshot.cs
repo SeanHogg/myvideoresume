@@ -8,7 +8,7 @@ using MyVideoResume.Data;
 
 #nullable disable
 
-namespace MyVideoResume.Server.Data.Migrations.MyVideoResume
+namespace MyVideoResume.Data.Migrations.MyVideoResume
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot

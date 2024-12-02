@@ -12,8 +12,8 @@ using MyVideoResume.Data;
 namespace MyVideoResume.Data.Migrations.MyVideoResume
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241201184252_Job Applications")]
-    partial class JobApplications
+    [Migration("20241202011330_Resume Initial")]
+    partial class ResumeInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -680,6 +680,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.PrimitiveCollection<string>("WorkSetting")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("JobPreferences", t =>
@@ -743,10 +747,73 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
+            modelBuilder.Entity("MyVideoResume.Data.Models.Jobs.BonusEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("BonusFrequency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BonusType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bonus", t =>
+                        {
+                            t.HasTrigger("Bonus_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("MyVideoResume.Data.Models.Jobs.EquityEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EquityType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Equity", t =>
+                        {
+                            t.HasTrigger("Equity_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
             modelBuilder.Entity("MyVideoResume.Data.Models.Jobs.JobItemEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BonusId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CompanyId")
@@ -762,9 +829,39 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.PrimitiveCollection<string>("EmploymentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EquityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("GoLiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HiringTarget")
+                        .HasColumnType("int");
+
+                    b.PrimitiveCollection<string>("Industry")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SalaryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.PrimitiveCollection<string>("Seniority")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
@@ -773,13 +870,57 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("WorkSetting")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("BonusId");
+
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("EquityId");
+
+                    b.HasIndex("SalaryId");
 
                     b.ToTable("Jobs", t =>
                         {
                             t.HasTrigger("Jobs_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("MyVideoResume.Data.Models.Jobs.SalaryEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("MaximumSalary")
+                        .HasColumnType("real");
+
+                    b.Property<float>("MinimumSalary")
+                        .HasColumnType("real");
+
+                    b.Property<int>("PaySchedule")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Salary", t =>
+                        {
+                            t.HasTrigger("Salary_Trigger");
                         });
 
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
@@ -1142,13 +1283,45 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
             modelBuilder.Entity("MyVideoResume.Data.Models.Jobs.JobItemEntity", b =>
                 {
+                    b.HasOne("MyVideoResume.Data.Models.AddressEntity", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MyVideoResume.Data.Models.Jobs.BonusEntity", "Bonus")
+                        .WithMany()
+                        .HasForeignKey("BonusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MyVideoResume.Data.Models.Business.CompanyProfileEntity", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyVideoResume.Data.Models.Jobs.EquityEntity", "Equity")
+                        .WithMany()
+                        .HasForeignKey("EquityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyVideoResume.Data.Models.Jobs.SalaryEntity", "Salary")
+                        .WithMany()
+                        .HasForeignKey("SalaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Bonus");
+
                     b.Navigation("Company");
+
+                    b.Navigation("Equity");
+
+                    b.Navigation("Salary");
                 });
 
             modelBuilder.Entity("MyVideoResume.Data.Models.Resume.MetaDataEntity", b =>
@@ -1189,17 +1362,19 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 {
                     b.HasOne("MyVideoResume.Data.Models.AddressEntity", "BillingAddress")
                         .WithMany()
-                        .HasForeignKey("BillingAddressId");
+                        .HasForeignKey("BillingAddressId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("MyVideoResume.Data.Models.JobPreferencesEntity", "JobPreferences")
                         .WithMany()
                         .HasForeignKey("JobPreferencesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MyVideoResume.Data.Models.AddressEntity", "MailingAddress")
                         .WithMany()
-                        .HasForeignKey("MailingAddressId");
+                        .HasForeignKey("MailingAddressId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("BillingAddress");
 
