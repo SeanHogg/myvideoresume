@@ -9,6 +9,7 @@
         <RadzenTemplateForm Action="@($"account/verifysecuritycode")" Data="@("code")" Method="post">
             <RadzenText Text="@message" TextStyle="Radzen.Blazor.TextStyle.Body2" TagName="Radzen.Blazor.TagName.P" />
             <RadzenSecurityCode @ref=sc Count="6" Name="code" Change=@VerifySecurityCode />
+            <RadzenTextBox hidden="true" id="redirectUrl" Name="redirectUrl" Value=@RedirectUrl></RadzenTextBox>
         </RadzenTemplateForm>
     </RadzenColumn>
 </RadzenRow>

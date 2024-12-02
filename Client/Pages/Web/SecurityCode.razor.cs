@@ -12,6 +12,9 @@ namespace MyVideoResume.Client.Pages.Web;
 
 public partial class SecurityCode
 {
+    [SupplyParameterFromQuery(Name = "RedirectUrl")]
+    private string? RedirectUrl { get; set; }
+
     async Task VerifySecurityCode(string code)
     {
         if (code.Count() == 6)

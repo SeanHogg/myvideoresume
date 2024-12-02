@@ -112,7 +112,7 @@ If you didn't request this code, you can safely ignore this email. Someone else 
 
                 await emailService.SendEmailAsync(user.Email, "Your single-use code", text);
 
-                return Redirect($"~/SecurityCode?email={Uri.EscapeDataString(user.Email)}");
+                return Redirect($"~/SecurityCode?email={Uri.EscapeDataString(user.Email)}&redirectUrl={redirectUrl}");
             }
             if (result.Succeeded)
             {
@@ -124,7 +124,7 @@ If you didn't request this code, you can safely ignore this email. Someone else 
     }
 
     [HttpPost]
-    public async Task<IActionResult> VerifySecurityCode(string code)
+    public async Task<IActionResult> VerifySecurityCode(string code, string redirectUrl)
     {
         var result = await signInManager.TwoFactorSignInAsync("Email", code, false, false);
 
@@ -145,6 +145,8 @@ If you didn't request this code, you can safely ignore this email. Someone else 
                 dataContextService.Context.SaveChanges();
             }
         }
+        if (!string.IsNullOrWhiteSpace(redirectUrl))
+            return Redirect(redirectUrl);
 
         return Redirect("~/");
     }
