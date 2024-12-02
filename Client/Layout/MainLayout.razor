@@ -14,8 +14,8 @@
                         <ChildContent>
                             <RadzenProfileMenuItem Path="account/settings" Icon="manage_accounts" Text="My Account" />
                             <RadzenProfileMenuItem Path="dashboard" Icon="manage_accounts" Text="Dashboard" />
-                            <RadzenProfileMenuItem Path="application-users" Icon="person" Text="Users" Visible="@Security.IsInRole("admin")" />
-                            <RadzenProfileMenuItem Path="application-roles" Icon="security" Text="Roles" Visible="@Security.IsInRole("admin")" />
+                            <RadzenProfileMenuItem Path="admin/application-users" Icon="person" Text="Users" Visible="@Security.IsInRole("admin")" />
+                            <RadzenProfileMenuItem Path="admin/application-roles" Icon="security" Text="Roles" Visible="@Security.IsInRole("admin")" />
                             <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new" />
                         </ChildContent>
                         <Template>
@@ -23,8 +23,14 @@
                             <RadzenGravatar Email="@Security.User?.Name" />
                         </Template>
                     </RadzenProfileMenu>
+                    <RadzenMenu>
+                        <RadzenMenuItem Icon="add_circle">
+                            <RadzenMenuItem Text="Create Job" Path="jobs" Icon="note_add"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Create Resume" Path="people/resume/builder" Icon="video_call"></RadzenMenuItem>
+                        </RadzenMenuItem>
+                    </RadzenMenu>
                     <RadzenAppearanceToggle DarkTheme="standard-dark" />
-                    <RadzenLink Icon="accessibility" Path="Login" Text="Sign In" Visible="@Security.IsNotAuthenticated()" />
+                    <RadzenLink Icon="login" Path="Login" Text="Sign In" Visible="@Security.IsNotAuthenticated()" />
                 </RadzenStack>
             </RadzenColumn>
         </RadzenRow>
@@ -51,16 +57,12 @@
                 <RadzenPanelMenuItem Text="Summarize Resume" Path="Tools/SummarizeResume" Icon="query_stats" />
                 <RadzenPanelMenuItem Text="Job Resume Match" Path="Tools/JobResumeMatch" Icon="join_inner" />
                 <RadzenPanelMenuItem Text="PDF to JSON" Path="Tools/pdftojson" Icon="convert_to_text" />
-                
+
             </RadzenPanelMenuItem>
             <RadzenPanelMenuItem Text="Tasks" Path="tasks" Icon="task_alt" />
             <RadzenPanelMenuItem Text="Outreach" Path="feed" Icon="campaign" />
             <RadzenPanelMenuItem Text="About" Path="about" Icon="info" />
         </RadzenPanelMenu>
-        <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="Create Resume" Click="@(args => NavigateTo("resumes"))"></RadzenButton>
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="Post Job" Click="@(args => NavigateTo("jobs"))"></RadzenButton>
-        </RadzenStack>
     </RadzenSidebar>
 </RadzenLayout>
 <RadzenFooter>

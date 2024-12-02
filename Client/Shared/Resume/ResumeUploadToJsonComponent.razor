@@ -1,6 +1,8 @@
 ﻿@using System.Dynamic
 @using System.Text.Json
+@using MyVideoResume.Client.Pages.Web
 @using MyVideoResume.Extensions
+@inherits BaseComponent
 
 <RadzenCard Variant="Variant.Outlined">
     <RadzenUpload id="ddUpload" @ref="Upload" ChooseText="Drag and drop here or click to choose files" Auto="false" Url=@Url Progress=@TrackProgress Complete=@CompleteUpload Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
@@ -37,16 +39,19 @@
         cancelUpload = false;
     }
 
-    void CancelUpload()
+    async Task CancelUpload()
     {
         cancelUpload = true;
+        await Upload.ClearFiles();
     }
 
     async Task UploadFile()
     {
+        // Verify that the User Is Logged in
         if (Upload.HasValue)
+        {
             await Upload.Upload();
-
+        }
     }
 
 

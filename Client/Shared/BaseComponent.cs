@@ -2,11 +2,14 @@
 using Microsoft.JSInterop;
 using MyVideoResume.Client.Services;
 using Radzen;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace MyVideoResume.Client.Shared;
 
 public class BaseComponent : LayoutComponentBase
 {
+    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
 
