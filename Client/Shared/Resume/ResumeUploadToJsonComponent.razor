@@ -4,7 +4,7 @@
 @using MyVideoResume.Extensions
 @inherits BaseComponent
 
-<RadzenCard Variant="Variant.Outlined">
+<RadzenCard Variant="Variant.Outlined" class="rz-p-4">
     <RadzenUpload id="ddUpload" @ref="Upload" ChooseText="Drag and drop here or click to choose files" Auto="false" Url=@Url Progress=@TrackProgress Complete=@CompleteUpload Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
     <RadzenButton ButtonStyle="ButtonStyle.Danger" Text="Upload File" Click=@UploadFile class="rz-mt-4" />
     <RadzenProgressBar Value=@progress class="rz-mt-6" Visible=@showProgress />

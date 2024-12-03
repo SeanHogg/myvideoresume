@@ -7,8 +7,12 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
+using MyVideoResume.Client.Services;
 using MyVideoResume.Client.Shared.Resume;
+using MyVideoResume.Data;
+using MyVideoResume.Data.Models.Resume;
 using Radzen;
 using Radzen.Blazor;
 
@@ -17,9 +21,16 @@ namespace MyVideoResume.Client.Pages.App;
 public partial class Dashboard
 {
     [Inject]
+    protected SecurityService Security { get; set; }
+
+    [Inject]
+    protected DataContext Context { get; set; }
+
+    [Inject]
     protected ILogger<Dashboard> Console { get; set; }
 
-    public ResumeUploadToJsonComponent ResumeUploadToJsonComponent { get; set; }
+    List<MetaResumeEntity> ResumeList { get; set; } = new List<MetaResumeEntity>();
+    ResumeUploadToJsonComponent ResumeUploadToJsonComponent { get; set; }
     RadzenUpload uploadDD;
 
     int progress;
@@ -28,9 +39,21 @@ public partial class Dashboard
     string completionMessage;
     bool cancelUpload = false;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetResumes();
+    }
+
+    async Task GetResumes()
+    {
+        var userId = Security.User.Id;
+        ResumeList = await Context.Resumes.Where(x => x.UserId == userId).ToListAsync();
+    }
+
     async Task UploadCompletedHandler(string result)
     {
-        //Navigate 
+        await GetResumes();
     }
 
     void TrackProgress(UploadProgressArgs args)
