@@ -34,8 +34,8 @@ public partial class ResumeToJSONConverterTool
     private async Task DownloadFile()
     {
         var temp = Result;
-        temp = temp.Replace("```json", "").Replace("``` ", "");
-        await JS.InvokeVoidAsync("saveTextAsFile", temp, "JsonResume");
+        temp = temp.Replace("```json", "").Replace("```", "");
+        await JS.InvokeVoidAsync("saveTextAsFile", temp, $"JsonResume-{DateTime.Now.ToString("yyyy-MM-dd")}.json");
     }
 
     private async Task UploadCompletedHandler(string result)

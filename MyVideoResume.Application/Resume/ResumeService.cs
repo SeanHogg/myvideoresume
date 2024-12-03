@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MyVideoResume.Abstractions.Job;
@@ -32,23 +33,20 @@ public class ResumeService
 
         try
         {
-            if (!string.IsNullOrWhiteSpace(userId))
+            if (!string.IsNullOrWhiteSpace(userId)) //should validate that its a real user account...
             {
-                var profile = _dataContext.UserProfiles.FirstOrDefault(x => x.UserId == userId);
+                var profile = _dataContext.UserProfiles.Include(x => x.Resumes).FirstOrDefault(x => x.UserId == userId);
                 if (profile != null)
                 {
                     if (profile.Resumes == null)
                         profile.Resumes = new List<MetaResumeEntity>();
 
-                    //Parse the string Resume JSON into Data Structure
-                    var resume = JsonSerializer.Deserialize<JSONResume>(resumeText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    resume.UserId = userId;
-
-                    JSONResumeMetaResumeMapper jSONResumeMetaResumeMapper = new JSONResumeMetaResumeMapper();
-
-                    var metaResume = jSONResumeMetaResumeMapper.JSONResumeToMetaResume(resume);
-
-                    profile.Resumes.Add(metaResume);
+                    //Save the Resume to get an object to populate into 
+                    var tempresume = JsonSerializer.Deserialize<MetaResumeEntity>(resumeText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    var resumeInformation = new ResumeInformationEntity() { UserId = userId, ResumeSerialized = resumeText };
+                    tempresume.ResumeInformation = resumeInformation;
+                    tempresume.UserId = userId;
+                    profile.Resumes.Add(tempresume);
                     _dataContext.SaveChanges();
                 }
             }

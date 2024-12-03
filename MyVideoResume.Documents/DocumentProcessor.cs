@@ -8,10 +8,21 @@ public interface IDocumentProcessor
 {
 
     string PdfToString(System.IO.Stream stream);
+    string JSONToString(System.IO.Stream stream);
 }
 
 public class DocumentProcessor : IDocumentProcessor
 {
+    public string JSONToString(Stream stream)
+    {
+        var result = string.Empty;
+        using (StreamReader reader = new StreamReader(stream))
+        {
+            result = reader.ReadToEnd();
+        }
+        return result;
+    }
+
     public string PdfToString(Stream stream)
     {
         var result = string.Empty;
@@ -31,9 +42,9 @@ public class DocumentProcessor : IDocumentProcessor
             {
                 using (var pageReader = docReader.GetPageReader(i))
                 {
-                    result += pageReader.GetText();                    
+                    result += pageReader.GetText();
                 }
-            }            
+            }
         }
 
         return result;

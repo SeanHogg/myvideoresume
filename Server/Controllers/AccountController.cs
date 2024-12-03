@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyVideoResume.Data.Models;
 using MyVideoResume.Application;
 using MyVideoResume.Services;
+using DocumentFormat.OpenXml.EMMA;
 
 namespace MyVideoResume.Server.Controllers;
 
@@ -18,9 +19,10 @@ public partial class AccountController : Controller
     private readonly ILogger<AccountController> logger;
     private readonly EmailService emailService;
     private readonly DataContextService dataContextService;
+    private readonly IConfiguration configuration;
 
     public AccountController(IWebHostEnvironment env, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
-        RoleManager<ApplicationRole> roleManager, ILogger<AccountController> logger, EmailService emailService, DataContextService dataContext)
+        RoleManager<ApplicationRole> roleManager, ILogger<AccountController> logger, EmailService emailService, DataContextService dataContext, IConfiguration configuration)
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
@@ -29,6 +31,7 @@ public partial class AccountController : Controller
         this.logger = logger;
         this.emailService = emailService;
         this.dataContextService = dataContext;
+        this.configuration = configuration;
     }
 
     #region Security
@@ -105,15 +108,24 @@ public partial class AccountController : Controller
             {
                 var code = await userManager.GenerateTwoFactorTokenAsync(user, "Email");
 
-                var text = $@"Hi, <br /> <br />
+                var mfaEnabled = configuration.GetValue<bool>("Security:IsMFAEnabled");
+                if (mfaEnabled)
+                {
+                    var text = $@"Hi, <br /> <br />
 We received your request for a single-use code to use with your MyVideoResu.ME account. <br /> <br />
 Your single-use code is: {code} <br /> <br />
 If you didn't request this code, you can safely ignore this email. Someone else might have typed your email address by mistake.";
 
-                await emailService.SendEmailAsync(user.Email, "Your single-use code", text);
+                    await emailService.SendEmailAsync(user.Email, "Your single-use code", text);
 
-                return Redirect($"~/SecurityCode?email={Uri.EscapeDataString(user.Email)}&redirectUrl={redirectUrl}");
+                    return Redirect($"~/SecurityCode?email={Uri.EscapeDataString(user.Email)}&redirectUrl={redirectUrl}");
+                }
+                else
+                {
+                    result = await signInManager.TwoFactorSignInAsync("Email", code, false, false);
+                }
             }
+
             if (result.Succeeded)
             {
                 return Redirect(redirectUrl);
