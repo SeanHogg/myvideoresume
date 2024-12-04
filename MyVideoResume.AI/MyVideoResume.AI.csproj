@@ -23,6 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\MyVideoResume.Abstractions\MyVideoResume.Abstractions.csproj" />
 	  <ProjectReference Include="..\MyVideoResume.Documents\MyVideoResume.Documents.csproj" />
 	</ItemGroup>
 

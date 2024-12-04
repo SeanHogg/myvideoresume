@@ -18,6 +18,7 @@ using MyVideoResume.Documents;
 using MyVideoResume.Client.Shared.Security.Recaptcha;
 using MyVideoResume.Application.Resume;
 using MyVideoResume.Application;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -84,9 +85,11 @@ builder.Services.AddSingleton<EmailService>();
 builder.Services.AddScoped<ResumeService>();
 builder.Services.AddSingleton<IResumePromptEngine, ResumePromptEngine>();
 builder.Services.AddScoped<SecurityService>();
-builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = false }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = true }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddAuthentication();
+builder.Services.AddAuthenticationStateDeserialization(); 
 builder.Services.AddAuthorization();
 
 //AI & ML 

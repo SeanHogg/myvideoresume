@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyVideoResume.Abstractions.Core;
 using MyVideoResume.Abstractions.Job;
 using MyVideoResume.Documents;
 
@@ -18,7 +19,7 @@ public class PromptController : Controller
 
     [HttpPost]
     [Route("summarize")]
-    public async Task<ActionResult<PromptResult>> SummarizeContent([FromBody] string content)
+    public async Task<ActionResult<ResponseResult>> SummarizeContent([FromBody] string content)
     {
         var prompt = "You are an AI Assistant that helps people summarize thier resume.";
         var result = await _engine.Process(prompt, content);
@@ -27,7 +28,7 @@ public class PromptController : Controller
 
     [HttpPost]
     [Route("match")]
-    public async Task<ActionResult<PromptResult>> MatchComparison([FromBody] MatchRequest request)
+    public async Task<ActionResult<ResponseResult>> MatchComparison([FromBody] MatchRequest request)
     {
         var prompt = "You are an AI Assistant that helps people match thier Document to a Comparison Description.";
         var userInput = $"Document: {request.Reference}";
@@ -38,7 +39,7 @@ public class PromptController : Controller
 
     [HttpPost]
     [Route("parse")]
-    public async Task<ActionResult<PromptResult>> ParseToJson(IFormFile file)
+    public async Task<ActionResult<ResponseResult>> ParseToJson(IFormFile file)
     {
         var prompt = @"you are a file parser assistant. I need you to parse the file into the following JSON format: 
         {
@@ -46,7 +47,7 @@ public class PromptController : Controller
         }
         ";
 
-        var result = new PromptResult();
+        var result = new ResponseResult();
         try
         {
             if (file != null)

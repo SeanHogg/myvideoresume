@@ -21,7 +21,6 @@ public partial class SecurityService
 
     private readonly HttpClient httpClient;
 
-    private readonly Uri baseUri;
 
     private readonly NavigationManager navigationManager;
 
@@ -35,7 +34,6 @@ public partial class SecurityService
 
     public SecurityService(NavigationManager navigationManager, IHttpClientFactory factory, ILogger<SecurityService> logger, RecaptchaService recaptchaService)
     {
-        this.baseUri = new Uri($"{navigationManager.BaseUri}odata/Identity/");
         this.httpClient = factory.CreateClient("MyVideoResume.Server");
         this.navigationManager = navigationManager;
         this._logger = logger;
@@ -128,7 +126,7 @@ public partial class SecurityService
 
     public async Task<IEnumerable<ApplicationRole>> GetRoles()
     {
-        var uri = new Uri(baseUri, $"ApplicationRoles");
+        var uri = new Uri($"{navigationManager.BaseUri}odata/Identity/ApplicationRoles");
 
         uri = uri.GetODataUri();
 
@@ -141,7 +139,7 @@ public partial class SecurityService
 
     public async Task<ApplicationRole> CreateRole(ApplicationRole role)
     {
-        var uri = new Uri(baseUri, $"ApplicationRoles");
+        var uri = new Uri($"{navigationManager.BaseUri}odata/Identity/ApplicationRoles");
 
         var content = new StringContent(ODataJsonSerializer.Serialize(role), Encoding.UTF8, "application/json");
 
@@ -152,14 +150,14 @@ public partial class SecurityService
 
     public async Task<HttpResponseMessage> DeleteRole(string id)
     {
-        var uri = new Uri(baseUri, $"ApplicationRoles('{id}')");
+        var uri = new Uri($"{navigationManager.BaseUri}odata/Identity/ApplicationRoles('{id}')");
 
         return await httpClient.DeleteAsync(uri);
     }
 
     public async Task<IEnumerable<ApplicationUser>> GetUsers()
     {
-        var uri = new Uri(baseUri, $"ApplicationUsers");
+        var uri = new Uri($"{navigationManager.BaseUri}odata/Identity/ApplicationUsers");
 
 
         uri = uri.GetODataUri();
@@ -173,7 +171,7 @@ public partial class SecurityService
 
     public async Task<ApplicationUser> CreateUser(ApplicationUser user)
     {
-        var uri = new Uri(baseUri, $"ApplicationUsers");
+        var uri = new Uri($"{navigationManager.BaseUri}odata/Identity/ApplicationUsers");
 
         var content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
 
@@ -184,7 +182,7 @@ public partial class SecurityService
 
     public async Task<HttpResponseMessage> DeleteUser(string id)
     {
-        var uri = new Uri(baseUri, $"ApplicationUsers('{id}')");
+        var uri = new Uri($"{navigationManager.BaseUri}odata/Identity/ApplicationUsers('{id}')");
 
         return await httpClient.DeleteAsync(uri);
     }
@@ -193,7 +191,7 @@ public partial class SecurityService
     {
         try
         {
-            var uri = new Uri(baseUri, $"ApplicationUsers('{id}')?$expand=Roles");
+            var uri = new Uri($"{navigationManager.BaseUri}odata/Identity/ApplicationUsers('{id}')?$expand=Roles");
 
             var response = await httpClient.GetAsync(uri);
 
@@ -214,7 +212,7 @@ public partial class SecurityService
 
     public async Task<ApplicationUser> UpdateUser(string id, ApplicationUser user)
     {
-        var uri = new Uri(baseUri, $"ApplicationUsers('{id}')");
+        var uri = new Uri($"{navigationManager.BaseUri}odata/Identity/ApplicationUsers('{id}')");
 
         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Patch, uri)
         {

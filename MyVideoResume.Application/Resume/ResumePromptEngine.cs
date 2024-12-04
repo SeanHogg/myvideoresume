@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MyVideoResume.Abstractions.Core;
 using MyVideoResume.Abstractions.Job;
 using MyVideoResume.AI;
 using MyVideoResume.Documents;
@@ -9,9 +10,9 @@ namespace MyVideoResume.Application.Resume;
 
 public interface IResumePromptEngine : IPromptEngine
 {
-    Task<PromptResult> SummarizeResume(string resumeText);
-    Task<PromptResult> ResumeParseJSON(IFormFile file);
-    Task<PromptResult> JobResumeMatch(JobMatchRequest request);
+    Task<ResponseResult> SummarizeResume(string resumeText);
+    Task<ResponseResult> ResumeParseJSON(IFormFile file);
+    Task<ResponseResult> JobResumeMatch(JobMatchRequest request);
 }
 
 public class ResumePromptEngine : OpenAIPromptEngine, IResumePromptEngine
@@ -23,14 +24,14 @@ public class ResumePromptEngine : OpenAIPromptEngine, IResumePromptEngine
         _documentProcessor = processor;
     }
 
-    public async Task<PromptResult> SummarizeResume(string resumeText)
+    public async Task<ResponseResult> SummarizeResume(string resumeText)
     {
         var prompt = "You are an AI Assistant that helps people summarize thier resume.";
         var result = await this.Process(prompt, resumeText);
         return result;
     }
 
-    public async Task<PromptResult> ResumeParseJSON(IFormFile file)
+    public async Task<ResponseResult> ResumeParseJSON(IFormFile file)
     {
 
         var prompt = @"you are a resume parser assistant. Respond with no formatting.
@@ -148,7 +149,7 @@ I need you to parse the resume into the following JSON format:
   }]
 }";
 
-        var result = new PromptResult();
+        var result = new ResponseResult();
         try
         {
             if (file != null)
@@ -166,7 +167,7 @@ I need you to parse the resume into the following JSON format:
 
     }
 
-    public async Task<PromptResult> JobResumeMatch(JobMatchRequest request)
+    public async Task<ResponseResult> JobResumeMatch(JobMatchRequest request)
     {
         var prompt = "You are an AI Assistant that helps people match thier Resume to a Job Description.";
         var userInput = $"Resume: {request.Resume}";

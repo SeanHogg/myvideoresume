@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
+using MyVideoResume.Abstractions.Core;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Client.Shared.Resume;
 using MyVideoResume.Data;
@@ -21,10 +22,7 @@ namespace MyVideoResume.Client.Pages.App;
 public partial class Dashboard
 {
     [Inject]
-    protected SecurityService Security { get; set; }
-
-    [Inject]
-    protected DataContext Context { get; set; }
+    protected DashboardService Service { get; set; }
 
     [Inject]
     protected ILogger<Dashboard> Console { get; set; }
@@ -42,18 +40,27 @@ public partial class Dashboard
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await GetResumes();
+        ResumeList = await Service.GetResumes();
     }
 
-    async Task GetResumes()
+    async Task DeleteCompletedHandler(ResponseResult result)
     {
-        var userId = Security.User.Id;
-        ResumeList = await Context.Resumes.Where(x => x.UserId == userId).ToListAsync();
+        if (!string.IsNullOrWhiteSpace(result.ErrorMessage))
+        {
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = result.ErrorMessage, Duration = 4000 });
+        }
+        else
+        {
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Resume Deleted", Detail = result.ErrorMessage, Duration = 4000 });
+
+            ResumeList = await Service.GetResumes();
+            StateHasChanged();
+        }
     }
 
     async Task UploadCompletedHandler(string result)
     {
-        await GetResumes();
+        ResumeList = await Service.GetResumes();
     }
 
     void TrackProgress(UploadProgressArgs args)

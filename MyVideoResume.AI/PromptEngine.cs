@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.ML.OnnxRuntimeGenAI;
+using MyVideoResume.Abstractions.Core;
 
 namespace MyVideoResume.AI;
 
 public interface IPromptEngine
 {
-    Task<PromptResult> Process(string question);
-    Task<PromptResult> Process(string prompt, string[] question);
-    Task<PromptResult> Process(string prompt, string question);
+    Task<ResponseResult> Process(string question);
+    Task<ResponseResult> Process(string prompt, string[] question);
+    Task<ResponseResult> Process(string prompt, string question);
 
 }
 
@@ -25,20 +26,20 @@ public class PromptEngine : IPromptEngine
         _logger = logger;
         _configuration = configuration;
     }
-    public async Task<PromptResult> Process(string question)
+    public async Task<ResponseResult> Process(string question)
     {
         var systemPrompt = "You are an AI assistant that helps people find information. Answer questions using a direct style. Do not share more information that the requested by the users.";
         return await Process(systemPrompt, question);
     }
 
-    public async Task<PromptResult> Process(string prompt, string question)
+    public async Task<ResponseResult> Process(string prompt, string question)
     {
         return await Process(prompt, new[] { question });
     }
 
-    public async Task<PromptResult> Process(string prompt, string[] questions)
+    public async Task<ResponseResult> Process(string prompt, string[] questions)
     {
-        var result = new PromptResult();
+        var result = new ResponseResult();
         var workingDirectory = string.Empty;
 
         try
@@ -83,6 +84,7 @@ public class PromptEngine : IPromptEngine
         catch (Exception ex)
         {
             _logger.LogError($"{ex.Message} - working dir: {workingDirectory}", ex);
+            result.ErrorMessage = ex.Message;
         }
 
         return result;

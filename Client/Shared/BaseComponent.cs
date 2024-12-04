@@ -8,7 +8,10 @@ namespace MyVideoResume.Client.Shared;
 
 public class BaseComponent : LayoutComponentBase
 {
-    [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    [Inject] protected HttpClient Http { get; set; }
+
 
     [Inject]
     protected NavigationManager NavigationManager { get; set; }

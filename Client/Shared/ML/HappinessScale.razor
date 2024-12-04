@@ -1,4 +1,5 @@
-﻿﻿<div class="sentiment">
+﻿@inherits BaseComponent
+﻿<div class="sentiment">
     <RadzenSlider @bind-Value=@Value TValue="float" Disabled=true style="width:100%" />
     <div class="marker">
         <div style="left: @Value%;">

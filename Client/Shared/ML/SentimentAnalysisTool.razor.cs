@@ -21,13 +21,6 @@ public partial class SentimentAnalysisTool
     [Inject]
     protected ILocalStorageService localStorage { get; set; }
 
-    [Inject]
-    protected IJSRuntime JS { get; set; }
-
-
-    [Inject]
-    protected NavigationManager NavigationManager { get; set; }
-
     [Parameter]
     public float happiness { get; set; } = 50; // 0=worst, 100=best
 

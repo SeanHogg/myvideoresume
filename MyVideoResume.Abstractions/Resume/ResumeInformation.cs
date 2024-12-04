@@ -11,6 +11,9 @@ public class ResumeInformation : CommonBase
 {
     public string UserId { get; set; }
 
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+
     public Industry Industry { get; set; } = Industry.Management;
     public List<JobType> EmploymentType { get; set; } = new List<JobType>();
     public PaySchedule PaySchedule { get; set; } = PaySchedule.Yearly;

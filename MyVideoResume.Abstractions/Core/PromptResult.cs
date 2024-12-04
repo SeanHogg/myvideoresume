@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyVideoResume.AI;
+namespace MyVideoResume.Abstractions.Core;
 
-public class PromptResult
+public class ResponseResult
 {
+    public string ErrorMessage { get; set; }
     public String Result { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿@inject NavigationManager NavigationManager
+﻿@inherits BaseComponent
 <div class="filterComponent">
     <RadzenButton Variant="Variant.Outlined" BadgeStyle="BadgeStyle.Secondary" Text="All" Click=@(args => Search("All")) />
     <RadzenDropDown AllowClear=true TValue="string" Change=@(args => Search($"{args}")) @bind-Value=@FilterSelected Data=@DatePosted Placeholder="Date Posted" TextProperty="Value" ValueProperty="Key"></RadzenDropDown>

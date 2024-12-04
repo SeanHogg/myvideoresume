@@ -1,9 +1,13 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyVideoResume.Abstractions.Core;
 using MyVideoResume.Abstractions.Job;
 using MyVideoResume.Abstractions.Resume;
 using MyVideoResume.AI;
 using MyVideoResume.Application.Resume;
+using MyVideoResume.Client.Services;
 using MyVideoResume.Data.Models;
 using MyVideoResume.Data.Models.Resume;
 using MyVideoResume.Documents;
@@ -12,8 +16,8 @@ using System.Security.Claims;
 
 namespace MyVideoResume.Server.Controllers;
 
-[Route("[controller]")]
-public class ResumeController : Controller
+[Route("Resume/[action]")]
+public partial class ResumeController : Controller
 {
 
     private readonly IResumePromptEngine _engine;
@@ -29,11 +33,28 @@ public class ResumeController : Controller
         _documentProcessor = documentProcessor;
     }
 
+    [Authorize]
     [HttpPost]
-    [Route("summarize")]
-    public async Task<ActionResult<PromptResult>> SummarizeResume([FromBody] string resumeText)
+    public async Task<ActionResult<ResponseResult>> Delete(string resumeId)
     {
-        var result = new PromptResult();
+        var result = new ResponseResult();
+        try
+        {
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            result = await _resumeService.DeleteResume(id, resumeId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+            result.Result = ex.Message;
+        }
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ResponseResult>> summarize([FromBody] string resumeText)
+    {
+        var result = new ResponseResult();
         try
         {
             result = await _engine.SummarizeResume(resumeText);
@@ -47,10 +68,9 @@ public class ResumeController : Controller
     }
 
     [HttpPost]
-    [Route("match")]
-    public async Task<ActionResult<PromptResult>> JobResumeMatchPost([FromBody] JobMatchRequest request)
+    public async Task<ActionResult<ResponseResult>> match([FromBody] JobMatchRequest request)
     {
-        var result = new PromptResult();
+        var result = new ResponseResult();
         try
         {
             result = await _engine.JobResumeMatch(request);
@@ -64,10 +84,9 @@ public class ResumeController : Controller
     }
 
     [HttpPost]
-    [Route("parse")]
-    public async Task<ActionResult<PromptResult>> ParseToJson(IFormFile file)
+    public async Task<ActionResult<ResponseResult>> parse(IFormFile file)
     {
-        var result = new PromptResult();
+        var result = new ResponseResult();
         try
         {
             if (file != null)
@@ -83,11 +102,11 @@ public class ResumeController : Controller
         return result;
     }
 
+    [Authorize]
     [HttpPost]
-    [Route("createFromFile")]
-    public async Task<ActionResult<PromptResult>> ParseToJsonCreate(IFormFile file)
+    public async Task<ActionResult<ResponseResult>> createFromFile(IFormFile file)
     {
-        var result = new PromptResult();
+        var result = new ResponseResult();
         try
         {
             if (file != null)

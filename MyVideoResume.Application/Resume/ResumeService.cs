@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MyVideoResume.Abstractions.Core;
 using MyVideoResume.Abstractions.Job;
 using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat;
 using MyVideoResume.AI;
@@ -26,10 +27,28 @@ public class ResumeService
         _configuration = configuration;
     }
 
-
-    public async Task<PromptResult> CreateResume(string userId, string resumeText)
+    public async Task<ResponseResult> DeleteResume(string userId, string resumeId)
     {
-        var result = new PromptResult() { };
+
+        var result = new ResponseResult();
+        try
+        {
+            if (await _dataContext.Resumes.Where(x => x.Id == Guid.Parse(resumeId) && x.UserId == userId).ExecuteDeleteAsync() > 0)
+                result.Result = "Operation Successful";
+            else
+                result.ErrorMessage = "Failed to Delete Resume";
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+            result.ErrorMessage = ex.Message;
+        }
+        return result;
+    }
+
+    public async Task<ResponseResult> CreateResume(string userId, string resumeText)
+    {
+        var result = new ResponseResult() { };
 
         try
         {
@@ -54,6 +73,7 @@ public class ResumeService
         catch (Exception ex)
         {
             _logger.LogError(ex.Message, ex);
+            result.ErrorMessage = ex.Message;
         }
         return result;
     }

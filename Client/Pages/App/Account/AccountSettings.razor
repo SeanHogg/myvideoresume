@@ -12,7 +12,7 @@
         <RadzenColumn SizeMD="12">
             <RadzenTabs>
                 <Tabs>
-                    <RadzenTabsItem Text="Profile">
+ @*                    <RadzenTabsItem Text="Profile">
                         <RadzenTemplateForm Method="post" Submit="@FormSubmit" TItem="MyVideoResume.Data.Models.JobPreferencesEntity" Data="@jobPreferences">
                             <RadzenStack style="margin-bottom: 1rem;">
                                 <RadzenFormField Text="Salary" Variant="Variant.Outlined">
@@ -24,7 +24,7 @@
                             </RadzenStack>
                         </RadzenTemplateForm>
 
-                    </RadzenTabsItem>
+                    </RadzenTabsItem> *@
                     <RadzenTabsItem Text="Account Settings">
                         <RadzenTemplateForm Method="post" Submit="@FormSubmit" TItem="MyVideoResume.Data.Models.ApplicationUser" Data="@user"
                                             Visible="@(user != null)">
@@ -66,7 +66,7 @@
                         </RadzenTemplateForm>
 
                     </RadzenTabsItem>
-                    <RadzenTabsItem Text="Security">
+@*                     <RadzenTabsItem Text="Security">
                         <RadzenTemplateForm Method="post" Submit="@FormSubmit" TItem="MyVideoResume.Data.Models.ApplicationUser" Data="@user"
                                             Visible="@(user != null)">
                             <RadzenAlert Size="AlertSize.Large" Shade="Shade.Light" AlertStyle="AlertStyle.Danger" Variant="Variant.Flat" Title="Cannot change password" Visible="@errorVisible">@error</RadzenAlert>
@@ -106,7 +106,7 @@
                             </RadzenStack>
                         </RadzenTemplateForm>
                     </RadzenTabsItem>
-                </Tabs>
+ *@                </Tabs>
             </RadzenTabs>
         </RadzenColumn>
     </RadzenRow>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MyVideoResume.Abstractions.Core;
 using OpenAI.Chat;
 
 namespace MyVideoResume.AI;
@@ -16,18 +17,18 @@ public class OpenAIPromptEngine : IPromptEngine
         _configuration = configuration;
     }
 
-    public async Task<PromptResult> Process(string question)
+    public async Task<ResponseResult> Process(string question)
     {
         var systemPrompt = "You are an AI assistant that helps people summarize work history and resume experience.";
         return await Process(systemPrompt, question);
     }
 
-    public async Task<PromptResult> Process(string prompt, string question)
+    public async Task<ResponseResult> Process(string prompt, string question)
     {
         return await Process(prompt, new[] { question });
     }
 
-    public async Task<PromptResult> Process(string prompt, string[] questions)
+    public async Task<ResponseResult> Process(string prompt, string[] questions)
     {
         if (client == null)
         {
@@ -45,7 +46,7 @@ public class OpenAIPromptEngine : IPromptEngine
         }
 
         var chatResult = await client.CompleteChatAsync(chatHistory);
-        var result = new PromptResult() { Result = chatResult.Value.Content[0].Text };
+        var result = new ResponseResult() { Result = chatResult.Value.Content[0].Text };
         return result;
     }
 }

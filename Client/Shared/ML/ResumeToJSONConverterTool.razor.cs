@@ -7,22 +7,11 @@ namespace MyVideoResume.Client.Shared.ML;
 
 public partial class ResumeToJSONConverterTool
 {
-
-    [Inject]
-    protected HttpClient Http { get; set; }
-
     [Inject]
     protected ILogger<ResumeToJSONConverterTool> Logger { get; set; }
 
     [Inject]
     protected ILocalStorageService localStorage { get; set; }
-
-    [Inject]
-    protected IJSRuntime JS { get; set; }
-
-
-    [Inject]
-    protected NavigationManager NavigationManager { get; set; }
 
     public bool DisableDownload { get; set; } = true;
     public string Result { get; set; } = "Upload";
@@ -35,7 +24,7 @@ public partial class ResumeToJSONConverterTool
     {
         var temp = Result;
         temp = temp.Replace("```json", "").Replace("```", "");
-        await JS.InvokeVoidAsync("saveTextAsFile", temp, $"JsonResume-{DateTime.Now.ToString("yyyy-MM-dd")}.json");
+        await JSRuntime.InvokeVoidAsync("saveTextAsFile", temp, $"JsonResume-{DateTime.Now.ToString("yyyy-MM-dd")}.json");
     }
 
     private async Task UploadCompletedHandler(string result)
