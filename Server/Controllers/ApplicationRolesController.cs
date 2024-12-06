@@ -8,79 +8,78 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using MyVideoResume.Data.Models;
 
-namespace MyVideoResume.Server.Controllers
+namespace MyVideoResume.Server.Controllers;
+
+[Authorize]
+[Route("odata/Identity/ApplicationRoles")]
+public partial class ApplicationRolesController : ODataController
 {
-    [Authorize]
-    [Route("odata/Identity/ApplicationRoles")]
-    public partial class ApplicationRolesController : ODataController
-    {
-       private readonly RoleManager<ApplicationRole> roleManager;
+   private readonly RoleManager<ApplicationRole> roleManager;
 
-       public ApplicationRolesController(RoleManager<ApplicationRole> roleManager)
+   public ApplicationRolesController(RoleManager<ApplicationRole> roleManager)
+   {
+       this.roleManager = roleManager;
+   }
+
+   partial void OnRolesRead(ref IQueryable<ApplicationRole> roles);
+
+   [EnableQuery]
+   [HttpGet]
+   public IEnumerable<ApplicationRole> Get()
+   {
+       var roles = roleManager.Roles;
+       OnRolesRead(ref roles);
+
+       return roles;
+   }
+
+   partial void OnRoleCreated(ApplicationRole role);
+
+   [HttpPost]
+   public async Task<IActionResult> Post([FromBody] ApplicationRole role)
+   {
+       if (role == null)
        {
-           this.roleManager = roleManager;
+           return BadRequest();
        }
 
-       partial void OnRolesRead(ref IQueryable<ApplicationRole> roles);
+       OnRoleCreated(role);
 
-       [EnableQuery]
-       [HttpGet]
-       public IEnumerable<ApplicationRole> Get()
+       var result = await roleManager.CreateAsync(role);
+
+       if (!result.Succeeded)
        {
-           var roles = roleManager.Roles;
-           OnRolesRead(ref roles);
+           var message = string.Join(", ", result.Errors.Select(error => error.Description));
 
-           return roles;
+           return BadRequest(new { error = new { message }});
        }
 
-       partial void OnRoleCreated(ApplicationRole role);
+       return Created($"odata/Identity/Roles('{role.Id}')", role);
+   }
 
-       [HttpPost]
-       public async Task<IActionResult> Post([FromBody] ApplicationRole role)
+   partial void OnRoleDeleted(ApplicationRole role);
+
+   [HttpDelete("{Id}")]
+   public async Task<IActionResult> Delete(string key)
+   {
+       var role = await roleManager.FindByIdAsync(key);
+
+       if (role == null)
        {
-           if (role == null)
-           {
-               return BadRequest();
-           }
-
-           OnRoleCreated(role);
-
-           var result = await roleManager.CreateAsync(role);
-
-           if (!result.Succeeded)
-           {
-               var message = string.Join(", ", result.Errors.Select(error => error.Description));
-
-               return BadRequest(new { error = new { message }});
-           }
-
-           return Created($"odata/Identity/Roles('{role.Id}')", role);
+           return NotFound();
        }
 
-       partial void OnRoleDeleted(ApplicationRole role);
+       OnRoleDeleted(role);
 
-       [HttpDelete("{Id}")]
-       public async Task<IActionResult> Delete(string key)
+       var result = await roleManager.DeleteAsync(role);
+
+       if (!result.Succeeded)
        {
-           var role = await roleManager.FindByIdAsync(key);
+           var message = string.Join(", ", result.Errors.Select(error => error.Description));
 
-           if (role == null)
-           {
-               return NotFound();
-           }
-
-           OnRoleDeleted(role);
-
-           var result = await roleManager.DeleteAsync(role);
-
-           if (!result.Succeeded)
-           {
-               var message = string.Join(", ", result.Errors.Select(error => error.Description));
-
-               return BadRequest(new { error = new { message }});
-           }
-
-           return new NoContentResult();
+           return BadRequest(new { error = new { message }});
        }
-    }
+
+       return new NoContentResult();
+   }
 }

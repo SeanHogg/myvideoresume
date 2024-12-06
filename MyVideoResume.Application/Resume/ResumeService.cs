@@ -27,6 +27,48 @@ public class ResumeService
         _configuration = configuration;
     }
 
+    public async Task<MetaResumeEntity> GetResume(string resumeId)
+    {
+        var result = new MetaResumeEntity();
+        try
+        {
+            //Is it a slug?
+            var info = _dataContext.ResumeInformation.FirstOrDefault(x => x.Slug == resumeId);
+            if (info != null)
+            {
+                if (info.Resume.IsPublic == true)
+                    result = info.Resume;
+            }
+            else
+            {
+                Guid guid;
+                if (Guid.TryParse(resumeId, out guid))
+                {
+                    result = _dataContext.Resumes.FirstOrDefault(x => x.Id == guid && x.IsPublic == true);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+        return result;
+    }
+
+    public async Task<List<MetaResumeEntity>> GetResumes(string userId)
+    {
+        var result = new List<MetaResumeEntity>();
+        try
+        {
+            result = await _dataContext.Resumes.Where(x => x.UserId == userId).ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+        return result;
+    }
+
     public async Task<ResponseResult> DeleteResume(string userId, string resumeId)
     {
 

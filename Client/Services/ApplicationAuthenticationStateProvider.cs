@@ -12,10 +12,10 @@ namespace MyVideoResume.Client.Services;
 
 public class ApplicationAuthenticationStateProvider : AuthenticationStateProvider
 {
-    private readonly SecurityService securityService;
+    private readonly SecurityWebService securityService;
     private ApplicationAuthenticationState authenticationState;
 
-    public ApplicationAuthenticationStateProvider(SecurityService securityService)
+    public ApplicationAuthenticationStateProvider(SecurityWebService securityService)
     {
         this.securityService = securityService;
     }

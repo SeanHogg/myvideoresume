@@ -16,7 +16,7 @@ using MyVideoResume.Client.Shared.Security.Recaptcha;
 
 namespace MyVideoResume.Client.Services;
 
-public partial class SecurityService
+public partial class SecurityWebService
 {
 
     private readonly HttpClient httpClient;
@@ -30,9 +30,9 @@ public partial class SecurityService
 
     public ClaimsPrincipal Principal { get; private set; }
 
-    private readonly ILogger<SecurityService> _logger;
+    private readonly ILogger<SecurityWebService> _logger;
 
-    public SecurityService(NavigationManager navigationManager, IHttpClientFactory factory, ILogger<SecurityService> logger, RecaptchaService recaptchaService)
+    public SecurityWebService(NavigationManager navigationManager, IHttpClientFactory factory, ILogger<SecurityWebService> logger, RecaptchaService recaptchaService)
     {
         this.httpClient = factory.CreateClient("MyVideoResume.Server");
         this.navigationManager = navigationManager;

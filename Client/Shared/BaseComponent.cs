@@ -33,7 +33,7 @@ public class BaseComponent : LayoutComponentBase
     protected NotificationService NotificationService { get; set; }
 
     [Inject]
-    protected SecurityService Security { get; set; }
+    protected SecurityWebService Security { get; set; }
 
     public void NavigateTo(string path)
     {

@@ -59,6 +59,7 @@ public enum WorkSetting
 
 public class JobPreferences : CommonBase
 {
+    public string? UserHandle { get; set; }
     public Industry Industry { get; set; } = Industry.Management;
     public ExperienceLevel Seniority { get; set; } = ExperienceLevel.Entry;
     public List<JobType> EmploymentType { get; set; } = new List<JobType>();

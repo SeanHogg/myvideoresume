@@ -10,7 +10,7 @@ using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
 
-namespace MyVideoResume.Client.Pages.App.People;
+namespace MyVideoResume.Client.Pages.App.People.Resumes;
 
 public partial class ResumeList
 {

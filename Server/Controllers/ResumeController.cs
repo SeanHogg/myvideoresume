@@ -16,10 +16,10 @@ using System.Security.Claims;
 
 namespace MyVideoResume.Server.Controllers;
 
-[Route("Resume/[action]")]
-public partial class ResumeController : Controller
+[Route("api/[controller]")]
+[ApiController]
+public partial class ResumeController : ControllerBase
 {
-
     private readonly IResumePromptEngine _engine;
     private readonly ILogger<ResumeController> _logger;
     private readonly ResumeService _resumeService;
@@ -33,8 +33,40 @@ public partial class ResumeController : Controller
         _documentProcessor = documentProcessor;
     }
 
+    [HttpGet("{resumeId}")]
+    public async Task<ActionResult<MetaResumeEntity>> Get(string resumeId)
+    {
+        var result = new MetaResumeEntity();
+        try
+        {
+            result = await _resumeService.GetResume(resumeId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+        return result;
+    }
+
     [Authorize]
-    [HttpPost]
+    [HttpGet]
+    public async Task<ActionResult<List<MetaResumeEntity>>> Get()
+    {
+        var result = new List<MetaResumeEntity>();
+        try
+        {
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            result = await _resumeService.GetResumes(id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+        return result;
+    }
+
+    [Authorize]
+    [HttpDelete("{resumeId}")]
     public async Task<ActionResult<ResponseResult>> Delete(string resumeId)
     {
         var result = new ResponseResult();
@@ -51,8 +83,8 @@ public partial class ResumeController : Controller
         return result;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<ResponseResult>> summarize([FromBody] string resumeText)
+    [HttpPost("Summarize")]
+    public async Task<ActionResult<ResponseResult>> Summarize([FromBody] string resumeText)
     {
         var result = new ResponseResult();
         try
@@ -67,8 +99,8 @@ public partial class ResumeController : Controller
         return result;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<ResponseResult>> match([FromBody] JobMatchRequest request)
+    [HttpPost("Match")]
+    public async Task<ActionResult<ResponseResult>> Match([FromBody] JobMatchRequest request)
     {
         var result = new ResponseResult();
         try
@@ -83,8 +115,8 @@ public partial class ResumeController : Controller
         return result;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<ResponseResult>> parse(IFormFile file)
+    [HttpPost("Parse")]
+    public async Task<ActionResult<ResponseResult>> Parse(IFormFile file)
     {
         var result = new ResponseResult();
         try
@@ -103,8 +135,8 @@ public partial class ResumeController : Controller
     }
 
     [Authorize]
-    [HttpPost]
-    public async Task<ActionResult<ResponseResult>> createFromFile(IFormFile file)
+    [HttpPost("CreateFromFile")]
+    public async Task<ActionResult<ResponseResult>> CreateFromFile(IFormFile file)
     {
         var result = new ResponseResult();
         try
@@ -148,5 +180,4 @@ public partial class ResumeController : Controller
         }
         return result;
     }
-
 }

@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using MyVideoResume.Abstractions.Job;
 using MyVideoResume.Abstractions.Core;
+using MyVideoResume.Client.Services;
 
 namespace MyVideoResume.Client.Shared.ML;
 
@@ -12,6 +13,9 @@ public partial class JobResumeMatchTool
 {
     [Inject]
     protected ILogger<SummarizeResumeTool> Logger { get; set; }
+
+    [Inject]
+    protected ResumeWebService Service { get; set; }
 
     [Inject]
     protected ILocalStorageService localStorage { get; set; }
@@ -25,12 +29,8 @@ public partial class JobResumeMatchTool
     {
         try
         {
-            var uri = new Uri($"{NavigationManager.BaseUri}resume/match");
-            Http.Timeout = TimeSpan.FromMinutes(10);
             Busy = true;
-            var request = new JobMatchRequest() { Job = JobDescription, Resume = Resume };
-            var response = await Http.PostAsJsonAsync<JobMatchRequest>(uri, request);
-            var r = await response.ReadAsync<ResponseResult>();
+            var r = await Service.Match(JobDescription, Resume);
             Result = r.Result;
             Busy = false;
         }

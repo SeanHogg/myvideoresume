@@ -4,85 +4,86 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 
-namespace MyVideoResume.Server.Controllers
+namespace MyVideoResume.Server.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public partial class UploadController : ControllerBase
 {
-    public partial class UploadController : Controller
+    private readonly IWebHostEnvironment environment;
+
+    public UploadController(IWebHostEnvironment environment)
     {
-        private readonly IWebHostEnvironment environment;
+        this.environment = environment;
+    }
 
-        public UploadController(IWebHostEnvironment environment)
+    // Single file upload
+    [HttpPost("single")]
+    public IActionResult Single(IFormFile file)
+    {
+        try
         {
-            this.environment = environment;
+            // Put your code here
+            return StatusCode(200);
         }
-
-        // Single file upload
-        [HttpPost("upload/single")]
-        public IActionResult Single(IFormFile file)
+        catch (Exception ex)
         {
-            try
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+    // Multiple files upload
+    [HttpPost("multiple")]
+    public IActionResult Multiple(IFormFile[] files)
+    {
+        try
+        {
+            // Put your code here
+            return StatusCode(200);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+    // Multiple files upload with parameter
+    [HttpPost("{id}")]
+    public IActionResult Post(IFormFile[] files, int id)
+    {
+        try
+        {
+            // Put your code here
+            return StatusCode(200);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+    // Image file upload (used by HtmlEditor components)
+    [HttpPost("image")]
+    public IActionResult Image(IFormFile file)
+    {
+        try
+        {
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+            using (var stream = new FileStream(Path.Combine(environment.WebRootPath, fileName), FileMode.Create))
             {
-                // Put your code here
-                return StatusCode(200);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
+                // Save the file
+                file.CopyTo(stream);
+
+                // Return the URL of the file
+                var url = Url.Content($"~/{fileName}");
+
+                return Ok(new { Url = url });
             }
         }
-
-        // Multiple files upload
-        [HttpPost("upload/multiple")]
-        public IActionResult Multiple(IFormFile[] files)
+        catch (Exception ex)
         {
-            try
-            {
-                // Put your code here
-                return StatusCode(200);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        // Multiple files upload with parameter
-        [HttpPost("upload/{id}")]
-        public IActionResult Post(IFormFile[] files, int id)
-        {
-            try
-            {
-                // Put your code here
-                return StatusCode(200);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        // Image file upload (used by HtmlEditor components)
-        [HttpPost("upload/image")]
-        public IActionResult Image(IFormFile file)
-        {
-            try
-            {
-                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-
-                using (var stream = new FileStream(Path.Combine(environment.WebRootPath, fileName), FileMode.Create))
-                {
-                    // Save the file
-                    file.CopyTo(stream);
-
-                    // Return the URL of the file
-                    var url = Url.Content($"~/{fileName}");
-
-                    return Ok(new { Url = url });
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            return StatusCode(500, ex.Message);
         }
     }
 }

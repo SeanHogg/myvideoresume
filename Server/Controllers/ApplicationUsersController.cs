@@ -16,167 +16,166 @@ using MyVideoResume.Server.Data;
 using MyVideoResume.Data.Models;
 using DocumentFormat.OpenXml.Spreadsheet;
 
-namespace MyVideoResume.Server.Controllers
+namespace MyVideoResume.Server.Controllers;
+
+[Authorize]
+[Route("odata/Identity/ApplicationUsers")]
+public partial class ApplicationUsersController : ODataController
 {
-    [Authorize]
-    [Route("odata/Identity/ApplicationUsers")]
-    public partial class ApplicationUsersController : ODataController
+    private readonly ApplicationIdentityDbContext context;
+    private readonly UserManager<ApplicationUser> userManager;
+    private readonly ILogger<ApplicationUsersController> logger;
+
+
+    public ApplicationUsersController(ApplicationIdentityDbContext context, UserManager<ApplicationUser> userManager, ILogger<ApplicationUsersController> logger)
     {
-        private readonly ApplicationIdentityDbContext context;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly ILogger<ApplicationUsersController> logger;
+        this.context = context;
+        this.userManager = userManager;
+        this.logger = logger;
+    }
 
+    partial void OnUsersRead(ref IQueryable<ApplicationUser> users);
 
-        public ApplicationUsersController(ApplicationIdentityDbContext context, UserManager<ApplicationUser> userManager, ILogger<ApplicationUsersController> logger)
+    [EnableQuery]
+    [HttpGet]
+    public IEnumerable<ApplicationUser> Get()
+    {
+        var users = userManager.Users;
+        OnUsersRead(ref users);
+
+        return users;
+    }
+
+    [EnableQuery]
+    [HttpGet("{Id}")]
+    public SingleResult<ApplicationUser> GetApplicationUser(string key)
+    {
+        try
         {
-            this.context = context;
-            this.userManager = userManager;
-            this.logger = logger;
+            var user = context.Users.Where(i => i.Id == key);
+            var result = SingleResult.Create(user);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex.Message, ex);
         }
 
-        partial void OnUsersRead(ref IQueryable<ApplicationUser> users);
+        return null;
+    }
 
-        [EnableQuery]
-        [HttpGet]
-        public IEnumerable<ApplicationUser> Get()
+    partial void OnUserDeleted(ApplicationUser user);
+
+    [HttpDelete("{Id}")]
+    public async Task<IActionResult> Delete(string key)
+    {
+        var user = await userManager.FindByIdAsync(key);
+
+        if (user == null)
         {
-            var users = userManager.Users;
-            OnUsersRead(ref users);
-
-            return users;
+            return NotFound();
         }
 
-        [EnableQuery]
-        [HttpGet("{Id}")]
-        public SingleResult<ApplicationUser> GetApplicationUser(string key)
-        {
-            try
-            {
-                var user = context.Users.Where(i => i.Id == key);
-                var result = SingleResult.Create(user);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message, ex);
-            }
+        OnUserDeleted(user);
 
-            return null;
+        var result = await userManager.DeleteAsync(user);
+
+        if (!result.Succeeded)
+        {
+            return IdentityError(result);
         }
 
-        partial void OnUserDeleted(ApplicationUser user);
+        return new NoContentResult();
+    }
 
-        [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete(string key)
+    partial void OnUserUpdated(ApplicationUser user);
+
+    [HttpPatch("{Id}")]
+    public async Task<IActionResult> Patch(string key, [FromBody] ApplicationUser data)
+    {
+        var user = await userManager.FindByIdAsync(key);
+
+        if (user == null)
         {
-            var user = await userManager.FindByIdAsync(key);
+            return NotFound();
+        }
 
-            if (user == null)
+        OnUserUpdated(data);
+
+        IdentityResult result = null;
+
+        user.Roles = null;
+
+        result = await userManager.UpdateAsync(user);
+
+        if (data.Roles != null)
+        {
+            result = await userManager.RemoveFromRolesAsync(user, await userManager.GetRolesAsync(user));
+
+            if (result.Succeeded)
             {
-                return NotFound();
+                result = await userManager.AddToRolesAsync(user, data.Roles.Select(r => r.Name));
             }
+        }
 
-            OnUserDeleted(user);
+        if (!string.IsNullOrEmpty(data.Password))
+        {
+            result = await userManager.RemovePasswordAsync(user);
 
-            var result = await userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                result = await userManager.AddPasswordAsync(user, data.Password);
+            }
 
             if (!result.Succeeded)
             {
                 return IdentityError(result);
             }
-
-            return new NoContentResult();
         }
 
-        partial void OnUserUpdated(ApplicationUser user);
-
-        [HttpPatch("{Id}")]
-        public async Task<IActionResult> Patch(string key, [FromBody] ApplicationUser data)
+        if (result != null && !result.Succeeded)
         {
-            var user = await userManager.FindByIdAsync(key);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            OnUserUpdated(data);
-
-            IdentityResult result = null;
-
-            user.Roles = null;
-
-            result = await userManager.UpdateAsync(user);
-
-            if (data.Roles != null)
-            {
-                result = await userManager.RemoveFromRolesAsync(user, await userManager.GetRolesAsync(user));
-
-                if (result.Succeeded)
-                {
-                    result = await userManager.AddToRolesAsync(user, data.Roles.Select(r => r.Name));
-                }
-            }
-
-            if (!string.IsNullOrEmpty(data.Password))
-            {
-                result = await userManager.RemovePasswordAsync(user);
-
-                if (result.Succeeded)
-                {
-                    result = await userManager.AddPasswordAsync(user, data.Password);
-                }
-
-                if (!result.Succeeded)
-                {
-                    return IdentityError(result);
-                }
-            }
-
-            if (result != null && !result.Succeeded)
-            {
-                return IdentityError(result);
-            }
-
-            return new NoContentResult();
+            return IdentityError(result);
         }
 
-        partial void OnUserCreated(ApplicationUser user);
+        return new NoContentResult();
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ApplicationUser user)
+    partial void OnUserCreated(ApplicationUser user);
+
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] ApplicationUser user)
+    {
+        user.UserName = user.Email;
+        user.EmailConfirmed = true;
+        var password = user.Password;
+        var roles = user.Roles;
+        user.Roles = null;
+        IdentityResult result = await userManager.CreateAsync(user, password);
+
+        if (result.Succeeded && roles != null)
         {
-            user.UserName = user.Email;
-            user.EmailConfirmed = true;
-            var password = user.Password;
-            var roles = user.Roles;
-            user.Roles = null;
-            IdentityResult result = await userManager.CreateAsync(user, password);
-
-            if (result.Succeeded && roles != null)
-            {
-                result = await userManager.AddToRolesAsync(user, roles.Select(r => r.Name));
-            }
-
-            user.Roles = roles;
-
-            if (result.Succeeded)
-            {
-                OnUserCreated(user);
-
-                return Created($"odata/Identity/Users('{user.Id}')", user);
-            }
-            else
-            {
-                return IdentityError(result);
-            }
+            result = await userManager.AddToRolesAsync(user, roles.Select(r => r.Name));
         }
 
-        private IActionResult IdentityError(IdentityResult result)
+        user.Roles = roles;
+
+        if (result.Succeeded)
         {
-            var message = string.Join(", ", result.Errors.Select(error => error.Description));
+            OnUserCreated(user);
 
-            return BadRequest(new { error = new { message } });
+            return Created($"odata/Identity/Users('{user.Id}')", user);
         }
+        else
+        {
+            return IdentityError(result);
+        }
+    }
+
+    private IActionResult IdentityError(IdentityResult result)
+    {
+        var message = string.Join(", ", result.Errors.Select(error => error.Description));
+
+        return BadRequest(new { error = new { message } });
     }
 }

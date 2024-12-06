@@ -1,4 +1,4 @@
-﻿@using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat
+﻿@using MyVideoResume.Data.Models.Resume
 
 
 <div class="searchComponent">
@@ -10,7 +10,7 @@
 </div>
 @code {
     [Parameter]
-    public JSONResume Resume { get; set; }
+    public MetaResumeEntity Resume { get; set; }
 
     protected override void OnInitialized()
     {

@@ -4,16 +4,17 @@ using MyVideoResume.Data.Models;
 
 namespace MyVideoResume.Server.Controllers;
 
-[Route("Account/{userId}/[action]")]
-public class JobPreferencesController : Controller
+[Route("api/[controller]")]
+[ApiController]
+public class JobPreferencesController : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("{userId}")]
     public JobPreferencesEntity Get(string userId)
     {
         return null;
     }
 
-    [HttpPost]
+    [HttpPost("{userId}")]
     public JobPreferencesEntity Post(string userId, [FromBody] JobPreferences preferences)
     {
         return null;

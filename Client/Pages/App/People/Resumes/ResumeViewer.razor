@@ -1,0 +1,8 @@
+@page "/resumes/{slug}"@page "/resume/{slug}"@inherits BaseComponent<PageTitle>MyVideoResu.ME - Resumes</PageTitle>
+<RadzenRow>
+    <RadzenColumn Size="12">
+        <RadzenText Text="Resumes" TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>        <RadzenCard>            <RadzenRow>                <RadzenColumn>                    @Resume.Id                </RadzenColumn>            </RadzenRow>
+        </RadzenCard>
+    </RadzenColumn>
+</RadzenRow>
+

@@ -14,8 +14,11 @@ public class MetaResumeEntity : JSONResume
 
     public string UserId { get; set; }
 
+    public bool? IsPublic { get; set; } = true;
+
     public List<MetaDataEntity> MetaData { get; set; }
 
+    [ForeignKey("Resume")]
     public ResumeInformationEntity ResumeInformation { get; set; }
     public ResumeTemplateEntity? ResumeTemplate { get; set; }
 

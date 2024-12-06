@@ -22,7 +22,7 @@ namespace MyVideoResume.Client.Pages.App;
 public partial class Dashboard
 {
     [Inject]
-    protected DashboardService Service { get; set; }
+    protected DashboardWebService Service { get; set; }
 
     [Inject]
     protected ILogger<Dashboard> Console { get; set; }
@@ -40,7 +40,8 @@ public partial class Dashboard
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        ResumeList = await Service.GetResumes();
+        if (Security.IsAuthenticated())
+            ResumeList = await Service.GetResumes();
     }
 
     async Task DeleteCompletedHandler(ResponseResult result)

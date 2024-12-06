@@ -19,6 +19,7 @@ using MyVideoResume.Client.Shared.Security.Recaptcha;
 using MyVideoResume.Application.Resume;
 using MyVideoResume.Application;
 using Microsoft.Extensions.DependencyInjection;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -77,15 +78,16 @@ builder.Services.AddControllers().AddOData(opt =>
     var oDataBuilderDataContext = new ODataConventionModelBuilder();
     opt.AddRouteComponents("odata/DataContext", oDataBuilderDataContext.GetEdmModel()).Count().Filter().OrderBy().Expand().Select().SetMaxTop(null).TimeZone = TimeZoneInfo.Utc;
 });
-
+builder.Services.AddOpenApi();
 
 builder.Services.AddSingleton<DocumentProcessor>();
 builder.Services.AddSingleton<RecaptchaService>();
 builder.Services.AddSingleton<EmailService>();
 builder.Services.AddScoped<ResumeService>();
 builder.Services.AddSingleton<IResumePromptEngine, ResumePromptEngine>();
-builder.Services.AddScoped<SecurityService>();
-builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<SecurityWebService>();
+builder.Services.AddScoped<ResumeWebService>();
+builder.Services.AddScoped<DashboardWebService>();
 builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = true }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddAuthentication();
@@ -120,6 +122,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 else
 {
