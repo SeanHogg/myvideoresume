@@ -18,7 +18,7 @@
     [Parameter] public bool DisableDownload { get; set; } = true;
     [Parameter] public string Result { get; set; } = "Upload Resume";
     [Parameter] public EventCallback<string> UploadCompleted { get; set; }
-    [Parameter] public string Url { get; set; } = "resume/parse";
+    [Parameter] public string Url { get; set; } = "api/resume/parse";
 
     int progress;
     bool showProgress;

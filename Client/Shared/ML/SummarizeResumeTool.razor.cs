@@ -4,6 +4,7 @@ using Radzen;
 using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using MyVideoResume.Abstractions.Core;
+using MyVideoResume.Client.Services;
 
 namespace MyVideoResume.Client.Shared.ML;
 
@@ -11,6 +12,8 @@ public partial class SummarizeResumeTool
 {
     [Inject]
     protected ILogger<SummarizeResumeTool> Logger { get; set; }
+
+    [Inject] ResumeWebService Service { get; set; }
 
     [Inject]
     protected ILocalStorageService localStorage { get; set; }
@@ -23,11 +26,8 @@ public partial class SummarizeResumeTool
     {
         try
         {
-            var uri = new Uri($"{NavigationManager.BaseUri}resume/summarize");
-            Http.Timeout = TimeSpan.FromMinutes(10);
             Busy = true;
-            var response = await Http.PostAsJsonAsync<string>(uri, Resume);
-            var r = await response.ReadAsync<ResponseResult>();
+            var r = await Service.Summarize(Resume);
             Result = r.Result;
             Busy = false;
         }

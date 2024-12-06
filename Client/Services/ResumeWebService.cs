@@ -91,4 +91,11 @@ public partial class ResumeWebService
         var r = await response.ReadAsync<ResponseResult>();
         return r;
     }
+    public async Task<ResponseResult> Summarize(string resume)
+    {
+        var uri = new Uri($"{_navigationManager.BaseUri}api/resume/summarize");
+        var response = await _httpClient.PostAsJsonAsync<string>(uri, resume);
+        var r = await response.ReadAsync<ResponseResult>();
+        return r;
+    }
 }
