@@ -1,8 +1,4 @@
-@page "/resumes/{slug}"@page "/resume/{slug}"@inherits BaseComponent<PageTitle>MyVideoResu.ME - Resumes</PageTitle>
-<RadzenRow>
-    <RadzenColumn Size="12">
-        <RadzenText Text="Resumes" TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>        <RadzenCard>            <RadzenRow>                <RadzenColumn>                    @Resume.Id                </RadzenColumn>            </RadzenRow>
-        </RadzenCard>
-    </RadzenColumn>
-</RadzenRow>
-
+@page "/resumes/{slug}"@page "/resume/{slug}"@using MyVideoResume.Client.Pages.App.People.Resumes.Templates@inherits BaseComponent<PageTitle>@ResumePageTitle</PageTitle><RadzenRow>    <RadzenColumn Size="12">        <RadzenText Text=@ResumeName TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>        <RadzenCard>            <RadzenRow>                <RadzenColumn>                    @if (!string.IsNullOrEmpty(Resume.ResumeTemplate?.Name))
+                    {                        <DynamicComponent Type="ComponentType" Parameters="ComponentParameters"></DynamicComponent>                    }
+                    else
+                    {                        <StandardTemplate Resume=@Resume></StandardTemplate>                    }                </RadzenColumn>            </RadzenRow>        </RadzenCard>    </RadzenColumn></RadzenRow>

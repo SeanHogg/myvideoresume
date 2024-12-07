@@ -9,8 +9,9 @@ namespace MyVideoResume.Abstractions.Resume;
 
 public class ResumeTemplate : CommonBase
 {
-    public string UserId { get; set; }
+    public string? UserId { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
     public string? TransformerComponentName { get; set; }
+    public string? Namespace { get; set; }
 }

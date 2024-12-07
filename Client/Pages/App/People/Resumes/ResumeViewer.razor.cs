@@ -24,13 +24,28 @@ public partial class ResumeViewer
 
     public MetaResumeEntity Resume { get; set; } = new MetaResumeEntity();
 
+    public string ResumePageTitle { get; set; }
+    public string ResumeName { get; set; }
+    public Type ComponentType { get; set; }
+    public Dictionary<string, object> ComponentParameters { get; set; }
+
     [Inject] protected ResumeWebService Service { get; set; }
+
+
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             Resume = await Service.GetResume(Slug);
+            if (Resume.ResumeInformation != null)
+            {
+                ResumeName = Resume.ResumeInformation?.Name;
+                ResumePageTitle = $"MyVideoResu.ME - Resume - {ResumeName}";
+                ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
+                ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
+                StateHasChanged();
+            }
         }
         catch (Exception ex)
         {

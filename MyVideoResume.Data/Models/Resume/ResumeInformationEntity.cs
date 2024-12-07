@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using MyVideoResume.Abstractions.Resume;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace MyVideoResume.Data.Models.Resume;
 
@@ -12,6 +13,7 @@ public class ResumeInformationEntity : ResumeInformation
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
+    [JsonIgnore]
     [InverseProperty("ResumeInformation")]
     public MetaResumeEntity Resume { get; set; }
 

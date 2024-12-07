@@ -39,5 +39,16 @@ public class BaseComponent : LayoutComponentBase
     {
         NavigationManager.NavigateTo(path);
     }
+    public void NavigateTo(string path, string parameter)
+    {
+        NavigationManager.NavigateTo($"{path}/{parameter}");
+    }
+
+    protected Type? ResolveComponent(string componentName, string namespacevalue)
+    {
+        return string.IsNullOrEmpty(componentName) ? null
+            : Type.GetType($"{namespacevalue}.{componentName}");
+    }
+
 
 }

@@ -41,10 +41,19 @@ public partial class ResumeWebService
 
     public async Task<List<MetaResumeEntity>> GetResumes()
     {
-        var user = _securityService.User.Id;
-        var uri = new Uri($"{_navigationManager.BaseUri}api/resume");
-        var response = await _httpClient.GetAsync(uri);
-        var result = await response.ReadAsync<List<MetaResumeEntity>>();
+        var result = new List<MetaResumeEntity> { };
+        try
+        {
+            var user = _securityService.User.Id;
+            var uri = new Uri($"{_navigationManager.BaseUri}api/resume");
+            var response = await _httpClient.GetAsync(uri);
+            result = await response.ReadAsync<List<MetaResumeEntity>>();
+            result = result.OrderByDescending(x => x.CreationDate).ToList();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
 
         return result;
     }
@@ -68,17 +77,23 @@ public partial class ResumeWebService
 
     public async Task<ResponseResult> Delete(MetaResumeEntity metaResumeEntity)
     {
-
-        var uri = new Uri($"{_navigationManager.BaseUri}api/resume/delete");
-        var payload = metaResumeEntity.Id.ToString();
-        var user = _securityService.User.Id;
-        var content = new FormUrlEncodedContent(new Dictionary<string, string> {
+        var result = new ResponseResult();
+        try
+        {
+            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/delete");
+            var payload = metaResumeEntity.Id.ToString();
+            var user = _securityService.User.Id;
+            var content = new FormUrlEncodedContent(new Dictionary<string, string> {
             { "resumeId", payload }
         });
 
-        var response = await _httpClient.PostAsync(uri, content);
-        var result = await response.ReadAsync<ResponseResult>();
-
+            var response = await _httpClient.PostAsync(uri, content);
+            result = await response.ReadAsync<ResponseResult>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
         return result;
     }
 

@@ -21,6 +21,9 @@ public class MetaResumeEntity : JSONResume
     [ForeignKey("Resume")]
     public ResumeInformationEntity ResumeInformation { get; set; }
     public ResumeTemplateEntity? ResumeTemplate { get; set; }
+    public DateTime? CreationDate { get; set; }
+    public DateTime? UpdateTime { get; set; }
+    public DateTime? DeletedTime { get; set; }
 
 }
 

@@ -4,15 +4,15 @@
 @inherits BaseComponent
 @inject ResumeWebService Service
 
-<RadzenCard style="background-color:white;">
+<RadzenCard style="background-color:white; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeEntity.Id.ToString()))>
     <RadzenCard class="rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding));background-color:white;">
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" class="rz-p-4">
-@*             <RadzenImage Path="@ResumeEntity?.UserId" Style="width: 100px; height: 100px; border-radius: 50%;" />
+            @*             <RadzenImage Path="@ResumeEntity?.UserId" Style="width: 100px; height: 100px; border-radius: 50%;" />
  *@            <RadzenStack Gap="0">
-                <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Candidate</RadzenText>
-                <RadzenText style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeEntity?.Basics?.Name)</b></RadzenText>
-                <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Company</RadzenText>
-                <RadzenText style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeEntity?.Basics?.Summary)</b></RadzenText>
+                <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">ID</RadzenText>
+                <RadzenText style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeEntity.Id)</b></RadzenText>
+                <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Name</RadzenText>
+                <RadzenText style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeEntity.ResumeInformation?.Name)</b></RadzenText>
             </RadzenStack>
         </RadzenStack>
     </RadzenCard>
@@ -20,8 +20,8 @@
         <RadzenText TextStyle="TextStyle.H6" style="color:white; "><strong>Profile</strong></RadzenText>
         <RadzenRow RowGap="0">
             <RadzenColumn SizeSM="4">
-                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Country</RadzenText>
-                <RadzenText TextStyle="TextStyle.Body1" style="color:white; "><b> @(ResumeEntity?.Basics?.Summary)</b></RadzenText>
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Template</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body1" style="color:white; "><b> @(ResumeEntity?.ResumeTemplate?.Name)</b></RadzenText>
                 <RadzenText TextStyle="TextStyle.Overline" class=" rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">City</RadzenText>
                 <RadzenText TextStyle="TextStyle.Body1" style="color:white; "><b>@(ResumeEntity?.Basics?.Summary)</b></RadzenText>
             </RadzenColumn>

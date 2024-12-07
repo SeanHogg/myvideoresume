@@ -1,9 +1,34 @@
 ﻿@using MyVideoResume.Data.Models.Resume
+@using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat
 
 
 <div class="searchComponent">
-    <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center">
-@*         <RadzenTextBox @bind-value=@QuerySelected placeholder="Search..." class="searchComponent" />
+    Loading..
+    @Resume.Id
+
+    <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center" style="height: 200px; overflow-x: auto;">
+        <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false" class="rz-m-4">
+            <Items>
+                @if (Resume.Work != null)
+                {
+                    @foreach (Work item in Resume.Work.OrderByDescending(x => x.StartDate).ToList())
+                    {
+                        <RadzenTimelineItem PointStyle="PointStyle.Dark">
+                            <LabelContent>
+                                <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@item.StartDate - @item.EndDate</RadzenText>
+                            </LabelContent>
+                            <ChildContent>
+                                @item.Name
+                            </ChildContent>
+                        </RadzenTimelineItem>
+                    }
+                }
+            </Items>
+
+        </RadzenTimeline>
+
+
+        @*         <RadzenTextBox @bind-value=@QuerySelected placeholder="Search..." class="searchComponent" />
         <RadzenButton Icon="search" Click=@(args => Search()) class="searchComponent" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Base"></RadzenButton>
         <FilterOptionsComponent></FilterOptionsComponent>
  *@    </RadzenStack>
@@ -11,6 +36,7 @@
 @code {
     [Parameter]
     public MetaResumeEntity Resume { get; set; }
+    public RadzenTimeline Timeline { get; set; }
 
     protected override void OnInitialized()
     {

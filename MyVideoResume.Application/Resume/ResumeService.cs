@@ -37,14 +37,46 @@ public class ResumeService
             if (info != null)
             {
                 if (info.Resume.IsPublic == true)
-                    result = info.Resume;
+                    result = _dataContext.Resumes
+                        .Include(x => x.Work)
+                        .Include(x => x.Awards)
+                        .Include(x => x.References)
+                        .Include(x => x.Basics)
+                        .Include(x => x.Certificates)
+                        .Include(x => x.Education)
+                        .Include(x => x.Interests)
+                        .Include(x => x.Volunteer)
+                        .Include(x => x.Skills)
+                        .Include(x => x.ResumeTemplate)
+                        .Include(x => x.ResumeInformation)
+                        .Include(x => x.Publications)
+                        .Include(x => x.Projects)
+                        .Include(x => x.MetaData)
+                        .Include(x => x.Languages)
+                        .FirstOrDefault(x => x.Id == info.Resume.Id);
             }
             else
             {
                 Guid guid;
                 if (Guid.TryParse(resumeId, out guid))
                 {
-                    result = _dataContext.Resumes.FirstOrDefault(x => x.Id == guid && x.IsPublic == true);
+                    result = _dataContext.Resumes
+                        .Include(x => x.Work)
+                        .Include(x => x.Awards)
+                        .Include(x => x.References)
+                        .Include(x => x.Basics)
+                        .Include(x => x.Certificates)
+                        .Include(x => x.Education)
+                        .Include(x => x.Interests)
+                        .Include(x => x.Volunteer)
+                        .Include(x => x.Skills)
+                        .Include(x => x.ResumeTemplate)
+                        .Include(x => x.ResumeInformation)
+                        .Include(x => x.Publications)
+                        .Include(x => x.Projects)
+                        .Include(x => x.MetaData)
+                        .Include(x => x.Languages)
+                        .FirstOrDefault(x => x.Id == guid);
                 }
             }
         }
@@ -60,7 +92,23 @@ public class ResumeService
         var result = new List<MetaResumeEntity>();
         try
         {
-            result = await _dataContext.Resumes.Where(x => x.UserId == userId).ToListAsync();
+            result = await _dataContext.Resumes
+                .Include(x => x.Work)
+                .Include(x => x.Awards)
+                .Include(x => x.References)
+                .Include(x => x.Basics)
+                .Include(x => x.Certificates)
+                .Include(x => x.Education)
+                .Include(x => x.Interests)
+                .Include(x => x.Volunteer)
+                .Include(x => x.Skills)
+                .Include(x => x.ResumeTemplate)
+                .Include(x => x.ResumeInformation)
+                .Include(x => x.Publications)
+                .Include(x => x.Projects)
+                .Include(x => x.MetaData)
+                .Include(x => x.Languages)
+                .Where(x => x.UserId == userId).ToListAsync();
         }
         catch (Exception ex)
         {
@@ -102,11 +150,23 @@ public class ResumeService
                     if (profile.Resumes == null)
                         profile.Resumes = new List<MetaResumeEntity>();
 
+                    // Create the standard template
+                    var standardTemplate = _dataContext.ResumeTemplates.FirstOrDefault(x => x.TransformerComponentName == "StandardTemplate");
+                    if (standardTemplate == null)
+                    {
+                        standardTemplate = ResumeTemplateEntity.CreateStandardResumeTemplate();
+                        standardTemplate.UserId = userId;
+                        _dataContext.ResumeTemplates.Add(standardTemplate);
+                        _dataContext.SaveChanges();
+                    }
+
                     //Save the Resume to get an object to populate into 
                     var tempresume = JsonSerializer.Deserialize<MetaResumeEntity>(resumeText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    var resumeInformation = new ResumeInformationEntity() { UserId = userId, ResumeSerialized = resumeText };
+                    var resumeInformation = new ResumeInformationEntity() { UserId = userId, ResumeSerialized = resumeText, Name = tempresume.Basics.Name };
                     tempresume.ResumeInformation = resumeInformation;
                     tempresume.UserId = userId;
+                    tempresume.IsPublic = true;
+                    tempresume.ResumeTemplate = standardTemplate;
                     profile.Resumes.Add(tempresume);
                     _dataContext.SaveChanges();
                 }

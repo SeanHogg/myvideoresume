@@ -35,7 +35,7 @@ public partial class DataContext : DbContext
     public DbSet<MetaResumeEntity> Resumes { get; set; } = default!;
     public DbSet<ResumeInformationEntity> ResumeInformation { get; set; } = default!;
     public DbSet<MetaDataEntity> MetaData { get; set; } = default!;
-
+    public DbSet<ResumeTemplateEntity> ResumeTemplates { get; set; }
     public DbSet<ApplicantToJobEntity> ApplicantsToJobs { get; set; } = default!;
 
 }
