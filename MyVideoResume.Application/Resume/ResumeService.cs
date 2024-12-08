@@ -62,7 +62,7 @@ public class ResumeService
                 query = query.Where(x => x.UserId == userId);
             }
 
-            result = query.Select(x => new ResumeSummaryItem() { CreationDateTimeFormatted = x.CreationDateTime.Value.ToString("yyyy-MM-dd"), IsPublic = true, Id = x.Id.ToString(), ResumeTemplateName = x.ResumeTemplate.Name, ResumeSummary = x.Basics.Summary, ResumeSlug = x.ResumeInformation.Slug, ResumeName = x.Basics.Name }).ToList();
+            result = query.Select(x => new ResumeSummaryItem() { UserId = x.UserId, CreationDateTimeFormatted = x.CreationDateTime.Value.ToString("yyyy-MM-dd"), IsPublic = true, Id = x.Id.ToString(), ResumeTemplateName = x.ResumeTemplate.Name, ResumeSummary = x.Basics.Summary, ResumeSlug = x.ResumeInformation.Slug, ResumeName = x.Basics.Name }).ToList();
         }
         catch (Exception ex)
         {

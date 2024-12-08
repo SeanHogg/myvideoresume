@@ -9,6 +9,8 @@ namespace MyVideoResume.Abstractions.Resume;
 public class ResumeSummaryItem
 {
     public string Id { get; set; }
+
+    public string UserId { get; set; }
     public string ResumeName { get; set; }
     public string ResumeSlug { get; set; }
     public string ResumeTemplateName { get; set; }
