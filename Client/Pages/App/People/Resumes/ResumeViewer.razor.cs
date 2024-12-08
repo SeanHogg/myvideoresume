@@ -24,8 +24,9 @@ public partial class ResumeViewer
 
     public MetaResumeEntity Resume { get; set; } = new MetaResumeEntity();
 
+    public bool IsResumeDeleted { get; set; }
+
     public string ResumePageTitle { get; set; }
-    public string ResumeName { get; set; }
     public Type ComponentType { get; set; }
     public Dictionary<string, object> ComponentParameters { get; set; }
 
@@ -38,16 +39,23 @@ public partial class ResumeViewer
         try
         {
             Resume = await Service.GetResume(Slug);
-            if (Resume.ResumeInformation != null)
+            IsResumeDeleted = Resume.DeletedDateTime.HasValue;
+            if (IsResumeDeleted)
             {
-                ResumeName = Resume.ResumeInformation?.Name;
-                ResumePageTitle = $"MyVideoResu.ME - Resume - {ResumeName}";
-                if (Resume.ResumeTemplate != null)
+                ResumePageTitle = $"MyVideoResu.ME - Resume - Not Available";
+            }
+            else
+            {
+                if (Resume.ResumeInformation != null)
                 {
-                    ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
-                    ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
+                    ResumePageTitle = $"MyVideoResu.ME - Resume - {Resume.ResumeInformation?.Name}";
+                    if (Resume.ResumeTemplate != null)
+                    {
+                        ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
+                        ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
+                    }
+                    StateHasChanged();
                 }
-                StateHasChanged();
             }
         }
         catch (Exception ex)

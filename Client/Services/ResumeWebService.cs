@@ -48,7 +48,7 @@ public partial class ResumeWebService
             var uri = new Uri($"{_navigationManager.BaseUri}api/resume");
             var response = await _httpClient.GetAsync(uri);
             result = await response.ReadAsync<List<MetaResumeEntity>>();
-            result = result.OrderByDescending(x => x.CreationDate).ToList();
+            result = result.OrderByDescending(x => x.CreationDateTime).ToList();
         }
         catch (Exception ex)
         {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyVideoResume.Data;
 
@@ -11,9 +12,11 @@ using MyVideoResume.Data;
 namespace MyVideoResume.Data.Migrations.MyVideoResume
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241208184147_RelationshipChanges2")]
+    partial class RelationshipChanges2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -539,10 +542,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationDateTime")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedDateTime")
+                    b.Property<DateTime?>("DeletedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("Latitude")
@@ -570,7 +573,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateDateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -595,10 +598,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<Guid?>("BillingAddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDateTime")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedDateTime")
+                    b.Property<DateTime?>("DeletedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -621,7 +624,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("TermsOfUserAgreementVersion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateDateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Website")
@@ -648,10 +651,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDateTime")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedDateTime")
+                    b.Property<DateTime?>("DeletedTime")
                         .HasColumnType("datetime2");
 
                     b.PrimitiveCollection<string>("EmploymentType")
@@ -670,7 +673,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<int>("Seniority")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("UpdateDateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserHandle")
@@ -700,10 +703,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDateTime")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedDateTime")
+                    b.Property<DateTime?>("DeletedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("JobApplicationStatus")
@@ -722,7 +725,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<float>("MatchScoreRating")
                         .HasColumnType("real");
 
-                    b.Property<DateTime?>("UpdateDateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserApplyingId")
@@ -819,10 +822,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDateTime")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedDateTime")
+                    b.Property<DateTime?>("DeletedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -863,7 +866,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("UpdateDateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -932,10 +935,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDateTime")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedDateTime")
+                    b.Property<DateTime?>("DeletedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -956,7 +959,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateDateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Url")
@@ -1038,10 +1041,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDateTime")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedDateTime")
+                    b.Property<DateTime?>("DeletedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -1073,7 +1076,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateDateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -1096,10 +1099,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDateTime")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedDateTime")
+                    b.Property<DateTime?>("DeletedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -1115,7 +1118,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("TransformerComponentName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateDateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -1140,10 +1143,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<Guid?>("BillingAddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDateTime")
+                    b.Property<DateTime?>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedDateTime")
+                    b.Property<DateTime?>("DeletedTime")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("JobPreferencesId")
@@ -1152,7 +1155,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<Guid?>("MailingAddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("UpdateDateTime")
+                    b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")

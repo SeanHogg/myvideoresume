@@ -121,12 +121,24 @@ public class ResumeService
     {
 
         var result = new ResponseResult();
+        result.ErrorMessage = "Failed to Delete Resume";
         try
         {
-            if (await _dataContext.Resumes.Where(x => x.Id == Guid.Parse(resumeId) && x.UserId == userId).ExecuteDeleteAsync() > 0)
-                result.Result = "Operation Successful";
-            else
-                result.ErrorMessage = "Failed to Delete Resume";
+            var userProfile = _dataContext.UserProfiles.Include(x => x.Resumes).FirstOrDefault(x => x.UserId == userId);
+            if (userProfile != null)
+            {
+                var resume = userProfile.Resumes.FirstOrDefault(x => x.Id == Guid.Parse(resumeId));
+                if (resume != null)
+                {
+                    resume.IsPublic = false;
+                    resume.UserId = string.Empty;
+                    resume.DeletedDateTime = DateTime.UtcNow;
+                    userProfile.Resumes.Remove(resume);
+                    _dataContext.SaveChanges();
+                    result.Result = "Operation Successful";
+                    result.ErrorMessage = string.Empty;
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -167,6 +179,7 @@ public class ResumeService
                     tempresume.UserId = userId;
                     tempresume.IsPublic = true;
                     tempresume.ResumeTemplate = standardTemplate;
+                    tempresume.CreationDateTime = DateTime.UtcNow;
                     profile.Resumes.Add(tempresume);
                     _dataContext.SaveChanges();
                 }

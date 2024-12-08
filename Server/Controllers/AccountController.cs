@@ -151,9 +151,9 @@ If you didn't request this code, you can safely ignore this email. Someone else 
             var profile = dataContextService.Context.UserProfiles.FirstOrDefault(x => x.UserId == id);
             if (profile == null)
             {
-                var jobPreferences = new JobPreferencesEntity() { UserId = id, CreationDate = DateTime.UtcNow, UpdateTime = DateTime.UtcNow };
+                var jobPreferences = new JobPreferencesEntity() { UserId = id, CreationDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow };
                 dataContextService.Context.JobPreferences.Add(jobPreferences);
-                dataContextService.Context.UserProfiles.Add(new UserProfileEntity() { UserId = id, CreationDate = DateTime.UtcNow, UpdateTime = DateTime.UtcNow, JobPreferences = jobPreferences });
+                dataContextService.Context.UserProfiles.Add(new UserProfileEntity() { UserId = id, CreationDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow, JobPreferences = jobPreferences });
                 dataContextService.Context.SaveChanges();
             }
         }

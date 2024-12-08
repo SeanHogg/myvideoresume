@@ -17,6 +17,7 @@ public class MetaResumeEntity : JSONResume
 
     public bool? IsPublic { get; set; } = true;
 
+    [DeleteBehavior(DeleteBehavior.Restrict)]
     public List<MetaDataEntity> MetaData { get; set; }
 
     [ForeignKey("Resume")]
@@ -25,9 +26,10 @@ public class MetaResumeEntity : JSONResume
     
     [DeleteBehavior(DeleteBehavior.Restrict)]
     public ResumeTemplateEntity? ResumeTemplate { get; set; }
-    public DateTime? CreationDate { get; set; }
-    public DateTime? UpdateTime { get; set; }
-    public DateTime? DeletedTime { get; set; }
+
+    public DateTime? CreationDateTime { get; set; }
+    public DateTime? UpdateDateTime { get; set; }
+    public DateTime? DeletedDateTime { get; set; }
 
 }
 

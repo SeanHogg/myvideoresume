@@ -1,4 +1,7 @@
-@page "/resumes/{slug}"@page "/resume/{slug}"@using MyVideoResume.Client.Pages.App.People.Resumes.Templates@inherits BaseComponent<PageTitle>@ResumePageTitle</PageTitle><RadzenRow>    <RadzenColumn Size="12">        <RadzenText Text=@ResumeName TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>        <RadzenCard>            <RadzenRow>                <RadzenColumn>                    @if (!string.IsNullOrEmpty(Resume.ResumeTemplate?.Name))
-                    {                        <DynamicComponent Type="ComponentType" Parameters="ComponentParameters"></DynamicComponent>                    }
-                    else
-                    {                        <StandardTemplate Resume=@Resume></StandardTemplate>                    }                </RadzenColumn>            </RadzenRow>        </RadzenCard>    </RadzenColumn></RadzenRow>
+@page "/resumes/{slug}"@page "/resume/{slug}"@using MyVideoResume.Client.Pages.App.People.Resumes.Templates@inherits BaseComponent<PageTitle>@ResumePageTitle</PageTitle>@if (IsResumeDeleted)
+{    <RadzenRow>        <RadzenColumn Size="12">            <RadzenText Text="No Longer Availale" TextStyle="Radzen.Blazor.TextStyle.DisplayH1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>        </RadzenColumn>    </RadzenRow>}
+else
+{   //TODO When marked NonPublic => Prompt for the user to login to see the Profile    <RadzenRow>        <RadzenColumn Size="12">            @if (!string.IsNullOrEmpty(Resume.ResumeTemplate?.Name))
+            {                <DynamicComponent Type="ComponentType" Parameters="ComponentParameters"></DynamicComponent>            }
+            else
+            {                <StandardTemplate Resume=@Resume></StandardTemplate>            }        </RadzenColumn>    </RadzenRow>}

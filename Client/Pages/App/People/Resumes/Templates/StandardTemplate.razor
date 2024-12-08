@@ -3,35 +3,53 @@
 @using AgeCalculator
 @using AgeCalculator.Extensions
 
-<div class="searchComponent">
-    <RadzenRow>
-        <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" class=".rz-overflow-auto">
-            <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false" class="rz-m-4">
-                <Items>
-                    @if (Resume.Work != null)
-                    {
-                        @foreach (Work item in Resume.Work.OrderByDescending(x => x.StartDate).ToList())
-                        {
-                            <RadzenTimelineItem PointStyle="PointStyle.Dark">
-                                <LabelContent>
-                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                                </LabelContent>
-                                <ChildContent>
-                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Name</RadzenText>
-                                    @YearsMonths(item.StartDate, item.EndDate)
-                                </ChildContent>
-                            </RadzenTimelineItem>
-                        }
-                    }
-                </Items>
-            </RadzenTimeline>
-        </RadzenColumn>
-    </RadzenRow>
-</div>
+<RadzenRow>
+    <RadzenColumn Style="max-width: 100%">
+        <RadzenText Text=@Title() TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+
+    </RadzenColumn>
+</RadzenRow>
+<RadzenRow>
+    <RadzenColumn Style="max-width: 100%">
+        <RadzenCard>
+            <div class="searchComponent">
+                <RadzenTabs>
+                    <Tabs>
+                        <RadzenTabsItem Text="Timeline">
+                            <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
+                                <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
+                                    <Items>
+                                        @if (Resume.Work != null)
+                                        {
+                                            @foreach (Work item in Resume.Work.OrderByDescending(x => x.StartDate).ToList())
+                                            {
+                                                <RadzenTimelineItem PointStyle="PointStyle.Dark">
+                                                    <LabelContent>
+                                                        <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                                                    </LabelContent>
+                                                    <ChildContent>
+                                                        <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Name</RadzenText>
+                                                        @YearsMonths(item.StartDate, item.EndDate)
+                                                    </ChildContent>
+                                                </RadzenTimelineItem>
+                                            }
+                                        }
+                                    </Items>
+                                </RadzenTimeline>
+                            </RadzenColumn>
+                        </RadzenTabsItem>
+                    </Tabs>
+
+                </RadzenTabs>
+            </div>
+        </RadzenCard>
+    </RadzenColumn>
+</RadzenRow>
 @code {
     [Parameter]
     public MetaResumeEntity Resume { get; set; }
     public RadzenTimeline Timeline { get; set; }
+    public string ResumeName { get; set; }
 
     private string ToFrom(string to, string from)
     {
@@ -49,6 +67,11 @@
         }
         var result = $"{DateTime.Parse(to).ToString("yyyy-MM")} - {endDateText}";
         return result;
+    }
+
+    private string Title()
+    {
+        return Resume.ResumeInformation?.Name;
     }
 
     private string YearsMonths(string to, string from)

@@ -2,7 +2,7 @@
 
 public class CommonBase
 {
-    public DateTime? CreationDate { get; set; }
-    public DateTime? UpdateTime { get; set; }
-    public DateTime? DeletedTime { get; set; }
+    public DateTime? CreationDateTime { get; set; }
+    public DateTime? UpdateDateTime { get; set; }
+    public DateTime? DeletedDateTime { get; set; }
 }

@@ -18,7 +18,7 @@ namespace MyVideoResume.Data.Models.Resume
 
         public static ResumeTemplateEntity CreateStandardResumeTemplate()
         {
-            return new ResumeTemplateEntity { Id = Guid.NewGuid(), Name = "Standard Template", Description = "Standard Template that displays the resume in chronological order", TransformerComponentName = "StandardTemplate", Namespace = "MyVideoResume.Client.Pages.App.People.Resumes.Templates", CreationDate = DateTime.UtcNow };
+            return new ResumeTemplateEntity { Id = Guid.NewGuid(), Name = "Standard Template", Description = "Standard Template that displays the resume in chronological order", TransformerComponentName = "StandardTemplate", Namespace = "MyVideoResume.Client.Pages.App.People.Resumes.Templates", CreationDateTime = DateTime.UtcNow };
         }
     }
 }
