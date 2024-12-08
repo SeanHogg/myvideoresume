@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using MyVideoResume.Data.Models.Resume;
 using MyVideoResume.Abstractions.Core;
 using static System.Net.WebRequestMethods;
+using MyVideoResume.Abstractions.Resume;
 
 namespace MyVideoResume.Client.Services;
 
@@ -32,15 +33,15 @@ public partial class DashboardWebService
         _logger = logger;
         _resumeService = resumeService;
     }
-    public async Task<List<MetaResumeEntity>> GetResumes()
+    public async Task<List<ResumeSummaryItem>> GetResumeSummaries()
     {
-        var result = await _resumeService.GetResumes();
+        var result = await _resumeService.GetResumeSummaryItems();
         return result;
     }
 
-    public async Task<ResponseResult> Delete(MetaResumeEntity metaResumeEntity)
+    public async Task<ResponseResult> Delete(string resumeId)
     {
-        var result = await _resumeService.Delete(metaResumeEntity);
+        var result = await _resumeService.Delete(resumeId);
         return result;
     }
 }

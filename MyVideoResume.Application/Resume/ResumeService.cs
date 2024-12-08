@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MyVideoResume.Abstractions.Core;
 using MyVideoResume.Abstractions.Job;
+using MyVideoResume.Abstractions.Resume;
 using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat;
 using MyVideoResume.AI;
 using MyVideoResume.Data;
@@ -27,6 +28,49 @@ public class ResumeService
         _configuration = configuration;
     }
 
+    //Get All Public Resume Summaries
+    public async Task<List<ResumeSummaryItem>> GetResumeSummaryItems(string userId, bool? onlyPublic = null)
+    {
+        var result = new List<ResumeSummaryItem>();
+        try
+        {
+            var query = _dataContext.Resumes.AsNoTracking()
+                        .Include(x => x.Work)
+                        //.Include(x => x.Awards)
+                        //.Include(x => x.References)
+                        .Include(x => x.Basics)
+                        //.Include(x => x.Certificates)
+                        //.Include(x => x.Education)
+                        //.Include(x => x.Interests)
+                        //.Include(x => x.Volunteer)
+                        //.Include(x => x.Skills)
+                        .Include(x => x.ResumeTemplate)
+                        .Include(x => x.ResumeInformation)
+                        //.Include(x => x.Publications)
+                        //.Include(x => x.Projects)
+                        .Include(x => x.MetaData)
+                        //.Include(x => x.Languages)
+                        .Where(x => 1 == 1);
+
+            if (onlyPublic.HasValue)
+            {
+                query = query.Where(x => x.IsPublic == onlyPublic);
+            }
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                query = query.Where(x => x.UserId == userId);
+            }
+
+            result = query.Select(x => new ResumeSummaryItem() { CreationDateTimeFormatted = x.CreationDateTime.Value.ToString("yyyy-MM-dd"), IsPublic = true, Id = x.Id.ToString(), ResumeTemplateName = x.ResumeTemplate.Name, ResumeSummary = x.Basics.Summary, ResumeSlug = x.ResumeInformation.Slug, ResumeName = x.Basics.Name }).ToList();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+        return result;
+    }
+
     public async Task<MetaResumeEntity> GetResume(string resumeId)
     {
         var result = new MetaResumeEntity();
@@ -34,25 +78,28 @@ public class ResumeService
         {
             //Is it a slug?
             var info = _dataContext.ResumeInformation.FirstOrDefault(x => x.Slug == resumeId);
+
+            var items = _dataContext.Resumes
+                       .Include(x => x.Work)
+                       .Include(x => x.Awards)
+                       .Include(x => x.References)
+                       .Include(x => x.Basics)
+                       .Include(x => x.Certificates)
+                       .Include(x => x.Education)
+                       .Include(x => x.Interests)
+                       .Include(x => x.Volunteer)
+                       .Include(x => x.Skills)
+                       .Include(x => x.ResumeTemplate)
+                       .Include(x => x.ResumeInformation)
+                       .Include(x => x.Publications)
+                       .Include(x => x.Projects)
+                       .Include(x => x.MetaData)
+                       .Include(x => x.Languages).AsNoTracking();
+
             if (info != null)
             {
                 if (info.Resume.IsPublic == true)
-                    result = _dataContext.Resumes
-                        .Include(x => x.Work)
-                        .Include(x => x.Awards)
-                        .Include(x => x.References)
-                        .Include(x => x.Basics)
-                        .Include(x => x.Certificates)
-                        .Include(x => x.Education)
-                        .Include(x => x.Interests)
-                        .Include(x => x.Volunteer)
-                        .Include(x => x.Skills)
-                        .Include(x => x.ResumeTemplate)
-                        .Include(x => x.ResumeInformation)
-                        .Include(x => x.Publications)
-                        .Include(x => x.Projects)
-                        .Include(x => x.MetaData)
-                        .Include(x => x.Languages)
+                    result = items
                         .FirstOrDefault(x => x.Id == info.Resume.Id);
             }
             else
@@ -60,22 +107,7 @@ public class ResumeService
                 Guid guid;
                 if (Guid.TryParse(resumeId, out guid))
                 {
-                    result = _dataContext.Resumes
-                        .Include(x => x.Work)
-                        .Include(x => x.Awards)
-                        .Include(x => x.References)
-                        .Include(x => x.Basics)
-                        .Include(x => x.Certificates)
-                        .Include(x => x.Education)
-                        .Include(x => x.Interests)
-                        .Include(x => x.Volunteer)
-                        .Include(x => x.Skills)
-                        .Include(x => x.ResumeTemplate)
-                        .Include(x => x.ResumeInformation)
-                        .Include(x => x.Publications)
-                        .Include(x => x.Projects)
-                        .Include(x => x.MetaData)
-                        .Include(x => x.Languages)
+                    result = items
                         .FirstOrDefault(x => x.Id == guid);
                 }
             }
@@ -92,7 +124,7 @@ public class ResumeService
         var result = new List<MetaResumeEntity>();
         try
         {
-            result = await _dataContext.Resumes
+            result = await _dataContext.Resumes.AsNoTracking()
                 .Include(x => x.Work)
                 .Include(x => x.Awards)
                 .Include(x => x.References)

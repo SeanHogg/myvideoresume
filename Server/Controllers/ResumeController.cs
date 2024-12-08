@@ -49,6 +49,23 @@ public partial class ResumeController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("GetSummaryItems")]
+    public async Task<ActionResult<List<ResumeSummaryItem>>> GetSummaryItems()
+    {
+        var result = new List<ResumeSummaryItem>();
+        try
+        {
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            result = await _resumeService.GetResumeSummaryItems(id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+        return result;
+    }
+
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<List<MetaResumeEntity>>> Get()
     {

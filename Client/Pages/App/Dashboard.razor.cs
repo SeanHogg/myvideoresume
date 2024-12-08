@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
 using MyVideoResume.Abstractions.Core;
+using MyVideoResume.Abstractions.Resume;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Client.Shared.Resume;
 using MyVideoResume.Data;
@@ -27,7 +28,7 @@ public partial class Dashboard
     [Inject]
     protected ILogger<Dashboard> Console { get; set; }
 
-    List<MetaResumeEntity> ResumeList { get; set; } = new List<MetaResumeEntity>();
+    List<ResumeSummaryItem> ResumeList { get; set; } = new List<ResumeSummaryItem>();
     ResumeUploadToJsonComponent ResumeUploadToJsonComponent { get; set; }
     RadzenUpload uploadDD;
 
@@ -41,7 +42,7 @@ public partial class Dashboard
     {
         await base.OnInitializedAsync();
         if (Security.IsAuthenticated())
-            ResumeList = await Service.GetResumes();
+            ResumeList = await Service.GetResumeSummaries();
     }
 
     async Task DeleteCompletedHandler(ResponseResult result)
@@ -54,83 +55,13 @@ public partial class Dashboard
         {
             NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Resume Deleted", Detail = result.ErrorMessage, Duration = 4000 });
 
-            ResumeList = await Service.GetResumes();
+            ResumeList = await Service.GetResumeSummaries();
             StateHasChanged();
         }
     }
 
     async Task UploadCompletedHandler(string result)
     {
-        ResumeList = await Service.GetResumes();
-    }
-
-    void TrackProgress(UploadProgressArgs args)
-    {
-        showProgress = true;
-        showComplete = false;
-        progress = args.Progress;
-
-        // cancel upload
-        args.Cancel = cancelUpload;
-
-        // reset cancel flag
-        cancelUpload = false;
-    }
-
-    void CancelUpload()
-    {
-        cancelUpload = true;
-    }
-
-    int customParameter = 1;
-
-    void OnChange(UploadChangeEventArgs args, string name)
-    {
-        foreach (var file in args.Files)
-        {
-            Console.LogInformation($"File: {file.Name} / {file.Size} bytes");
-        }
-
-        Console.LogInformation($"{name} changed");
-    }
-
-    void OnProgress(UploadProgressArgs args, string name)
-    {
-        Console.LogInformation($"{args.Progress}% '{name}' / {args.Loaded} of {args.Total} bytes.");
-
-        if (args.Progress == 100)
-        {
-            foreach (var file in args.Files)
-            {
-                Console.LogInformation($"Uploaded: {file.Name} / {file.Size} bytes");
-            }
-        }
-    }
-
-    void OnComplete(UploadCompleteEventArgs args)
-    {
-        Console.LogInformation($"Server response: {args.RawResponse}");
-    }
-
-    void OnClientChange(UploadChangeEventArgs args)
-    {
-        Console.LogInformation($"Client-side upload changed");
-
-        foreach (var file in args.Files)
-        {
-            Console.LogInformation($"File: {file.Name} / {file.Size} bytes");
-
-            try
-            {
-                long maxFileSize = 10 * 1024 * 1024;
-                // read file
-                var stream = file.OpenReadStream(maxFileSize);
-                stream.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.LogInformation($"Client-side file read error: {ex.Message}");
-            }
-        }
+        ResumeList = await Service.GetResumeSummaries();
     }
 }

@@ -19,6 +19,7 @@ using MyVideoResume.Data.Models.Resume;
 using MyVideoResume.Abstractions.Core;
 using static System.Net.WebRequestMethods;
 using MyVideoResume.Abstractions.Job;
+using MyVideoResume.Abstractions.Resume;
 
 namespace MyVideoResume.Client.Services;
 
@@ -39,12 +40,28 @@ public partial class ResumeWebService
         this._securityService = securityService;
     }
 
+    public async Task<List<ResumeSummaryItem>> GetResumeSummaryItems() //Eventually Pass in a Search Object
+    {
+        var result = new List<ResumeSummaryItem> { };
+        try
+        {
+            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/GetSummaryItems");
+            var response = await _httpClient.GetAsync(uri);
+            result = await response.ReadAsync<List<ResumeSummaryItem>>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+
+        return result;
+    }
+
     public async Task<List<MetaResumeEntity>> GetResumes()
     {
         var result = new List<MetaResumeEntity> { };
         try
         {
-            var user = _securityService.User.Id;
             var uri = new Uri($"{_navigationManager.BaseUri}api/resume");
             var response = await _httpClient.GetAsync(uri);
             result = await response.ReadAsync<List<MetaResumeEntity>>();
@@ -75,14 +92,13 @@ public partial class ResumeWebService
         return result;
     }
 
-    public async Task<ResponseResult> Delete(MetaResumeEntity metaResumeEntity)
+    public async Task<ResponseResult> Delete(string resumeId)
     {
         var result = new ResponseResult();
         try
         {
-            var payload = metaResumeEntity.Id.ToString();
-            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/{payload}");
-            var content = new FormUrlEncodedContent(new Dictionary<string, string> { { "resumeId", payload } });
+            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/{resumeId}");
+            var content = new FormUrlEncodedContent(new Dictionary<string, string> { { "resumeId", resumeId } });
 
             var response = await _httpClient.PostAsync(uri, content);
             result = await response.ReadAsync<ResponseResult>();
