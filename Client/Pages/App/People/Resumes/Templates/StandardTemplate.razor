@@ -1,12 +1,12 @@
 ﻿@using MyVideoResume.Data.Models.Resume
 @using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat
-
+@using AgeCalculator
+@using AgeCalculator.Extensions
 
 <div class="searchComponent">
-    Loading..
     @Resume.Id
 
-    <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center" style="height: 200px; overflow-x: auto;">
+    <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center" style="overflow-x:scroll; overflow-y:hidden;width:100%;">
         <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false" class="rz-m-4">
             <Items>
                 @if (Resume.Work != null)
@@ -15,10 +15,12 @@
                     {
                         <RadzenTimelineItem PointStyle="PointStyle.Dark">
                             <LabelContent>
-                                <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@item.StartDate - @item.EndDate</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
                             </LabelContent>
                             <ChildContent>
                                 @item.Name
+                                <br />
+                                @YearsMonths(item.StartDate, item.EndDate)
                             </ChildContent>
                         </RadzenTimelineItem>
                     }
@@ -37,6 +39,44 @@
     [Parameter]
     public MetaResumeEntity Resume { get; set; }
     public RadzenTimeline Timeline { get; set; }
+
+    private string ToFrom(string to, string from)
+    {
+        var endDateText = string.Empty;
+
+        var endDate = DateTime.UtcNow;
+        if (!DateTime.TryParse(from, out endDate))
+        {
+            endDate = DateTime.UtcNow;
+            endDateText = from;
+        }
+        else
+        {
+            endDateText = endDate.ToString("yyyy-MM");
+        }
+        var result = $"{DateTime.Parse(to).ToString("yyyy-MM")} - {endDateText}";
+        return result;
+    }
+
+    private string YearsMonths(string to, string from)
+    {
+        var endDate = DateTime.UtcNow;
+        if (!DateTime.TryParse(from, out endDate))
+        {
+            endDate = DateTime.UtcNow;
+        }
+
+        var age = DateTime.Parse(to).CalculateAge(endDate);
+        var result = "";
+        if (age.Years > 0 && age.Months > 0)
+            result = $"{@age.Years} years and {@age.Months} months";
+        else if (age.Years == 0 && age.Months > 0)
+            result = $"{@age.Months} months";
+        else
+            result = $"{@age.Years} years";
+
+        return result;
+    }
 
     protected override void OnInitialized()
     {

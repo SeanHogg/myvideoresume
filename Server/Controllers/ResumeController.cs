@@ -66,7 +66,7 @@ public partial class ResumeController : ControllerBase
     }
 
     [Authorize]
-    [HttpDelete("{resumeId}")]
+    [HttpPost("{resumeId}")]
     public async Task<ActionResult<ResponseResult>> Delete(string resumeId)
     {
         var result = new ResponseResult();

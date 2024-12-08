@@ -42,8 +42,11 @@ public partial class ResumeViewer
             {
                 ResumeName = Resume.ResumeInformation?.Name;
                 ResumePageTitle = $"MyVideoResu.ME - Resume - {ResumeName}";
-                ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
-                ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
+                if (Resume.ResumeTemplate != null)
+                {
+                    ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
+                    ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
+                }
                 StateHasChanged();
             }
         }

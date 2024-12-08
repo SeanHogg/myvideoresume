@@ -80,12 +80,9 @@ public partial class ResumeWebService
         var result = new ResponseResult();
         try
         {
-            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/delete");
             var payload = metaResumeEntity.Id.ToString();
-            var user = _securityService.User.Id;
-            var content = new FormUrlEncodedContent(new Dictionary<string, string> {
-            { "resumeId", payload }
-        });
+            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/{payload}");
+            var content = new FormUrlEncodedContent(new Dictionary<string, string> { { "resumeId", payload } });
 
             var response = await _httpClient.PostAsync(uri, content);
             result = await response.ReadAsync<ResponseResult>();
