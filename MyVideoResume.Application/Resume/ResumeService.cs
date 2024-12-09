@@ -77,7 +77,7 @@ public class ResumeService
         try
         {
             //Is it a slug?
-            var info = _dataContext.ResumeInformation.FirstOrDefault(x => x.Slug == resumeId);
+            var info = _dataContext.ResumeInformation.Include(x=>x.Resume).AsNoTracking().FirstOrDefault(x => x.Slug == resumeId);
 
             var items = _dataContext.Resumes
                        .Include(x => x.Work)

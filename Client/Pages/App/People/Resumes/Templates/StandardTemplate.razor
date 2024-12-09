@@ -30,7 +30,7 @@
                                                     <ChildContent>
                                                         <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Name</RadzenText>
                                                         <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
-                                                        
+
                                                     </ChildContent>
                                                 </RadzenTimelineItem>
                                             }
@@ -49,13 +49,18 @@
 <RadzenRow>
     <RadzenColumn Style="max-width: 100%">
         <RadzenText Text="Summary" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-
     </RadzenColumn>
 </RadzenRow>
 <RadzenRow Style="padding-bottom:15px">
     <RadzenColumn Style="max-width: 100%">
         <RadzenCard>
-            <RadzenText TextStyle="TextStyle.Body1">@Resume.Basics?.Summary</RadzenText>
+            <div style="padding:15px;">
+                <RadzenRow>
+                    <RadzenColumn SizeSM="12">
+                        <RadzenText TextStyle="TextStyle.Body1">@Resume.Basics?.Summary</RadzenText>
+                    </RadzenColumn>
+                </RadzenRow>
+            </div>
         </RadzenCard>
     </RadzenColumn>
 </RadzenRow>
@@ -186,17 +191,19 @@
             <RadzenCard>
                 @foreach (var item in Resume.Skills)
                 {
-                    <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
-                    <RadzenRow>
-                        <RadzenColumn SizeSM="4">
-                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Level</RadzenText>
-                            <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Level)</b></RadzenText>
-                        </RadzenColumn>
-                        <RadzenColumn SizeSM="8">
-                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Keywords</RadzenText>
-                            <RadzenText TextStyle="TextStyle.Body1"><b>@(string.Join(", ", item.Keywords))</b></RadzenText>
-                        </RadzenColumn>
-                    </RadzenRow>
+                    <div style="padding:15px;">
+                        <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
+                        <RadzenRow>
+                            <RadzenColumn SizeSM="4">
+                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Level</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Level)</b></RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn SizeSM="8">
+                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Keywords</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1"><b>@(string.Join(", ", item.Keywords))</b></RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </div>
                 }
             </RadzenCard>
         </RadzenColumn>
