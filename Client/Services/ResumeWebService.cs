@@ -40,6 +40,23 @@ public partial class ResumeWebService
         this._securityService = securityService;
     }
 
+    public async Task<List<ResumeSummaryItem>> GetPublicResumes() //Eventually Pass in a Search Object
+    {
+        var result = new List<ResumeSummaryItem> { };
+        try
+        {
+            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/GetPublicResumes");
+            var response = await _httpClient.GetAsync(uri);
+            result = await response.ReadAsync<List<ResumeSummaryItem>>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+
+        return result;
+    }
+
     public async Task<List<ResumeSummaryItem>> GetResumeSummaryItems() //Eventually Pass in a Search Object
     {
         var result = new List<ResumeSummaryItem> { };

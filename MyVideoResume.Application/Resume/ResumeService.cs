@@ -29,7 +29,7 @@ public class ResumeService
     }
 
     //Get All Public Resume Summaries
-    public async Task<List<ResumeSummaryItem>> GetResumeSummaryItems(string userId, bool? onlyPublic = null)
+    public async Task<List<ResumeSummaryItem>> GetResumeSummaryItems(string? userId = null, bool? onlyPublic = null)
     {
         var result = new List<ResumeSummaryItem>();
         try
@@ -50,7 +50,7 @@ public class ResumeService
                         //.Include(x => x.Projects)
                         .Include(x => x.MetaData)
                         //.Include(x => x.Languages)
-                        .Where(x => 1 == 1);
+                        .Where(x => x.DeletedDateTime == null);
 
             if (onlyPublic.HasValue)
             {

@@ -48,6 +48,21 @@ public partial class ResumeController : ControllerBase
         return result;
     }
 
+    [HttpGet("GetPublicResumes")]
+    public async Task<ActionResult<List<ResumeSummaryItem>>> GetPublicResumes()
+    {
+        var result = new List<ResumeSummaryItem>();
+        try
+        {
+            result = await _resumeService.GetResumeSummaryItems(onlyPublic: true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+        return result;
+    }
+
     [Authorize]
     [HttpGet("GetSummaryItems")]
     public async Task<ActionResult<List<ResumeSummaryItem>>> GetSummaryItems()
