@@ -22,13 +22,13 @@
     <RadzenCard class="rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding)); background-color: #0e44cc; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
         <RadzenText TextStyle="TextStyle.H6" style="color:white; "><strong>Details</strong></RadzenText>
         <RadzenRow RowGap="0">
-            <RadzenColumn SizeSM="4" Visible=@DisplayItem>
+            <RadzenColumn SizeSM="12" Visible=@DisplayItem>
                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Template</RadzenText>
                 <RadzenText TextStyle="TextStyle.Body1" style="color:white; "><b> @(ResumeItem.ResumeTemplateName)</b></RadzenText>
                 <RadzenText TextStyle="TextStyle.Overline" class=" rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Public</RadzenText>
                 <RadzenText TextStyle="TextStyle.Body1" style="color:white; "><b>@(ResumeItem.IsPublic)</b></RadzenText>
             </RadzenColumn>
-            <RadzenColumn SizeSM="8">
+            <RadzenColumn SizeSM="12">
                 <RadzenText TextStyle="TextStyle.Overline" style="color:white; " class="rz-display-flex rz-mt-4 rz-mb-0">Summary</RadzenText>
                 <RadzenText style="color:white; " TextStyle="TextStyle.Body1"><b>@(ResumeItem.ResumeSummary)</b></RadzenText>
                 @*                 <RadzenText style="color:white; " TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Freight</RadzenText>

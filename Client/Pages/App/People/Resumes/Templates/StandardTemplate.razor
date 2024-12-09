@@ -9,7 +9,7 @@
 
     </RadzenColumn>
 </RadzenRow>
-<RadzenRow>
+<RadzenRow Style="padding-bottom:15px">
     <RadzenColumn Style="max-width: 100%">
         <RadzenCard>
             <div class="searchComponent">
@@ -21,7 +21,7 @@
                                     <Items>
                                         @if (Resume.Work != null)
                                         {
-                                            @foreach (Work item in Resume.Work.OrderByDescending(x => x.StartDate).ToList())
+                                            @foreach (Work item in Resume.Work.OrderByDescending(x => x.EndDate).ToList())
                                             {
                                                 <RadzenTimelineItem PointStyle="PointStyle.Dark">
                                                     <LabelContent>
@@ -29,7 +29,8 @@
                                                     </LabelContent>
                                                     <ChildContent>
                                                         <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Name</RadzenText>
-                                                        @YearsMonths(item.StartDate, item.EndDate)
+                                                        <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
+                                                        
                                                     </ChildContent>
                                                 </RadzenTimelineItem>
                                             }
@@ -43,6 +44,166 @@
                 </RadzenTabs>
             </div>
         </RadzenCard>
+    </RadzenColumn>
+</RadzenRow>
+<RadzenRow>
+    <RadzenColumn Style="max-width: 100%">
+        <RadzenText Text="Summary" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+
+    </RadzenColumn>
+</RadzenRow>
+<RadzenRow Style="padding-bottom:15px">
+    <RadzenColumn Style="max-width: 100%">
+        <RadzenCard>
+            <RadzenText TextStyle="TextStyle.Body1">@Resume.Basics?.Summary</RadzenText>
+        </RadzenCard>
+    </RadzenColumn>
+</RadzenRow>
+@if (Resume.Work != null && Resume.Work.Count > 0)
+{
+    <RadzenRow>
+        <RadzenColumn Style="max-width: 100%">
+            <RadzenText Text="Work Experience" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow Style="padding-bottom:15px">
+        <RadzenColumn Style="max-width: 100%">
+            <RadzenCard>
+                @foreach (var item in Resume.Work.OrderByDescending(x => x.EndDate))
+                {
+                    <div style="padding:15px;">
+                        <RadzenRow>
+                            <RadzenColumn SizeSM="12">
+                                <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Position)</b></RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Overline">@item.Summary</RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        @if (item.Highlights.Count > 0)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn SizeSM="12">
+                                    <RadzenText TextStyle="TextStyle.Body1"><b>Highlights</b></RadzenText>
+                                    <ul>
+                                        @foreach (var i in item.Highlights)
+                                        {
+                                            <li>@i</li>
+                                        }
+                                    </ul>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+                    </div>
+                }
+            </RadzenCard>
+        </RadzenColumn>
+    </RadzenRow>
+}
+
+
+@if (Resume.Education != null && Resume.Education.Count > 0)
+{
+    <RadzenRow>
+        <RadzenColumn Style="max-width: 100%">
+            <RadzenText Text="Education" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow Style="padding-bottom:15px">
+        <RadzenColumn Style="max-width: 100%">
+            <RadzenCard>
+                @foreach (var item in Resume.Education)
+                {
+                    <div style="padding:15px;">
+                        <RadzenRow>
+                            <RadzenColumn SizeSM="12">
+                                <RadzenText TextStyle="TextStyle.Body1">@item.Institution</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1"><b>@item.StudyType, @(item.Area)</b></RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        @if (item.Courses.Count > 0)
+                        {
+                            <RadzenRow>
+                                <RadzenColumn SizeSM="12">
+                                    <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Courses</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body1"><b>@(string.Join(", ", item.Courses))</b></RadzenText>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        }
+                    </div>
+                }
+            </RadzenCard>
+        </RadzenColumn>
+    </RadzenRow>
+}
+
+@if (Resume.Volunteer != null && Resume.Volunteer.Count > 0)
+{
+    <RadzenRow>
+        <RadzenColumn Style="max-width: 100%">
+            <RadzenText Text="Volunteering" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow Style="padding-bottom:15px">
+        <RadzenColumn Style="max-width: 100%">
+            <RadzenCard>
+                @foreach (var item in Resume.Volunteer)
+                {
+                    <div style="padding:15px;">
+                        <RadzenRow>
+                            <RadzenColumn SizeSM="12">
+                                <RadzenText TextStyle="TextStyle.Body1">@item.Organization</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Position)</b></RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow>
+                            <RadzenColumn SizeSM="12">
+                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Summary</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Summary)</b></RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </div>
+                }
+            </RadzenCard>
+        </RadzenColumn>
+    </RadzenRow>
+}
+
+@if (Resume.Skills != null && Resume.Skills.Count > 0)
+{
+    <RadzenRow>
+        <RadzenColumn Style="max-width: 100%">
+            <RadzenText Text="Skills" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow Style="padding-bottom:15px">
+        <RadzenColumn Style="max-width: 100%">
+            <RadzenCard>
+                @foreach (var item in Resume.Skills)
+                {
+                    <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
+                    <RadzenRow>
+                        <RadzenColumn SizeSM="4">
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Level</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Level)</b></RadzenText>
+                        </RadzenColumn>
+                        <RadzenColumn SizeSM="8">
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Keywords</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@(string.Join(", ", item.Keywords))</b></RadzenText>
+                        </RadzenColumn>
+                    </RadzenRow>
+                }
+            </RadzenCard>
+        </RadzenColumn>
+    </RadzenRow>
+}
+<RadzenRow Style="padding-bottom:75px">
+    <RadzenColumn Style="max-width: 100%">
     </RadzenColumn>
 </RadzenRow>
 @code {
@@ -85,7 +246,7 @@
         var age = DateTime.Parse(to).CalculateAge(endDate);
         var result = "";
         if (age.Years > 0 && age.Months > 0)
-            result = $"{@age.Years} years and {@age.Months} months";
+            result = $"{@age.Years} years, {@age.Months} months";
         else if (age.Years == 0 && age.Months > 0)
             result = $"{@age.Months} months";
         else
