@@ -62,6 +62,8 @@ public partial class Dashboard
 
     async Task UploadCompletedHandler(string result)
     {
+        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Resume Created", Detail = result, Duration = 4000 });
+
         ResumeList = await Service.GetResumeSummaries();
     }
 }

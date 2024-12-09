@@ -12,8 +12,8 @@
  *@            <RadzenStack Gap="0">
                 <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Name</RadzenText>
                 <RadzenText style="color: #262526" TextStyle="TextStyle.H3"><b>@(ResumeItem.ResumeName)</b></RadzenText>
-                <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">ID</RadzenText>
-                <RadzenText style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeItem.Id)</b></RadzenText>
+                <RadzenText Visible=@DisplayItem style ="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">ID</RadzenText>
+                <RadzenText Visible=@DisplayItem style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeItem.Id)</b></RadzenText>
                 <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Creation</RadzenText>
                 <RadzenText style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeItem.CreationDateTimeFormatted)</b></RadzenText>
             </RadzenStack>
@@ -22,7 +22,7 @@
     <RadzenCard class="rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding)); background-color: #0e44cc; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
         <RadzenText TextStyle="TextStyle.H6" style="color:white; "><strong>Details</strong></RadzenText>
         <RadzenRow RowGap="0">
-            <RadzenColumn SizeSM="4">
+            <RadzenColumn SizeSM="4" Visible=@DisplayItem>
                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Template</RadzenText>
                 <RadzenText TextStyle="TextStyle.Body1" style="color:white; "><b> @(ResumeItem.ResumeTemplateName)</b></RadzenText>
                 <RadzenText TextStyle="TextStyle.Overline" class=" rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Public</RadzenText>
@@ -37,20 +37,28 @@
         </RadzenRow>
     </RadzenCard>
     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="0">
-        <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Text" Icon="delete" Text="Delete" Click=Delete Visible=@UserOwnsItem />
-        <RadzenButton ButtonStyle="ButtonStyle.Dark" Variant="Variant.Text" Icon="edit" Text="Edit" Visible=@UserOwnsItem />
+        <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Text" Icon="delete" Text="Delete" Click=Delete Visible=@DisplayItem />
+        <RadzenButton ButtonStyle="ButtonStyle.Dark" Variant="Variant.Text" Icon="edit" Text="Edit" Visible=@DisplayItem />
         <RadzenButton ButtonStyle="ButtonStyle.Dark" Variant="Variant.Text" Icon="preview" Text="View" Click=@(()=> NavigateTo("resumes", ResumeItem.Id)) />
     </RadzenStack>
 </RadzenCard>
 
 @code {
+    public enum ResumePreviewMode
+    {
+        View,
+        Edit
+    }
 
     [Parameter] public EventCallback<ResponseResult> DeleteCompleted { get; set; }
 
     [Parameter]
     public ResumeSummaryItem ResumeItem { get; set; } = null;
 
-    public bool UserOwnsItem { get; set; } = false;
+    [Parameter]
+    public ResumePreviewMode Mode { get; set; } = ResumePreviewMode.View;
+
+    public bool DisplayItem { get; set; } = false;
 
     public string ResumeCreationDate { get; set; }
 
@@ -65,9 +73,17 @@
                     ResumeSummary = "Upload PDF Resume",
                     CreationDateTimeFormatted = DateTime.UtcNow.ToString("yyyy-MM-dd")
                 };
-        else
+
+        switch (Mode)
         {
-            UserOwnsItem = ResumeItem.UserId == Security.User.Id;    
+            case ResumePreviewMode.View:
+                DisplayItem = false;
+                break;
+            case ResumePreviewMode.Edit:
+                DisplayItem = ResumeItem.UserId == Security.User.Id;
+                break;
+            default:
+                break;
         }
     }
 
