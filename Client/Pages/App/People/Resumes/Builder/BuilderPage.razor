@@ -1,8 +1,5 @@
-@page "/resumes/builder"@attribute [Authorize]@inherits BaseComponent<PageTitle>MyVideoResu.ME - Resumes</PageTitle>
-<RadzenRow>
-    <RadzenColumn Size="12">
-        <RadzenText Text="Resumes" TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>        <RadzenCard>            <RadzenRow>                <RadzenColumn>                    Coming soon                </RadzenColumn>            </RadzenRow>
-        </RadzenCard>
-    </RadzenColumn>
-</RadzenRow>
-
+@page "/resumes/builder/{resumeId}"@using MyVideoResume.Client.Pages.App.People.Resumes.Templates
+@attribute [Authorize]@inherits BaseComponent<PageTitle>MyVideoResu.ME - Resumes</PageTitle><RadzenRow>    <RadzenColumn Size="4">        <RadzenText Text="Resume Builder" TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>        <RadzenCard>            <RadzenRow>                <RadzenColumn>                    Coming soon                </RadzenColumn>            </RadzenRow>        </RadzenCard>    </RadzenColumn>    <RadzenColumn Size="8">        @if (!string.IsNullOrEmpty(Resume.ResumeTemplate?.Name))
+        {            <DynamicComponent Type="ComponentType" Parameters="ComponentParameters"></DynamicComponent>        }
+        else
+        {            <StandardTemplate Resume=@Resume></StandardTemplate>        }    </RadzenColumn></RadzenRow>
