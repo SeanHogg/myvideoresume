@@ -28,6 +28,7 @@ builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().
 builder.Services.AddScoped<SecurityWebService>();
 builder.Services.AddScoped<DashboardWebService>();
 builder.Services.AddScoped<ResumeWebService>();
+builder.Services.AddScoped<MenuService>();
 builder.Services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
 var host = builder.Build();
 await host.RunAsync();

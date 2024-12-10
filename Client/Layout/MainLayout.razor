@@ -2,13 +2,16 @@
 @inject CookieThemeService CookieThemeService
 <RadzenComponents />
 
-<RadzenLayout style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body';">
+<RadzenLayout>
     <RadzenHeader>
         <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="0">
-            <RadzenColumn Size="2">
-                <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
+            <RadzenColumn SizeXS="1" Size="2">
+                <RadzenSidebarToggle Click="@MenuService.SidebarToggleClick"></RadzenSidebarToggle>
             </RadzenColumn>
-            <RadzenColumn Size="10">
+            <RadzenColumn SizeXS="1" Size="1">
+                <a href="/"><RadzenImage Path="images/logo-login.png" AlternateText="MyVideoResu.me" style="width: 60px; height: 20px;"></RadzenImage></a>
+            </RadzenColumn>
+            <RadzenColumn SizeXS="10" Size="9">
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
                     <RadzenMenu Responsive="false">
                         <RadzenMenuItem Icon="add_circle">
@@ -18,7 +21,7 @@
                     </RadzenMenu>
                     <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
                         <ChildContent>
-                            <RadzenProfileMenuItem Path="account/settings" Icon="manage_accounts" Text="My Account" />
+                            <RadzenProfileMenuItem Path="account/settings" Icon="manage_accounts" Text="My Account" title="My Account" />
                             <RadzenProfileMenuItem Path="dashboard" Icon="manage_accounts" Text="Dashboard" />
                             <RadzenProfileMenuItem Path="admin/application-users" Icon="person" Text="Users" Visible="@Security.IsInRole("admin")" />
                             <RadzenProfileMenuItem Path="admin/application-roles" Icon="security" Text="Roles" Visible="@Security.IsInRole("admin")" />
@@ -34,42 +37,39 @@
             </RadzenColumn>
         </RadzenRow>
     </RadzenHeader>
-    <RadzenBody Expanded="@sidebarExpanded">
-        <RadzenRow class="rz-mx-auto rz-px-4 rz-pt-2 rz-pt-md-4 rz-pt-lg-6 rz-pt-xl-12 rz-pb-2 rz-pb-lg-12" Style="max-width: 1440px; height:95%">
-            <RadzenColumn Size="12" style="height:100%">
+    <RadzenSidebar Responsive="false" Style="width: max-content">
+        <RadzenPanelMenu DisplayStyle="@(MenuService.SidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)" ShowArrow="false">
+            <RadzenPanelMenuItem Text="Dashboard" Path="dashboard" Icon="dashboard" title="Dashboard" />
+            <RadzenPanelMenuItem Text="Resumes" Path="resumes" Icon="contract" title="Resumes" />
+            <RadzenPanelMenuItem Text="Jobs" Path="jobs" Icon="database" title="Jobs" />
+            <RadzenPanelMenuItem Text="Companies" Path="companies" Icon="store" title="Companies" />
+            <RadzenPanelMenuItem Text="People" Path="people" Icon="contacts" title="People" />
+            <RadzenPanelMenuItem Text="Tools" Icon="handyman" title="Tools">
+                <RadzenPanelMenuItem Text="Sentiment Analysis" Path="Tools/SentimentAnalysis" Icon="mood" title="Sentiment Analysis" />
+                <RadzenPanelMenuItem Text="Summarize Resume" Path="Tools/SummarizeResume" Icon="query_stats" title="Summarize Resume" />
+                <RadzenPanelMenuItem Text="Job Resume Match" Path="Tools/JobResumeMatch" Icon="join_inner" title="Job Resume Match" />
+                <RadzenPanelMenuItem Text="PDF to JSON" Path="Tools/pdftojson" Icon="convert_to_text" title="PDF to JSON" />
+
+            </RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Tasks" Path="tasks" Icon="task_alt" title="Tasks" />
+            <RadzenPanelMenuItem Text="Outreach" Path="feed" Icon="campaign" title="Outreach" />
+            <RadzenPanelMenuItem Text="About" Path="about" Icon="info" title="About" />
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+    <RadzenBody>
+        <RadzenRow>
+            <RadzenColumn Size="11" SizeXS="11" SizeSM="12" SizeMD="12" SizeLG="12" SizeXL="12" SizeXX="12">
                 @Body
             </RadzenColumn>
         </RadzenRow>
     </RadzenBody>
-    <RadzenSidebar @bind-Expanded="@sidebarExpanded" style="z-index: 2">
-        <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
-            <a href="/"><RadzenImage Path="images/logo-login.png" AlternateText="MyVideoResu.me" style="width: 120px; height: 40px;"></RadzenImage></a>
-        </RadzenStack>
-        <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)">
-            <RadzenPanelMenuItem Text="Dashboard" Path="dashboard" Icon="dashboard" />
-            <RadzenPanelMenuItem Text="Resumes" Path="resumes" Icon="contract" />
-            <RadzenPanelMenuItem Text="Jobs" Path="jobs" Icon="database" />
-            <RadzenPanelMenuItem Text="Companies" Path="companies" Icon="store" />
-            <RadzenPanelMenuItem Text="People" Path="people" Icon="contacts" />
-            <RadzenPanelMenuItem Text="Tools" Icon="handyman">
-                <RadzenPanelMenuItem Text="Sentiment Analysis" Path="Tools/SentimentAnalysis" Icon="mood" />
-                <RadzenPanelMenuItem Text="Summarize Resume" Path="Tools/SummarizeResume" Icon="query_stats" />
-                <RadzenPanelMenuItem Text="Job Resume Match" Path="Tools/JobResumeMatch" Icon="join_inner" />
-                <RadzenPanelMenuItem Text="PDF to JSON" Path="Tools/pdftojson" Icon="convert_to_text" />
-
-            </RadzenPanelMenuItem>
-            <RadzenPanelMenuItem Text="Tasks" Path="tasks" Icon="task_alt" />
-            <RadzenPanelMenuItem Text="Outreach" Path="feed" Icon="campaign" />
-            <RadzenPanelMenuItem Text="About" Path="about" Icon="info" />
-        </RadzenPanelMenu>
-    </RadzenSidebar>
+    <RadzenFooter>
+        <RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="0">
+            <RadzenColumn Size="12">
+                <CopyrightInformation></CopyrightInformation>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenFooter>
 </RadzenLayout>
-<RadzenFooter>
-    <RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="0">
-        <RadzenColumn Size="12">
-            <CopyrightInformation></CopyrightInformation>
-        </RadzenColumn>
-    </RadzenRow>
-</RadzenFooter>
 <script type="text/javascript" src="https://myvideoresume.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/g2slup/b/8/c95134bc67d3a521bb3f4331beb9b804/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=6b2adf83"></script>
 

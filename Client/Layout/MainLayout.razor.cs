@@ -16,15 +16,6 @@ namespace MyVideoResume.Client.Layout;
 
 public partial class MainLayout 
 {
-
-    private bool sidebarExpanded = true;
-
-
-    void SidebarToggleClick()
-    {
-        sidebarExpanded = !sidebarExpanded;
-    }
-
     protected void ProfileMenuClick(RadzenProfileMenuItem args)
     {
         if (args.Value == "Logout")

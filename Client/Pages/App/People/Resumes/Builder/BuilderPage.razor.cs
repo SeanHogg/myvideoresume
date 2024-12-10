@@ -31,6 +31,11 @@ public partial class BuilderPage
 
     protected override async Task OnInitializedAsync()
     {
+        if (MenuService.SidebarExpanded)
+        {
+            MenuService.SidebarToggleClick();
+        }
+
         try
         {
             Resume = await Service.GetResume(ResumeId);
