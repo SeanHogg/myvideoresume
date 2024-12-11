@@ -6,6 +6,13 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace MyVideoResume.Client.Shared;
 
+public static class Paths
+{
+    public static readonly string Resume_CreateNew = "resumes/builder/new";
+    public static readonly string Resume_API_CreateFromFile = "api/resume/createFromFile";
+    public static readonly string Jobs = "jobs";
+}
+
 public class BaseComponent : LayoutComponentBase
 {
     [Inject] protected MenuService MenuService { get; set; }

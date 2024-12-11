@@ -5,9 +5,9 @@
 @inherits BaseComponent
 @inject ResumeWebService Service
 
-<RadzenCard style="background-color:white;">
-    <RadzenCard class="rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: calc(-1 * var(--rz-card-padding));background-color:white; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" class="rz-p-4">
+<RadzenCard style="background-color:white; width: 350px">
+    <RadzenCard class="rz-shadow-0 rz-border-radius-0" style="margin: 5px calc(-1 * var(--rz-card-padding));background-color:white; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start">
             @*             <RadzenImage Path="@ResumeEntity?.UserId" Style="width: 100px; height: 100px; border-radius: 50%;" />
  *@            <RadzenStack Gap="0">
                 <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Name</RadzenText>
@@ -19,7 +19,7 @@
             </RadzenStack>
         </RadzenStack>
     </RadzenCard>
-    <RadzenCard class="rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding)); background-color: #0e44cc; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
+    <RadzenCard class="rz-shadow-0 rz-border-radius-0" style="margin: 5px calc(-1 * var(--rz-card-padding)); background-color: #0e44cc; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
         <RadzenText TextStyle="TextStyle.H6" style="color:white; "><strong>Details</strong></RadzenText>
         <RadzenRow RowGap="0">
             <RadzenColumn SizeSM="12" Visible=@DisplayItem>

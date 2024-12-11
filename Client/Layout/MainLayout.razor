@@ -15,8 +15,8 @@
                 <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-px-2">
                     <RadzenMenu Responsive="false">
                         <RadzenMenuItem Icon="add_circle">
-                            <RadzenMenuItem Text="Create Job" Path="jobs" Icon="note_add"></RadzenMenuItem>
-                            <RadzenMenuItem Text="Create Resume" Path="resumes/builder" Icon="video_call"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Create Job" Path=@Paths.Jobs Icon="note_add"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Create Resume" Path=@Paths.Resume_CreateNew Icon="video_call"></RadzenMenuItem>
                         </RadzenMenuItem>
                     </RadzenMenu>
                     <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">

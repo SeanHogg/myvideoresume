@@ -38,7 +38,12 @@ public partial class BuilderPage
 
         try
         {
-            Resume = await Service.GetResume(ResumeId);
+            var temp = await Service.GetResume(ResumeId);
+
+            if (Security.User.Id == temp.UserId)
+                Resume = temp;
+            else
+                Resume = null;
 
             if (Resume != null)
             {
