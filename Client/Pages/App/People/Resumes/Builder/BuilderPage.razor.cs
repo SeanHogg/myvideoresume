@@ -29,6 +29,11 @@ public partial class BuilderPage
 
     [Inject] protected ResumeWebService Service { get; set; }
 
+    void Submit(MetaResumeEntity arg)
+    {
+        //
+    }
+
     protected override async Task OnInitializedAsync()
     {
         if (MenuService.SidebarExpanded)
@@ -40,19 +45,22 @@ public partial class BuilderPage
         {
             var temp = await Service.GetResume(ResumeId);
 
-            if (Security.User.Id == temp.UserId)
-                Resume = temp;
-            else
-                Resume = null;
-
-            if (Resume != null)
+            if (ResumeId.ToLower() != "new")
             {
-                if (Resume.ResumeTemplate != null)
+                if (Security.User.Id == temp.UserId)
+                    Resume = temp;
+                else
+                    Resume = null;
+
+                if (Resume != null)
                 {
-                    ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
-                    ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
+                    if (Resume.ResumeTemplate != null)
+                    {
+                        ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
+                        ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
+                    }
+                    StateHasChanged();
                 }
-                StateHasChanged();
             }
         }
         catch (Exception ex)

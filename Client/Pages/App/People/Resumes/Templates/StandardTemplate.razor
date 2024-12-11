@@ -11,63 +11,61 @@
 </RadzenRow>
 <RadzenRow Style="padding-bottom:15px">
     <RadzenColumn Style="max-width: 100%">
-        <RadzenCard>
-            <div class="searchComponent">
-                <RadzenTabs>
-                    <Tabs>
-                        <RadzenTabsItem Text="Work">
+        <div class="searchComponent">
+            <RadzenTabs>
+                <Tabs>
+                    <RadzenTabsItem Text="Work">
+                        <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
+                            <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
+                                <Items>
+                                    @if (Resume.Work != null)
+                                    {
+                                        @foreach (var item in Resume.Work.OrderByDescending(x => x.EndDate).ToList())
+                                        {
+                                            <RadzenTimelineItem PointStyle="PointStyle.Dark">
+                                                <LabelContent>
+                                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                                                </LabelContent>
+                                                <ChildContent>
+                                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Name</RadzenText>
+                                                    <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
+
+                                                </ChildContent>
+                                            </RadzenTimelineItem>
+                                        }
+                                    }
+                                </Items>
+                            </RadzenTimeline>
+                        </RadzenColumn>
+                    </RadzenTabsItem>
+                    @if (Resume.Volunteer != null)
+                    {
+                        <RadzenTabsItem Text="Volunteer">
                             <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
                                 <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
                                     <Items>
-                                        @if (Resume.Work != null)
+                                        @foreach (var item in Resume.Volunteer.OrderByDescending(x => x.EndDate).ToList())
                                         {
-                                            @foreach (var item in Resume.Work.OrderByDescending(x => x.EndDate).ToList())
-                                            {
-                                                <RadzenTimelineItem PointStyle="PointStyle.Dark">
-                                                    <LabelContent>
-                                                        <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                                                    </LabelContent>
-                                                    <ChildContent>
-                                                        <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Name</RadzenText>
-                                                        <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
+                                            <RadzenTimelineItem PointStyle="PointStyle.Dark">
+                                                <LabelContent>
+                                                    <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                                                </LabelContent>
+                                                <ChildContent>
+                                                    <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Organization</RadzenText>
+                                                    <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
 
-                                                    </ChildContent>
-                                                </RadzenTimelineItem>
-                                            }
+                                                </ChildContent>
+                                            </RadzenTimelineItem>
                                         }
                                     </Items>
                                 </RadzenTimeline>
                             </RadzenColumn>
                         </RadzenTabsItem>
-                        @if (Resume.Volunteer != null)
-                        {
-                            <RadzenTabsItem Text="Volunteer">
-                                <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
-                                    <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
-                                        <Items>
-                                            @foreach (var item in Resume.Volunteer.OrderByDescending(x => x.EndDate).ToList())
-                                            {
-                                                <RadzenTimelineItem PointStyle="PointStyle.Dark">
-                                                    <LabelContent>
-                                                        <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                                                    </LabelContent>
-                                                    <ChildContent>
-                                                        <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Organization</RadzenText>
-                                                        <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
+                    }
+                </Tabs>
 
-                                                    </ChildContent>
-                                                </RadzenTimelineItem>
-                                            }
-                                        </Items>
-                                    </RadzenTimeline>
-                                </RadzenColumn>
-                            </RadzenTabsItem>
-                        }
-                    </Tabs>
-
-                </RadzenTabs>
-            </div>
-        </RadzenCard>
+            </RadzenTabs>
+        </div>
     </RadzenColumn>
 </RadzenRow>
 <RadzenRow>
