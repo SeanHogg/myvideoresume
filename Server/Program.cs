@@ -119,6 +119,17 @@ builder.Services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticatio
 builder.Host.UseSerilog();
 
 var app = builder.Build();
+app.Use(async (context, next) =>
+{
+    context.Response.OnStarting(state => {
+        var httpcontext = (HttpContext)state;
+        httpcontext.Response.Headers.Remove("Content-Security-Policy");
+        httpcontext.Response.Headers.Add("Content-Security-Policy", "frame-ancestors hirefractionaltalent.com *.hirefractionaltalent.com https:;");
+        return Task.CompletedTask;
+    }, context);
+    await next();
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -133,11 +144,6 @@ else
     app.UseHsts();
 }
 
-app.Use(async (context, next) =>
-{
-    context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors hirefractionaltalent.com *.hirefractionaltalent.com https:;");
-    await next();
-});
 
 app.UseSerilogRequestLogging();
 
