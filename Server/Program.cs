@@ -135,7 +135,7 @@ else
 
 app.Use(async (context, next) =>
 {
-    context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors 'self' 'https://hirefractionaltalent.com'");
+    context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors hirefractionaltalent.com *.hirefractionaltalent.com https:;");
     await next();
 });
 
