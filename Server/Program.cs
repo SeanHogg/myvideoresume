@@ -92,7 +92,7 @@ builder.Services.AddScoped<DashboardWebService>();
 builder.Services.AddHttpClient("MyVideoResume.Server").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { UseCookies = true }).AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddHeaderPropagation(o => o.Headers.Add("Cookie"));
 builder.Services.AddAuthentication();
-builder.Services.AddAuthenticationStateDeserialization(); 
+builder.Services.AddAuthenticationStateDeserialization();
 builder.Services.AddAuthorization();
 
 //AI & ML 
@@ -132,6 +132,12 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors 'self' 'https://hirefractionaltalent.com'");
+    await next();
+});
 
 app.UseSerilogRequestLogging();
 
