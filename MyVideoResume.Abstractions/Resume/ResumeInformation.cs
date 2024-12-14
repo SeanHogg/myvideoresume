@@ -7,15 +7,25 @@ public enum ResumeType
     JSONResumeFormat
 }
 
+public enum DisplayPrivacy
+{
+    ToPublic,
+    ToRecruiters,
+    ToConnections,
+    ToSelf
+}
+
 public class ResumeInformation : CommonBase
 {
     public string UserId { get; set; }
 
     public string? Name { get; set; }
-    
+
     public string? Slug { get; set; }
 
     public string? Description { get; set; }
+
+    public DisplayPrivacy? ShowContactDetails { get; set; } = DisplayPrivacy.ToConnections;
 
     public Industry Industry { get; set; } = Industry.Management;
     public List<JobType> EmploymentType { get; set; } = new List<JobType>();

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
+using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Data.Models.Resume;
 using Radzen;
@@ -22,16 +23,16 @@ public partial class BuilderPage
 
     [Inject] ILogger<BuilderPage> Logger { get; set; }
 
-    public MetaResumeEntity Resume { get; set; } = new MetaResumeEntity();
+    public MetaResumeEntity Resume { get; set; } = new MetaResumeEntity() { Basics = new() { Location = new() }, Awards = new(), Certificates = new(), Education = new List<Education>(), Interests = new(), Languages = new List<LanguageItem>(), Projects = new List<Project>(), Publications = new List<Publication>(), References = new List<ReferenceItem>(), Skills = new List<Skill>(), Volunteer = new List<Volunteer>(), Work = new List<Work>() };
 
     public Type ComponentType { get; set; }
     public Dictionary<string, object> ComponentParameters { get; set; }
 
     [Inject] protected ResumeWebService Service { get; set; }
 
-    void Submit(MetaResumeEntity arg)
+    async Task Submit(MetaResumeEntity arg)
     {
-        //
+        await Service.Save(arg);
     }
 
     protected override async Task OnInitializedAsync()

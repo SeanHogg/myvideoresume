@@ -2,11 +2,19 @@
 @using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat
 @using AgeCalculator
 @using AgeCalculator.Extensions
+@using MyVideoResume.Abstractions.Resume
 
 <RadzenRow>
     <RadzenColumn Style="max-width: 100%">
         <RadzenText Text=@Title() TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-
+        <RadzenStack AlignItems="AlignItems.Normal" Orientation="Orientation.Horizontal">
+            @if (Resume.ResumeInformation != null && Resume.ResumeInformation.ShowContactDetails != DisplayPrivacy.ToSelf) //TO DO: check the user's role
+            {
+                <RadzenText Text=@Resume.Basics.Email TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+                <RadzenText Text=@Resume.Basics.Phone TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+                <RadzenLink Path=@Resume.Basics.Url Text="My Website" Icon="globe" target="_blank" Visible=!string.IsNullOrEmpty(Resume.Basics.Url) />
+            }
+        </RadzenStack>
     </RadzenColumn>
 </RadzenRow>
 <RadzenRow Style="padding-bottom:15px">
@@ -261,7 +269,13 @@
 
     private string Title()
     {
-        return Resume.ResumeInformation?.Name;
+        if (Resume.Basics == null)
+            Resume.Basics = new Basics();
+
+        if (string.IsNullOrEmpty(Resume.Basics?.Name))
+            Resume.Basics.Name = Resume.ResumeInformation?.Name;
+
+        return Resume.Basics.Name;
     }
 
     private string YearsMonths(string to, string from)

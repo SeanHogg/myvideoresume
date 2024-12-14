@@ -71,13 +71,18 @@ public class ResumeService
         return result;
     }
 
+    public async Task<ResponseResult> Save(string userId, MetaResumeEntity resume)
+    {
+
+        return new ResponseResult();
+    }
     public async Task<MetaResumeEntity> GetResume(string resumeId)
     {
         var result = new MetaResumeEntity();
         try
         {
             //Is it a slug?
-            var info = _dataContext.ResumeInformation.Include(x=>x.Resume).AsNoTracking().FirstOrDefault(x => x.Slug == resumeId);
+            var info = _dataContext.ResumeInformation.Include(x => x.Resume).AsNoTracking().FirstOrDefault(x => x.Slug == resumeId);
 
             var items = _dataContext.Resumes
                        .Include(x => x.Work)

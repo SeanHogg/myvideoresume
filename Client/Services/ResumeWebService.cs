@@ -127,6 +127,15 @@ public partial class ResumeWebService
         return result;
     }
 
+    public async Task<ResponseResult> Save(MetaResumeEntity resume)
+    {
+        var uri = new Uri($"{_navigationManager.BaseUri}api/resume/save");
+        _httpClient.Timeout = TimeSpan.FromMinutes(10);
+        var response = await _httpClient.PostAsJsonAsync<MetaResumeEntity>(uri, resume);
+        var r = await response.ReadAsync<ResponseResult>();
+        return r;
+    }
+
     public async Task<ResponseResult> Match(string jobDescription, string resume)
     {
         var uri = new Uri($"{_navigationManager.BaseUri}api/resume/match");

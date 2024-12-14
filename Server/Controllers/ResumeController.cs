@@ -98,6 +98,26 @@ public partial class ResumeController : ControllerBase
     }
 
     [Authorize]
+    [HttpPost]
+    public async Task<ActionResult<ResponseResult>> Save(MetaResumeEntity resume)
+    {
+
+        var result = new ResponseResult();
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            result = await _resumeService.Save(userId, resume);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
+        return result;
+
+    }
+
+
+    [Authorize]
     [HttpPost("{resumeId}")]
     public async Task<ActionResult<ResponseResult>> Delete(string resumeId)
     {
