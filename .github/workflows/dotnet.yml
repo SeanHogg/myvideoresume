@@ -48,6 +48,7 @@ jobs:
        files: '**/appsettings.json'
        key-value-pairs: |
         ConnectionStrings.Default=${{ secrets.DB_CONNECTION_STRING }}
+        ConnectionStrings.Workers=${{ secrets.DB_CONNECTION_STRING_WORKERS }}
         Smtp.Host=${{ secrets.EMAIL_HOST }}
         Smtp.Port=${{ secrets.EMAIL_PORT }}
         Smtp.Ssl=${{ secrets.EMAIL_SSL }}
