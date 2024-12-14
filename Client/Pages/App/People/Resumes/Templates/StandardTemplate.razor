@@ -3,9 +3,20 @@
 @using AgeCalculator
 @using AgeCalculator.Extensions
 @using MyVideoResume.Abstractions.Resume
+@inherits BaseComponent
 
 <RadzenRow>
     <RadzenColumn Style="max-width: 100%">
+        @if (IsOwner)
+        {
+            <div style="float: right; padding-right: 35px">
+                <RadzenMenu Responsive="false">
+                    <RadzenMenuItem Icon="more_horiz">
+                        <RadzenMenuItem Text="Edit" Path=@Paths.Jobs Icon="edit" Click=@(()=> NavigateTo("resumes/builder", Resume.Id.ToString()))></RadzenMenuItem>
+                    </RadzenMenuItem>
+                </RadzenMenu>
+            </div>
+        }
         <RadzenText Text=@Title() TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
         <RadzenStack AlignItems="AlignItems.Normal" Orientation="Orientation.Horizontal">
             @if (Resume.ResumeInformation != null && Resume.ResumeInformation.ShowContactDetails != DisplayPrivacy.ToSelf) //TO DO: check the user's role
@@ -248,6 +259,7 @@
     public MetaResumeEntity Resume { get; set; }
     public RadzenTimeline Timeline { get; set; }
     public string ResumeName { get; set; }
+    public bool IsOwner { get; set; } = false;
 
     private string ToFrom(string to, string from)
     {
@@ -300,5 +312,13 @@
 
     protected override void OnInitialized()
     {
+        if (Resume != null)
+        {
+            if (!string.IsNullOrEmpty(Resume.UserId))
+            {
+                if (Security.User.Id == Resume.UserId)
+                    IsOwner = true;
+            }
+        }
     }
 }

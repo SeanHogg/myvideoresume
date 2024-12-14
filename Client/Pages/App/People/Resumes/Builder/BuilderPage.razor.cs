@@ -35,8 +35,35 @@ public partial class BuilderPage
         await Service.Save(arg);
     }
 
+    public int PercentageComplete { get; set; }
+
+    object? CalculatePercentComplete()
+    {
+        var result = 0;
+
+        //Resume Name
+        if (!string.IsNullOrEmpty(Resume.ResumeInformation.Name))
+            result += 10;
+        //Email
+        //if()
+        //Privacy Settings
+        //Basic Info
+        //SLUG
+        //Summary
+        //Education
+        //Work
+
+        PercentageComplete = result;
+        StateHasChanged();
+
+        return result;
+    }
+
+    void ShowTooltip(ElementReference elementReference, string content) => TooltipService.Open(elementReference, content, new TooltipOptions() { Position = TooltipPosition.Top });
+
     protected override async Task OnInitializedAsync()
     {
+
         if (MenuService.SidebarExpanded)
         {
             MenuService.SidebarToggleClick();
@@ -68,6 +95,8 @@ public partial class BuilderPage
         {
             Logger.LogError(ex.Message, ex);
         }
+
+        CalculatePercentComplete();
 
         await base.OnInitializedAsync();
     }

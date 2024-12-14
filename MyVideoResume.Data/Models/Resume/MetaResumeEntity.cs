@@ -15,7 +15,7 @@ public class MetaResumeEntity : JSONResume
 
     public string UserId { get; set; }
 
-    public bool? IsPublic { get; set; } = true;
+    public bool IsPublic { get; set; } = true;
 
     [DeleteBehavior(DeleteBehavior.Restrict)]
     public List<MetaDataEntity> MetaData { get; set; }

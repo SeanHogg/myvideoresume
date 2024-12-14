@@ -89,10 +89,8 @@ a {
 
 /* Style for sentiment display */
 .sentiment {
-    background-color: #eee;
     position: relative;
     display: inline-block;
-    padding: 1rem;
     margin-bottom: 25px;
     padding-top: 0;
     border-radius: 1rem;

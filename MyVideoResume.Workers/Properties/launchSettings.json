@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "MyVideoResume.Workers": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:52583;http://localhost:52584"
+    }
+  }
+}

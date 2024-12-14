@@ -20,6 +20,7 @@ using MyVideoResume.Application.Resume;
 using MyVideoResume.Application;
 using Microsoft.Extensions.DependencyInjection;
 using Scalar.AspNetCore;
+using MyVideoResume.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -116,6 +117,8 @@ builder.Services.AddControllers().AddOData(o =>
 });
 builder.Services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
 
+builder.Services.AddWorkers(builder.Configuration.GetConnectionString("Workers"));
+
 builder.Host.UseSerilog();
 
 var app = builder.Build();
@@ -154,6 +157,7 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
+app.UseWorkers();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()

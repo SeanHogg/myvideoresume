@@ -29,6 +29,7 @@
 		<ProjectReference Include="..\MyVideoResume.Application\MyVideoResume.Application.csproj" />
 		<ProjectReference Include="..\MyVideoResume.Data\MyVideoResume.Data.csproj" />
 		<ProjectReference Include="..\MyVideoResume.ML.SentimentAnalysis\MyVideoResume.ML.SentimentAnalysis.csproj" />
+		<ProjectReference Include="..\MyVideoResume.Workers\MyVideoResume.Workers.csproj" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">

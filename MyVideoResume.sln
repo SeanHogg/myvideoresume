@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVideoResume.Application",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVideoResume.Documents", "MyVideoResume.Documents\MyVideoResume.Documents.csproj", "{CFF8BCA8-C7DB-A47D-975F-64FBA4EEBE0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVideoResume.Workers", "MyVideoResume.Workers\MyVideoResume.Workers.csproj", "{BBB99908-4A61-4319-81D9-47E32EF5059D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{CFF8BCA8-C7DB-A47D-975F-64FBA4EEBE0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFF8BCA8-C7DB-A47D-975F-64FBA4EEBE0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFF8BCA8-C7DB-A47D-975F-64FBA4EEBE0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBB99908-4A61-4319-81D9-47E32EF5059D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBB99908-4A61-4319-81D9-47E32EF5059D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBB99908-4A61-4319-81D9-47E32EF5059D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBB99908-4A61-4319-81D9-47E32EF5059D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +104,7 @@ Global
 		{DA1C39C0-C69F-425D-A6B0-3DD8B7892699} = {CE9FC5A1-34C1-42DC-9523-0895D4CCA068}
 		{32286708-64CC-4477-BA27-D752C27FFC5E} = {CE9FC5A1-34C1-42DC-9523-0895D4CCA068}
 		{CFF8BCA8-C7DB-A47D-975F-64FBA4EEBE0E} = {CE9FC5A1-34C1-42DC-9523-0895D4CCA068}
+		{BBB99908-4A61-4319-81D9-47E32EF5059D} = {CE9FC5A1-34C1-42DC-9523-0895D4CCA068}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C40737A8-E03A-4EFD-8B5A-8013DA6AB507}

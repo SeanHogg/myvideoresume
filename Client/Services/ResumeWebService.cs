@@ -129,20 +129,36 @@ public partial class ResumeWebService
 
     public async Task<ResponseResult> Save(MetaResumeEntity resume)
     {
-        var uri = new Uri($"{_navigationManager.BaseUri}api/resume/save");
-        _httpClient.Timeout = TimeSpan.FromMinutes(10);
-        var response = await _httpClient.PostAsJsonAsync<MetaResumeEntity>(uri, resume);
-        var r = await response.ReadAsync<ResponseResult>();
+        var r = new ResponseResult();
+        try
+        {
+            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/save");
+            _httpClient.Timeout = TimeSpan.FromMinutes(10);
+            var response = await _httpClient.PostAsJsonAsync<MetaResumeEntity>(uri, resume);
+            r = await response.ReadAsync<ResponseResult>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
         return r;
     }
 
     public async Task<ResponseResult> Match(string jobDescription, string resume)
     {
-        var uri = new Uri($"{_navigationManager.BaseUri}api/resume/match");
-        _httpClient.Timeout = TimeSpan.FromMinutes(10);
-        var request = new JobMatchRequest() { Job = jobDescription, Resume = resume };
-        var response = await _httpClient.PostAsJsonAsync<JobMatchRequest>(uri, request);
-        var r = await response.ReadAsync<ResponseResult>();
+        var r = new ResponseResult();
+        try
+        {
+            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/match");
+            _httpClient.Timeout = TimeSpan.FromMinutes(10);
+            var request = new JobMatchRequest() { Job = jobDescription, Resume = resume };
+            var response = await _httpClient.PostAsJsonAsync<JobMatchRequest>(uri, request);
+            r = await response.ReadAsync<ResponseResult>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+        }
         return r;
     }
     public async Task<ResponseResult> Summarize(string resume)
