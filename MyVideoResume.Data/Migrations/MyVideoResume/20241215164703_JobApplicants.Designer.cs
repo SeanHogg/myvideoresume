@@ -12,8 +12,8 @@ using MyVideoResume.Data;
 namespace MyVideoResume.Data.Migrations.MyVideoResume
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241214162738_OrderResumeItems")]
-    partial class OrderResumeItems
+    [Migration("20241215164703_JobApplicants")]
+    partial class JobApplicants
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -758,22 +758,22 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<float>("MatchScoreRating")
                         .HasColumnType("real");
 
+                    b.Property<Guid>("ResumeItemId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserApplyingId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserResumeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("JobId");
 
-                    b.HasIndex("UserApplyingId");
+                    b.HasIndex("ResumeItemId");
 
-                    b.HasIndex("UserResumeId");
+                    b.HasIndex("UserApplyingId");
 
                     b.ToTable("ApplicantToJob", t =>
                         {
@@ -978,9 +978,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("MetaResumeEntityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("MetaType")
                         .HasColumnType("int");
 
@@ -991,6 +988,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("ReferenceId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ResumeInformationEntityId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
@@ -1005,7 +1005,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MetaResumeEntityId");
+                    b.HasIndex("ResumeInformationEntityId");
 
                     b.ToTable("MetaData", t =>
                         {
@@ -1030,13 +1030,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("Resume")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ResumeTemplateId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdateDateTime")
@@ -1046,19 +1040,12 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserProfileEntityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BasicsId");
 
                     b.HasIndex("Resume")
                         .IsUnique();
-
-                    b.HasIndex("ResumeTemplateId");
-
-                    b.HasIndex("UserProfileEntityId");
 
                     b.ToTable("MetaResumes", t =>
                         {
@@ -1099,14 +1086,20 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<int>("PaySchedule")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Privacy_ShowContactDetails")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Privacy_ShowResume")
+                        .HasColumnType("int");
+
                     b.Property<string>("ResumeSerialized")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ResumeType")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ResumeTemplateId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("ShowContactDetails")
+                    b.Property<int>("ResumeType")
                         .HasColumnType("int");
 
                     b.Property<string>("Slug")
@@ -1119,7 +1112,14 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserProfileId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ResumeTemplateId");
+
+                    b.HasIndex("UserProfileId");
 
                     b.ToTable("ResumeInformation", t =>
                         {
@@ -1182,11 +1182,22 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("JobPreferencesId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MailingAddressId")
                         .HasColumnType("uniqueidentifier");
@@ -1325,23 +1336,23 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyVideoResume.Data.Models.UserProfileEntity", "UserApplying")
-                        .WithMany("JobApplications")
-                        .HasForeignKey("UserApplyingId")
+                    b.HasOne("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", "ResumeItem")
+                        .WithMany()
+                        .HasForeignKey("ResumeItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyVideoResume.Data.Models.Resume.MetaResumeEntity", "UserResume")
-                        .WithMany()
-                        .HasForeignKey("UserResumeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("MyVideoResume.Data.Models.UserProfileEntity", "UserApplying")
+                        .WithMany("JobApplications")
+                        .HasForeignKey("UserApplyingId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Job");
 
-                    b.Navigation("UserApplying");
+                    b.Navigation("ResumeItem");
 
-                    b.Navigation("UserResume");
+                    b.Navigation("UserApplying");
                 });
 
             modelBuilder.Entity("MyVideoResume.Data.Models.Jobs.JobItemEntity", b =>
@@ -1389,10 +1400,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
             modelBuilder.Entity("MyVideoResume.Data.Models.Resume.MetaDataEntity", b =>
                 {
-                    b.HasOne("MyVideoResume.Data.Models.Resume.MetaResumeEntity", null)
+                    b.HasOne("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", null)
                         .WithMany("MetaData")
-                        .HasForeignKey("MetaResumeEntityId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ResumeInformationEntityId")
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("MyVideoResume.Data.Models.Resume.MetaResumeEntity", b =>
@@ -1402,25 +1413,32 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasForeignKey("BasicsId");
 
                     b.HasOne("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", "ResumeInformation")
-                        .WithOne("Resume")
+                        .WithOne("MetaResume")
                         .HasForeignKey("MyVideoResume.Data.Models.Resume.MetaResumeEntity", "Resume")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MyVideoResume.Data.Models.Resume.ResumeTemplateEntity", "ResumeTemplate")
-                        .WithMany()
-                        .HasForeignKey("ResumeTemplateId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("MyVideoResume.Data.Models.UserProfileEntity", null)
-                        .WithMany("Resumes")
-                        .HasForeignKey("UserProfileEntityId");
-
                     b.Navigation("Basics");
 
                     b.Navigation("ResumeInformation");
+                });
+
+            modelBuilder.Entity("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", b =>
+                {
+                    b.HasOne("MyVideoResume.Data.Models.Resume.ResumeTemplateEntity", "ResumeTemplate")
+                        .WithMany()
+                        .HasForeignKey("ResumeTemplateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("MyVideoResume.Data.Models.UserProfileEntity", "UserProfile")
+                        .WithMany("ResumeItems")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("ResumeTemplate");
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("MyVideoResume.Data.Models.UserProfileEntity", b =>
@@ -1460,8 +1478,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
                     b.Navigation("Languages");
 
-                    b.Navigation("MetaData");
-
                     b.Navigation("Projects");
 
                     b.Navigation("Publications");
@@ -1477,7 +1493,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
             modelBuilder.Entity("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", b =>
                 {
-                    b.Navigation("Resume")
+                    b.Navigation("MetaData");
+
+                    b.Navigation("MetaResume")
                         .IsRequired();
                 });
 
@@ -1485,7 +1503,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 {
                     b.Navigation("JobApplications");
 
-                    b.Navigation("Resumes");
+                    b.Navigation("ResumeItems");
                 });
 #pragma warning restore 612, 618
         }

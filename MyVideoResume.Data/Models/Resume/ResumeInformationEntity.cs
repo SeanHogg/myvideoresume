@@ -15,6 +15,14 @@ public class ResumeInformationEntity : ResumeInformation
 
     [JsonIgnore]
     [InverseProperty("ResumeInformation")]
-    public MetaResumeEntity Resume { get; set; }
+    public MetaResumeEntity MetaResume { get; set; }
 
+    [JsonIgnore]
+    public UserProfileEntity UserProfile { get; set; }
+
+    [DeleteBehavior(DeleteBehavior.NoAction)]
+    public List<MetaDataEntity> MetaData { get; set; }
+
+    [DeleteBehavior(DeleteBehavior.NoAction)]
+    public ResumeTemplateEntity? ResumeTemplate { get; set; }
 }

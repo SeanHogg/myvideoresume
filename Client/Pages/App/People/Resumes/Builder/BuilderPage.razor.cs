@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Net.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
@@ -7,46 +8,56 @@ using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
+using MyVideoResume.Abstractions.Resume;
 using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat;
+using MyVideoResume.Client.Pages.App.People.Resumes.Templates;
 using MyVideoResume.Client.Services;
+using MyVideoResume.Client.Shared;
 using MyVideoResume.Data.Models.Resume;
 using Radzen;
 using Radzen.Blazor;
 
 namespace MyVideoResume.Client.Pages.App.People.Resumes.Builder;
 
+
+
 public partial class BuilderPage
 {
-    [Parameter]
-    public String ResumeId { get; set; }
-
+    [Parameter] public String ResumeId { get; set; }
 
     [Inject] ILogger<BuilderPage> Logger { get; set; }
 
-    public MetaResumeEntity Resume { get; set; } = new MetaResumeEntity() { Basics = new() { Location = new() }, Awards = new(), Certificates = new(), Education = new List<Education>(), Interests = new(), Languages = new List<LanguageItem>(), Projects = new List<Project>(), Publications = new List<Publication>(), References = new List<ReferenceItem>(), Skills = new List<Skill>(), Volunteer = new List<Volunteer>(), Work = new List<Work>() };
-
-    public Type ComponentType { get; set; }
-    public Dictionary<string, object> ComponentParameters { get; set; }
-
     [Inject] protected ResumeWebService Service { get; set; }
 
-    async Task Submit(MetaResumeEntity arg)
+    public ResumeInformationEntity Resume { get; set; } = new ResumeInformationEntity()
     {
-        await Service.Save(arg);
-    }
+        MetaData = new List<MetaDataEntity>(),
+        MetaResume = new MetaResumeEntity() { Basics = new() { Location = new() }, Awards = new(), Certificates = new(), Education = new List<Education>(), Interests = new(), Languages = new List<LanguageItem>(), Projects = new List<Project>(), Publications = new List<Publication>(), References = new List<ReferenceItem>(), Skills = new List<Skill>(), Volunteer = new List<Volunteer>(), Work = new List<Work>() }
+    };
+
+    public Type ComponentType { get; set; }
+
+    public Dictionary<string, object> ComponentParameters { get; set; }
 
     public int PercentageComplete { get; set; }
 
-    object? CalculatePercentComplete()
+    public string SelectedValue { get; set; } = DisplayPrivacy.ToPublic.ToString();
+
+    public SortedList<string, string> Privacy { get; set; }
+
+    protected int CalculatePercentComplete()
     {
         var result = 0;
 
         //Resume Name
-        if (!string.IsNullOrEmpty(Resume.ResumeInformation.Name))
+        if (!string.IsNullOrEmpty(Resume.Name))
             result += 10;
         //Email
         //if()
         //Privacy Settings
+        if (!string.IsNullOrEmpty(SelectedValue))
+            result += 10;
+
         //Basic Info
         //SLUG
         //Summary
@@ -58,11 +69,11 @@ public partial class BuilderPage
 
         return result;
     }
-
-    void ShowTooltip(ElementReference elementReference, string content) => TooltipService.Open(elementReference, content, new TooltipOptions() { Position = TooltipPosition.Top });
+    protected async Task Submit(ResumeInformationEntity arg) => await Service.Save(arg);
 
     protected override async Task OnInitializedAsync()
     {
+        Privacy = DisplayPrivacy.ToPublic.ToSortedList();
 
         if (MenuService.SidebarExpanded)
         {
@@ -85,7 +96,7 @@ public partial class BuilderPage
                     if (Resume.ResumeTemplate != null)
                     {
                         ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
-                        ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
+                        ComponentParameters = new Dictionary<string, object>() { { "resume", Resume }, { "mode", StandardTemplate.DisplayMode.Edit } };
                     }
                     StateHasChanged();
                 }

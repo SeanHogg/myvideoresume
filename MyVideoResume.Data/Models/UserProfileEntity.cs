@@ -13,19 +13,19 @@ using System.Threading.Tasks;
 namespace MyVideoResume.Data.Models;
 
 [Table("UserProfiles")]
-public class UserProfileEntity: CommonBase
+public class UserProfileEntity: UserProfile
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
-    public string UserId { get; set; }
-
     [DeleteBehavior(DeleteBehavior.NoAction)]
     public JobPreferencesEntity JobPreferences { get; set; }
 
-    public List<MetaResumeEntity> Resumes { get; set; }
+    [DeleteBehavior(DeleteBehavior.NoAction)]
+    public List<ResumeInformationEntity> ResumeItems { get; set; }
 
+    [DeleteBehavior(DeleteBehavior.NoAction)]
     public List<ApplicantToJobEntity> JobApplications { get; set; }
 
     [DeleteBehavior(DeleteBehavior.NoAction)]

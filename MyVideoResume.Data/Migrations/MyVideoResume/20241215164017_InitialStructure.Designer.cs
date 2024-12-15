@@ -12,8 +12,8 @@ using MyVideoResume.Data;
 namespace MyVideoResume.Data.Migrations.MyVideoResume
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241208184147_RelationshipChanges2")]
-    partial class RelationshipChanges2
+    [Migration("20241215164017_InitialStructure")]
+    partial class InitialStructure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
                     b.Property<Guid?>("MetaResumeEntityId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<string>("Summary")
                         .IsRequired()
@@ -129,6 +132,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -168,6 +174,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
                     b.Property<Guid?>("MetaResumeEntityId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<string>("Score")
                         .IsRequired()
@@ -213,6 +222,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MetaResumeEntityId");
@@ -240,6 +252,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
                     b.Property<Guid?>("MetaResumeEntityId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -312,6 +327,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<string>("StartDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -343,6 +361,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<string>("Publisher")
                         .IsRequired()
@@ -384,6 +405,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<string>("Reference")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -420,6 +444,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MetaResumeEntityId");
@@ -447,6 +474,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
                     b.Property<Guid?>("MetaResumeEntityId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<string>("Organization")
                         .IsRequired()
@@ -500,6 +530,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -542,10 +575,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedTime")
+                    b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("Latitude")
@@ -573,7 +606,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateTime")
+                    b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -598,10 +631,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<Guid?>("BillingAddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedTime")
+                    b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -624,7 +657,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("TermsOfUserAgreementVersion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateTime")
+                    b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Website")
@@ -651,10 +684,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedTime")
+                    b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
                     b.PrimitiveCollection<string>("EmploymentType")
@@ -673,7 +706,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<int>("Seniority")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("UpdateTime")
+                    b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserHandle")
@@ -703,10 +736,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedTime")
+                    b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("JobApplicationStatus")
@@ -725,7 +758,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<float>("MatchScoreRating")
                         .HasColumnType("real");
 
-                    b.Property<DateTime?>("UpdateTime")
+                    b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserApplyingId")
@@ -822,10 +855,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedTime")
+                    b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -866,7 +899,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("UpdateTime")
+                    b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -935,18 +968,15 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedTime")
+                    b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("MetaResumeEntityId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("MetaType")
                         .HasColumnType("int");
@@ -959,7 +989,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateTime")
+                    b.Property<Guid?>("ResumeInformationEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Url")
@@ -972,7 +1005,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MetaResumeEntityId");
+                    b.HasIndex("ResumeInformationEntityId");
 
                     b.ToTable("MetaData", t =>
                         {
@@ -997,13 +1030,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsPublic")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("Resume")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ResumeTemplateId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdateDateTime")
@@ -1013,19 +1040,12 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserProfileEntityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BasicsId");
 
                     b.HasIndex("Resume")
                         .IsUnique();
-
-                    b.HasIndex("ResumeTemplateId");
-
-                    b.HasIndex("UserProfileEntityId");
 
                     b.ToTable("MetaResumes", t =>
                         {
@@ -1041,10 +1061,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedTime")
+                    b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -1066,9 +1086,18 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<int>("PaySchedule")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Privacy_ShowContactDetails")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Privacy_ShowResume")
+                        .HasColumnType("int");
+
                     b.Property<string>("ResumeSerialized")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ResumeTemplateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ResumeType")
                         .HasColumnType("int");
@@ -1076,14 +1105,21 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateTime")
+                    b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserProfileId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ResumeTemplateId");
+
+                    b.HasIndex("UserProfileId");
 
                     b.ToTable("ResumeInformation", t =>
                         {
@@ -1099,10 +1135,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedTime")
+                    b.Property<DateTime?>("DeletedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -1118,7 +1154,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("TransformerComponentName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateTime")
+                    b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -1143,19 +1179,30 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<Guid?>("BillingAddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime?>("CreationDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedTime")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("JobPreferencesId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("MailingAddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("UpdateTime")
+                    b.Property<DateTime?>("UpdateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -1292,7 +1339,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.HasOne("MyVideoResume.Data.Models.UserProfileEntity", "UserApplying")
                         .WithMany("JobApplications")
                         .HasForeignKey("UserApplyingId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MyVideoResume.Data.Models.Resume.MetaResumeEntity", "UserResume")
@@ -1353,10 +1400,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
             modelBuilder.Entity("MyVideoResume.Data.Models.Resume.MetaDataEntity", b =>
                 {
-                    b.HasOne("MyVideoResume.Data.Models.Resume.MetaResumeEntity", null)
+                    b.HasOne("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", null)
                         .WithMany("MetaData")
-                        .HasForeignKey("MetaResumeEntityId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ResumeInformationEntityId")
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("MyVideoResume.Data.Models.Resume.MetaResumeEntity", b =>
@@ -1366,25 +1413,32 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasForeignKey("BasicsId");
 
                     b.HasOne("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", "ResumeInformation")
-                        .WithOne("Resume")
+                        .WithOne("MetaResume")
                         .HasForeignKey("MyVideoResume.Data.Models.Resume.MetaResumeEntity", "Resume")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MyVideoResume.Data.Models.Resume.ResumeTemplateEntity", "ResumeTemplate")
-                        .WithMany()
-                        .HasForeignKey("ResumeTemplateId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("MyVideoResume.Data.Models.UserProfileEntity", null)
-                        .WithMany("Resumes")
-                        .HasForeignKey("UserProfileEntityId");
-
                     b.Navigation("Basics");
 
                     b.Navigation("ResumeInformation");
+                });
+
+            modelBuilder.Entity("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", b =>
+                {
+                    b.HasOne("MyVideoResume.Data.Models.Resume.ResumeTemplateEntity", "ResumeTemplate")
+                        .WithMany()
+                        .HasForeignKey("ResumeTemplateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("MyVideoResume.Data.Models.UserProfileEntity", "UserProfile")
+                        .WithMany("ResumeItems")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("ResumeTemplate");
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("MyVideoResume.Data.Models.UserProfileEntity", b =>
@@ -1424,8 +1478,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
                     b.Navigation("Languages");
 
-                    b.Navigation("MetaData");
-
                     b.Navigation("Projects");
 
                     b.Navigation("Publications");
@@ -1441,7 +1493,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
             modelBuilder.Entity("MyVideoResume.Data.Models.Resume.ResumeInformationEntity", b =>
                 {
-                    b.Navigation("Resume")
+                    b.Navigation("MetaData");
+
+                    b.Navigation("MetaResume")
                         .IsRequired();
                 });
 
@@ -1449,7 +1503,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 {
                     b.Navigation("JobApplications");
 
-                    b.Navigation("Resumes");
+                    b.Navigation("ResumeItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -30,7 +30,7 @@ public class ApplicantToJobEntity : CommonBase
 
     public UserProfileEntity UserApplying { get; set; }
 
-    public MetaResumeEntity UserResume { get; set; }
+    public ResumeInformationEntity ResumeItem { get; set; }
 
     public JobApplicationStatus JobApplicationStatus { get; set; }
 

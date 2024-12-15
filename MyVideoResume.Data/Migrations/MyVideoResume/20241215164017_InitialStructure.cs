@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyVideoResume.Data.Migrations.MyVideoResume
 {
     /// <inheritdoc />
-    public partial class ResumeInitial : Migration
+    public partial class InitialStructure : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,9 +16,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Latitude = table.Column<int>(type: "int", nullable: true),
                     Longitude = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -68,9 +68,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserHandle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Industry = table.Column<int>(type: "int", nullable: false),
                     Seniority = table.Column<int>(type: "int", nullable: false),
                     EmploymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -101,38 +102,18 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 });
 
             migrationBuilder.CreateTable(
-                name: "ResumeInformation",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Industry = table.Column<int>(type: "int", nullable: false),
-                    EmploymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaySchedule = table.Column<int>(type: "int", nullable: false),
-                    MinimumSalary = table.Column<float>(type: "real", nullable: false),
-                    ResumeType = table.Column<int>(type: "int", nullable: false),
-                    ResumeSerialized = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ResumeInformation", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ResumeTemplates",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TransformerComponentName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TransformerComponentName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Namespace = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -162,9 +143,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MailingAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BillingAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Website = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -194,13 +175,16 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     JobPreferencesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MailingAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     BillingAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -257,9 +241,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     EquityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SalaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     HiringTarget = table.Column<int>(type: "int", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -306,14 +290,79 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 });
 
             migrationBuilder.CreateTable(
+                name: "ResumeInformation",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ResumeTemplateId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Privacy_ShowResume = table.Column<int>(type: "int", nullable: true),
+                    Privacy_ShowContactDetails = table.Column<int>(type: "int", nullable: true),
+                    Industry = table.Column<int>(type: "int", nullable: false),
+                    EmploymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PaySchedule = table.Column<int>(type: "int", nullable: false),
+                    MinimumSalary = table.Column<float>(type: "real", nullable: false),
+                    ResumeType = table.Column<int>(type: "int", nullable: false),
+                    ResumeSerialized = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResumeInformation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResumeInformation_ResumeTemplates_ResumeTemplateId",
+                        column: x => x.ResumeTemplateId,
+                        principalTable: "ResumeTemplates",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ResumeInformation_UserProfiles_UserProfileId",
+                        column: x => x.UserProfileId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MetaData",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ResumeInformationEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReferenceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MetaType = table.Column<int>(type: "int", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MetaData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MetaData_ResumeInformation_ResumeInformationEntityId",
+                        column: x => x.ResumeInformationEntityId,
+                        principalTable: "ResumeInformation",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MetaResumes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ResumeInformationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ResumeTemplateId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserProfileEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Resume = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     BasicsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -325,21 +374,11 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         principalTable: "Basics",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_MetaResumes_ResumeInformation_ResumeInformationId",
-                        column: x => x.ResumeInformationId,
+                        name: "FK_MetaResumes_ResumeInformation_Resume",
+                        column: x => x.Resume,
                         principalTable: "ResumeInformation",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MetaResumes_ResumeTemplates_ResumeTemplateId",
-                        column: x => x.ResumeTemplateId,
-                        principalTable: "ResumeTemplates",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_MetaResumes_UserProfiles_UserProfileEntityId",
-                        column: x => x.UserProfileEntityId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "Id");
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -354,9 +393,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     MatchResults = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MatchResultsDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MatchScoreRating = table.Column<float>(type: "real", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreationDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -377,8 +416,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         name: "FK_ApplicantToJob_UserProfiles_UserApplyingId",
                         column: x => x.UserApplyingId,
                         principalTable: "UserProfiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -386,6 +424,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Awarder = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -407,6 +446,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Issuer = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -428,6 +468,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Institution = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Area = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudyType = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -453,6 +494,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Keywords = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MetaResumeEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -472,6 +514,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Language = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Fluency = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MetaResumeEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -487,36 +530,11 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 });
 
             migrationBuilder.CreateTable(
-                name: "MetaData",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MetaResumeEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReferenceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MetaType = table.Column<int>(type: "int", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MetaData", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MetaData_MetaResumes_MetaResumeEntityId",
-                        column: x => x.MetaResumeEntityId,
-                        principalTable: "MetaResumes",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Project",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EndDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -540,6 +558,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Publisher = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReleaseDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -562,6 +581,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Reference = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MetaResumeEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -581,6 +601,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Level = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Keywords = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -601,6 +622,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Organization = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -625,6 +647,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -725,9 +748,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 column: "MetaResumeEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MetaData_MetaResumeEntityId",
+                name: "IX_MetaData_ResumeInformationEntityId",
                 table: "MetaData",
-                column: "MetaResumeEntityId");
+                column: "ResumeInformationEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MetaResumes_BasicsId",
@@ -735,19 +758,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 column: "BasicsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MetaResumes_ResumeInformationId",
+                name: "IX_MetaResumes_Resume",
                 table: "MetaResumes",
-                column: "ResumeInformationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MetaResumes_ResumeTemplateId",
-                table: "MetaResumes",
-                column: "ResumeTemplateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MetaResumes_UserProfileEntityId",
-                table: "MetaResumes",
-                column: "UserProfileEntityId");
+                column: "Resume",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Project_MetaResumeEntityId",
@@ -763,6 +777,16 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 name: "IX_ReferenceItem_MetaResumeEntityId",
                 table: "ReferenceItem",
                 column: "MetaResumeEntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResumeInformation_ResumeTemplateId",
+                table: "ResumeInformation",
+                column: "ResumeTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResumeInformation_UserProfileId",
+                table: "ResumeInformation",
+                column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Skill_MetaResumeEntityId",
@@ -862,13 +886,13 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 name: "ResumeInformation");
 
             migrationBuilder.DropTable(
+                name: "Location");
+
+            migrationBuilder.DropTable(
                 name: "ResumeTemplates");
 
             migrationBuilder.DropTable(
                 name: "UserProfiles");
-
-            migrationBuilder.DropTable(
-                name: "Location");
 
             migrationBuilder.DropTable(
                 name: "Addresses");

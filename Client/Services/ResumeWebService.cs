@@ -74,14 +74,14 @@ public partial class ResumeWebService
         return result;
     }
 
-    public async Task<List<MetaResumeEntity>> GetResumes()
+    public async Task<List<ResumeInformationEntity>> GetResumes()
     {
-        var result = new List<MetaResumeEntity> { };
+        var result = new List<ResumeInformationEntity> { };
         try
         {
             var uri = new Uri($"{_navigationManager.BaseUri}api/resume");
             var response = await _httpClient.GetAsync(uri);
-            result = await response.ReadAsync<List<MetaResumeEntity>>();
+            result = await response.ReadAsync<List<ResumeInformationEntity>>();
             result = result.OrderByDescending(x => x.CreationDateTime).ToList();
         }
         catch (Exception ex)
@@ -92,14 +92,14 @@ public partial class ResumeWebService
         return result;
     }
 
-    public async Task<MetaResumeEntity> GetResume(string resumeId)
+    public async Task<ResumeInformationEntity> GetResume(string resumeId)
     {
-        var result = new MetaResumeEntity();
+        var result = new ResumeInformationEntity();
         try
         {
             var uri = new Uri($"{_navigationManager.BaseUri}api/resume/{resumeId}");
             var response = await _httpClient.GetAsync(uri);
-            result = await response.ReadAsync<MetaResumeEntity>();
+            result = await response.ReadAsync<ResumeInformationEntity>();
         }
         catch (Exception ex)
         {
@@ -127,14 +127,14 @@ public partial class ResumeWebService
         return result;
     }
 
-    public async Task<ResponseResult> Save(MetaResumeEntity resume)
+    public async Task<ResponseResult> Save(ResumeInformationEntity resume)
     {
         var r = new ResponseResult();
         try
         {
             var uri = new Uri($"{_navigationManager.BaseUri}api/resume/save");
             _httpClient.Timeout = TimeSpan.FromMinutes(10);
-            var response = await _httpClient.PostAsJsonAsync<MetaResumeEntity>(uri, resume);
+            var response = await _httpClient.PostAsJsonAsync<ResumeInformationEntity>(uri, resume);
             r = await response.ReadAsync<ResponseResult>();
         }
         catch (Exception ex)

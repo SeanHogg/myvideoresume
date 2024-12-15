@@ -22,7 +22,7 @@ public partial class ResumeEmbedded
 
     [Inject] ILogger<ResumeViewer> Logger { get; set; }
 
-    public MetaResumeEntity Resume { get; set; } = new MetaResumeEntity();
+    public ResumeInformationEntity Resume { get; set; } = new ResumeInformationEntity();
 
     public bool IsResumeDeleted { get; set; }
 
@@ -46,16 +46,13 @@ public partial class ResumeEmbedded
             }
             else
             {
-                if (Resume.ResumeInformation != null)
-                {
-                    ResumePageTitle = $"MyVideoResu.ME - Resume - {Resume.ResumeInformation?.Name}";
+                    ResumePageTitle = $"MyVideoResu.ME - Resume - {Resume.MetaResume.Basics.Name}";
                     if (Resume.ResumeTemplate != null)
                     {
                         ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
                         ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
                     }
                     StateHasChanged();
-                }
             }
         }
         catch (Exception ex)

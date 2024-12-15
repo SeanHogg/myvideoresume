@@ -15,18 +15,10 @@ public class MetaResumeEntity : JSONResume
 
     public string UserId { get; set; }
 
-    public bool IsPublic { get; set; } = true;
-
-    [DeleteBehavior(DeleteBehavior.Restrict)]
-    public List<MetaDataEntity> MetaData { get; set; }
-
     [ForeignKey("Resume")]
     [DeleteBehavior(DeleteBehavior.Restrict)] 
     public ResumeInformationEntity ResumeInformation { get; set; }
     
-    [DeleteBehavior(DeleteBehavior.Restrict)]
-    public ResumeTemplateEntity? ResumeTemplate { get; set; }
-
     public DateTime? CreationDateTime { get; set; }
     public DateTime? UpdateDateTime { get; set; }
     public DateTime? DeletedDateTime { get; set; }

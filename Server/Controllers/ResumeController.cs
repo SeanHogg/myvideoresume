@@ -34,9 +34,9 @@ public partial class ResumeController : ControllerBase
     }
 
     [HttpGet("{resumeId}")]
-    public async Task<ActionResult<MetaResumeEntity>> Get(string resumeId)
+    public async Task<ActionResult<ResumeInformationEntity>> Get(string resumeId)
     {
-        var result = new MetaResumeEntity();
+        var result = new ResumeInformationEntity();
         try
         {
             result = await _resumeService.GetResume(resumeId);
@@ -82,9 +82,9 @@ public partial class ResumeController : ControllerBase
 
     [Authorize]
     [HttpGet]
-    public async Task<ActionResult<List<MetaResumeEntity>>> Get()
+    public async Task<ActionResult<List<ResumeInformationEntity>>> Get()
     {
-        var result = new List<MetaResumeEntity>();
+        var result = new List<ResumeInformationEntity>();
         try
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -99,7 +99,7 @@ public partial class ResumeController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult<ResponseResult>> Save(MetaResumeEntity resume)
+    public async Task<ActionResult<ResponseResult>> Save(ResumeInformationEntity resume)
     {
 
         var result = new ResponseResult();
