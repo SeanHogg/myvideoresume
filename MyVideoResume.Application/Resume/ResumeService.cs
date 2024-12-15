@@ -28,16 +28,17 @@ public class ResumeService
         var result = new List<ResumeSummaryItem>();
         try
         {
-            var query = _dataContext.Resumes.AsNoTracking()
-                        .Include(x => x.Basics)
-                       .Include(x => x.ResumeInformation).ThenInclude(x => x.MetaData)
-                       .Include(x => x.ResumeInformation).ThenInclude(x => x.UserProfile)
-                       .Include(x => x.ResumeInformation).ThenInclude(x => x.ResumeTemplate)
-                        .Where(x => x.DeletedDateTime == null);
+            var query = _dataContext.ResumeInformation
+                .Include(x=> x.MetaResume).ThenInclude(y=>y.Basics)
+                .Include(x => x.MetaData)
+                .Include(x => x.UserProfile)
+                .Include(x => x.ResumeTemplate)
+                .AsNoTracking()
+                .Where(x => x.DeletedDateTime == null);
 
             if (onlyPublic.HasValue)
             {
-                query = query.Where(x => x.ResumeInformation.Privacy_ShowResume == DisplayPrivacy.ToPublic);
+                query = query.Where(x => x.Privacy_ShowResume == DisplayPrivacy.ToPublic);
             }
 
             if (!string.IsNullOrEmpty(userId))
@@ -45,7 +46,7 @@ public class ResumeService
                 query = query.Where(x => x.UserId == userId);
             }
 
-            result = query.Select(x => new ResumeSummaryItem() { UserId = x.UserId, CreationDateTimeFormatted = x.CreationDateTime.Value.ToString("yyyy-MM-dd"), IsPublic = true, Id = x.Id.ToString(), ResumeTemplateName = x.ResumeInformation.ResumeTemplate.Name, ResumeSummary = x.Basics.Summary, ResumeSlug = x.ResumeInformation.Slug, ResumeName = x.Basics.Name }).ToList();
+            result = query.Select(x => new ResumeSummaryItem() { UserId = x.UserId, CreationDateTimeFormatted = x.CreationDateTime.Value.ToString("yyyy-MM-dd"), IsPublic = true, Id = x.Id.ToString(), ResumeTemplateName = x.ResumeTemplate.Name, ResumeSummary = x.MetaResume.Basics.Summary, ResumeSlug = x.Slug, ResumeName = x.MetaResume.Basics.Name }).ToList();
         }
         catch (Exception ex)
         {

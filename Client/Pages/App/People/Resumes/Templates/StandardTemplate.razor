@@ -5,258 +5,261 @@
 @using MyVideoResume.Abstractions.Resume
 @inherits BaseComponent
 
-<RadzenRow>
-    <RadzenColumn Style="max-width: 100%">
-        @if (IsOwner && Mode == DisplayMode.View)
-        {
-            <div style="float: right; padding-right: 35px">
-                <RadzenMenu Responsive="false">
-                    <RadzenMenuItem Icon="more_horiz">
-                        <RadzenMenuItem Text="Edit" Path=@Paths.Jobs Icon="edit" Click=@(()=> NavigateTo($"{Paths.Resume_Edit}{Resume.Id.ToString()}"))></RadzenMenuItem>
-                    </RadzenMenuItem>
-                </RadzenMenu>
-            </div>
-        }
-        <RadzenText Text=@Title() TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-        <RadzenStack AlignItems="AlignItems.Normal" Orientation="Orientation.Horizontal">
-            @if (Resume != null && Resume.Privacy_ShowContactDetails != DisplayPrivacy.ToSelf) //TO DO: check the user's role
+@if (Resume != null && Resume.MetaResume != null)
+{
+    <RadzenRow>
+        <RadzenColumn Style="max-width: 100%">
+            @if (IsOwner && Mode == DisplayMode.View)
             {
-                <RadzenText Text=@Resume.MetaResume.Basics.Email TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-                <RadzenText Text=@Resume.MetaResume.Basics.Phone TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-                <RadzenLink Path=@Resume.MetaResume.Basics.Url Text="My Website" Icon="globe" target="_blank" Visible=!string.IsNullOrEmpty(Resume.MetaResume.Basics.Url) />
+                <div style="float: right; padding-right: 35px">
+                    <RadzenMenu Responsive="false">
+                        <RadzenMenuItem Icon="more_horiz">
+                            <RadzenMenuItem Text="Edit" Path=@Paths.Jobs Icon="edit" Click=@(()=> NavigateTo($"{Paths.Resume_Edit}{Resume.Id.ToString()}"))></RadzenMenuItem>
+                        </RadzenMenuItem>
+                    </RadzenMenu>
+                </div>
             }
-        </RadzenStack>
-    </RadzenColumn>
-</RadzenRow>
-@if (Resume.MetaResume.Work != null || Resume.MetaResume.Volunteer != null)
-{
-    <RadzenRow Style="padding-bottom:15px">
-        <RadzenColumn Style="max-width: 100%">
-            <div class="searchComponent">
-                <RadzenTabs>
-                    <Tabs>
-                        @if (Resume.MetaResume.Work != null)
-                        {
-                            <RadzenTabsItem Text="Work">
-                                <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
-                                    <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
-                                        <Items>
-                                            @foreach (var item in Resume.MetaResume.Work.OrderByDescending(x => x.EndDate).ToList())
-                                            {
-                                                <RadzenTimelineItem PointStyle="PointStyle.Dark">
-                                                    <LabelContent>
-                                                        <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                                                    </LabelContent>
-                                                    <ChildContent>
-                                                        <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Name</RadzenText>
-                                                        <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
-
-                                                    </ChildContent>
-                                                </RadzenTimelineItem>
-                                            }
-                                        </Items>
-                                    </RadzenTimeline>
-                                </RadzenColumn>
-                            </RadzenTabsItem>
-                        }
-                        @if (Resume.MetaResume.Volunteer != null)
-                        {
-                            <RadzenTabsItem Text="Volunteer">
-                                <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
-                                    <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
-                                        <Items>
-                                            @foreach (var item in Resume.MetaResume.Volunteer.OrderByDescending(x => x.EndDate).ToList())
-                                            {
-                                                <RadzenTimelineItem PointStyle="PointStyle.Dark">
-                                                    <LabelContent>
-                                                        <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                                                    </LabelContent>
-                                                    <ChildContent>
-                                                        <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Organization</RadzenText>
-                                                        <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
-
-                                                    </ChildContent>
-                                                </RadzenTimelineItem>
-                                            }
-                                        </Items>
-                                    </RadzenTimeline>
-                                </RadzenColumn>
-                            </RadzenTabsItem>
-                        }
-                    </Tabs>
-
-                </RadzenTabs>
-            </div>
+            <RadzenText Text=@Title() TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+            <RadzenStack AlignItems="AlignItems.Normal" Orientation="Orientation.Horizontal">
+                @if (Resume != null && Resume.Privacy_ShowContactDetails != DisplayPrivacy.ToSelf) //TO DO: check the user's role
+                {
+                    <RadzenText Text=@Resume.MetaResume.Basics.Email TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+                    <RadzenText Text=@Resume.MetaResume.Basics.Phone TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+                    <RadzenLink Path=@Resume.MetaResume.Basics.Url Text="My Website" Icon="globe" target="_blank" Visible=!string.IsNullOrEmpty(Resume.MetaResume.Basics.Url) />
+                }
+            </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
-}
-<RadzenRow>
-    <RadzenColumn Style="max-width: 100%">
-        <RadzenText Text="Summary" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-    </RadzenColumn>
-</RadzenRow>
-<RadzenRow Style="padding-bottom:15px">
-    <RadzenColumn Style="max-width: 100%">
-        <RadzenCard>
-            <div style="padding:15px;">
-                <RadzenRow>
-                    <RadzenColumn SizeSM="12">
-                        <RadzenText TextStyle="TextStyle.Body1">@Resume.MetaResume.Basics?.Summary</RadzenText>
-                    </RadzenColumn>
-                </RadzenRow>
-            </div>
-        </RadzenCard>
-    </RadzenColumn>
-</RadzenRow>
-@if (Resume.MetaResume.Work != null && Resume.MetaResume.Work.Count > 0)
-{
+    @if (Resume.MetaResume.Work != null || Resume.MetaResume.Volunteer != null)
+    {
+        <RadzenRow Style="padding-bottom:15px">
+            <RadzenColumn Style="max-width: 100%">
+                <div class="searchComponent">
+                    <RadzenTabs>
+                        <Tabs>
+                            @if (Resume.MetaResume.Work != null)
+                            {
+                                <RadzenTabsItem Text="Work">
+                                    <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
+                                        <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
+                                            <Items>
+                                                @foreach (var item in Resume.MetaResume.Work.OrderByDescending(x => x.EndDate).ToList())
+                                                {
+                                                    <RadzenTimelineItem PointStyle="PointStyle.Dark">
+                                                        <LabelContent>
+                                                            <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                                                        </LabelContent>
+                                                        <ChildContent>
+                                                            <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Name</RadzenText>
+                                                            <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
+
+                                                        </ChildContent>
+                                                    </RadzenTimelineItem>
+                                                }
+                                            </Items>
+                                        </RadzenTimeline>
+                                    </RadzenColumn>
+                                </RadzenTabsItem>
+                            }
+                            @if (Resume.MetaResume.Volunteer != null)
+                            {
+                                <RadzenTabsItem Text="Volunteer">
+                                    <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
+                                        <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
+                                            <Items>
+                                                @foreach (var item in Resume.MetaResume.Volunteer.OrderByDescending(x => x.EndDate).ToList())
+                                                {
+                                                    <RadzenTimelineItem PointStyle="PointStyle.Dark">
+                                                        <LabelContent>
+                                                            <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                                                        </LabelContent>
+                                                        <ChildContent>
+                                                            <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Organization</RadzenText>
+                                                            <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
+
+                                                        </ChildContent>
+                                                    </RadzenTimelineItem>
+                                                }
+                                            </Items>
+                                        </RadzenTimeline>
+                                    </RadzenColumn>
+                                </RadzenTabsItem>
+                            }
+                        </Tabs>
+
+                    </RadzenTabs>
+                </div>
+            </RadzenColumn>
+        </RadzenRow>
+    }
     <RadzenRow>
         <RadzenColumn Style="max-width: 100%">
-            <RadzenText Text="Work Experience" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-
+            <RadzenText Text="Summary" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
         </RadzenColumn>
     </RadzenRow>
     <RadzenRow Style="padding-bottom:15px">
         <RadzenColumn Style="max-width: 100%">
             <RadzenCard>
-                @foreach (var item in Resume.MetaResume.Work.OrderByDescending(x => x.EndDate))
-                {
-                    <div style="padding:15px;">
-                        <RadzenRow>
-                            <RadzenColumn SizeSM="12">
-                                <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Position)</b></RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Overline">@item.Summary</RadzenText>
-                            </RadzenColumn>
-                        </RadzenRow>
-                        @if (item.Highlights.Count > 0)
-                        {
+                <div style="padding:15px;">
+                    <RadzenRow>
+                        <RadzenColumn SizeSM="12">
+                            <RadzenText TextStyle="TextStyle.Body1">@Resume.MetaResume.Basics?.Summary</RadzenText>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </div>
+            </RadzenCard>
+        </RadzenColumn>
+    </RadzenRow>
+    @if (Resume.MetaResume.Work != null && Resume.MetaResume.Work.Count > 0)
+    {
+        <RadzenRow>
+            <RadzenColumn Style="max-width: 100%">
+                <RadzenText Text="Work Experience" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow Style="padding-bottom:15px">
+            <RadzenColumn Style="max-width: 100%">
+                <RadzenCard>
+                    @foreach (var item in Resume.MetaResume.Work.OrderByDescending(x => x.EndDate))
+                    {
+                        <div style="padding:15px;">
                             <RadzenRow>
                                 <RadzenColumn SizeSM="12">
-                                    <RadzenText TextStyle="TextStyle.Body1"><b>Highlights</b></RadzenText>
-                                    <ul>
-                                        @foreach (var i in item.Highlights)
-                                        {
-                                            <li>@i</li>
-                                        }
-                                    </ul>
+                                    <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Position)</b></RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Overline">@item.Summary</RadzenText>
                                 </RadzenColumn>
                             </RadzenRow>
-                        }
-                    </div>
-                }
-            </RadzenCard>
-        </RadzenColumn>
-    </RadzenRow>
-}
+                            @if (item.Highlights.Count > 0)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn SizeSM="12">
+                                        <RadzenText TextStyle="TextStyle.Body1"><b>Highlights</b></RadzenText>
+                                        <ul>
+                                            @foreach (var i in item.Highlights)
+                                            {
+                                                <li>@i</li>
+                                            }
+                                        </ul>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
+                        </div>
+                    }
+                </RadzenCard>
+            </RadzenColumn>
+        </RadzenRow>
+    }
 
 
-@if (Resume.MetaResume.Education != null && Resume.MetaResume.Education.Count > 0)
-{
-    <RadzenRow>
-        <RadzenColumn Style="max-width: 100%">
-            <RadzenText Text="Education" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+    @if (Resume.MetaResume.Education != null && Resume.MetaResume.Education.Count > 0)
+    {
+        <RadzenRow>
+            <RadzenColumn Style="max-width: 100%">
+                <RadzenText Text="Education" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
 
-        </RadzenColumn>
-    </RadzenRow>
-    <RadzenRow Style="padding-bottom:15px">
-        <RadzenColumn Style="max-width: 100%">
-            <RadzenCard>
-                @foreach (var item in Resume.MetaResume.Education)
-                {
-                    <div style="padding:15px;">
-                        <RadzenRow>
-                            <RadzenColumn SizeSM="12">
-                                <RadzenText TextStyle="TextStyle.Body1">@item.Institution</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body1"><b>@item.StudyType, @(item.Area)</b></RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                            </RadzenColumn>
-                        </RadzenRow>
-                        @if (item.Courses.Count > 0)
-                        {
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow Style="padding-bottom:15px">
+            <RadzenColumn Style="max-width: 100%">
+                <RadzenCard>
+                    @foreach (var item in Resume.MetaResume.Education)
+                    {
+                        <div style="padding:15px;">
                             <RadzenRow>
                                 <RadzenColumn SizeSM="12">
-                                    <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Courses</RadzenText>
-                                    <RadzenText TextStyle="TextStyle.Body1"><b>@(string.Join(", ", item.Courses))</b></RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body1">@item.Institution</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body1"><b>@item.StudyType, @(item.Area)</b></RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
                                 </RadzenColumn>
                             </RadzenRow>
-                        }
-                    </div>
-                }
-            </RadzenCard>
+                            @if (item.Courses.Count > 0)
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn SizeSM="12">
+                                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Courses</RadzenText>
+                                        <RadzenText TextStyle="TextStyle.Body1"><b>@(string.Join(", ", item.Courses))</b></RadzenText>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
+                        </div>
+                    }
+                </RadzenCard>
+            </RadzenColumn>
+        </RadzenRow>
+    }
+
+    @if (Resume.MetaResume.Volunteer != null && Resume.MetaResume.Volunteer.Count > 0)
+    {
+        <RadzenRow>
+            <RadzenColumn Style="max-width: 100%">
+                <RadzenText Text="Volunteering" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow Style="padding-bottom:15px">
+            <RadzenColumn Style="max-width: 100%">
+                <RadzenCard>
+                    @foreach (var item in Resume.MetaResume.Volunteer)
+                    {
+                        <div style="padding:15px;">
+                            <RadzenRow>
+                                <RadzenColumn SizeSM="12">
+                                    <RadzenText TextStyle="TextStyle.Body1">@item.Organization</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Position)</b></RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
+                                </RadzenColumn>
+                            </RadzenRow>
+                            <RadzenRow>
+                                <RadzenColumn SizeSM="12">
+                                    <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Summary</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Summary)</b></RadzenText>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        </div>
+                    }
+                </RadzenCard>
+            </RadzenColumn>
+        </RadzenRow>
+    }
+
+    @if (Resume.MetaResume.Skills != null && Resume.MetaResume.Skills.Count > 0)
+    {
+        <RadzenRow>
+            <RadzenColumn Style="max-width: 100%">
+                <RadzenText Text="Skills" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow Style="padding-bottom:15px">
+            <RadzenColumn Style="max-width: 100%">
+                <RadzenCard>
+                    @foreach (var item in Resume.MetaResume.Skills)
+                    {
+                        <div style="padding:15px;">
+                            <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
+                            <RadzenRow>
+                                <RadzenColumn SizeSM="4">
+                                    <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Level</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Level)</b></RadzenText>
+                                </RadzenColumn>
+                                <RadzenColumn SizeSM="8">
+                                    <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Keywords</RadzenText>
+                                    <RadzenText TextStyle="TextStyle.Body1"><b>@(string.Join(", ", item.Keywords))</b></RadzenText>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        </div>
+                    }
+                </RadzenCard>
+            </RadzenColumn>
+        </RadzenRow>
+    }
+    <RadzenRow Style="padding-bottom:75px">
+        <RadzenColumn Style="max-width: 100%">
         </RadzenColumn>
     </RadzenRow>
 }
-
-@if (Resume.MetaResume.Volunteer != null && Resume.MetaResume.Volunteer.Count > 0)
-{
-    <RadzenRow>
-        <RadzenColumn Style="max-width: 100%">
-            <RadzenText Text="Volunteering" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-
-        </RadzenColumn>
-    </RadzenRow>
-    <RadzenRow Style="padding-bottom:15px">
-        <RadzenColumn Style="max-width: 100%">
-            <RadzenCard>
-                @foreach (var item in Resume.MetaResume.Volunteer)
-                {
-                    <div style="padding:15px;">
-                        <RadzenRow>
-                            <RadzenColumn SizeSM="12">
-                                <RadzenText TextStyle="TextStyle.Body1">@item.Organization</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Position)</b></RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                            </RadzenColumn>
-                        </RadzenRow>
-                        <RadzenRow>
-                            <RadzenColumn SizeSM="12">
-                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Summary</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Summary)</b></RadzenText>
-                            </RadzenColumn>
-                        </RadzenRow>
-                    </div>
-                }
-            </RadzenCard>
-        </RadzenColumn>
-    </RadzenRow>
-}
-
-@if (Resume.MetaResume.Skills != null && Resume.MetaResume.Skills.Count > 0)
-{
-    <RadzenRow>
-        <RadzenColumn Style="max-width: 100%">
-            <RadzenText Text="Skills" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-        </RadzenColumn>
-    </RadzenRow>
-    <RadzenRow Style="padding-bottom:15px">
-        <RadzenColumn Style="max-width: 100%">
-            <RadzenCard>
-                @foreach (var item in Resume.MetaResume.Skills)
-                {
-                    <div style="padding:15px;">
-                        <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
-                        <RadzenRow>
-                            <RadzenColumn SizeSM="4">
-                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Level</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Level)</b></RadzenText>
-                            </RadzenColumn>
-                            <RadzenColumn SizeSM="8">
-                                <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Keywords</RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body1"><b>@(string.Join(", ", item.Keywords))</b></RadzenText>
-                            </RadzenColumn>
-                        </RadzenRow>
-                    </div>
-                }
-            </RadzenCard>
-        </RadzenColumn>
-    </RadzenRow>
-}
-<RadzenRow Style="padding-bottom:75px">
-    <RadzenColumn Style="max-width: 100%">
-    </RadzenColumn>
-</RadzenRow>
 @code {
     [Parameter] public ResumeInformationEntity Resume { get; set; }
     [Parameter] public DisplayMode Mode { get; set; } = DisplayMode.View;

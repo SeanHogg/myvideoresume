@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat;
 using Riok.Mapperly.Abstractions;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace MyVideoResume.Data.Models.Resume;
 
@@ -15,6 +16,7 @@ public class MetaResumeEntity : JSONResume
 
     public string UserId { get; set; }
 
+    [JsonIgnore]
     [ForeignKey("Resume")]
     [DeleteBehavior(DeleteBehavior.Restrict)] 
     public ResumeInformationEntity ResumeInformation { get; set; }

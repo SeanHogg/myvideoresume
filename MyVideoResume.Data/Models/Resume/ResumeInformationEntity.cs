@@ -13,7 +13,6 @@ public class ResumeInformationEntity : ResumeInformation
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
-    [JsonIgnore]
     [InverseProperty("ResumeInformation")]
     public MetaResumeEntity MetaResume { get; set; }
 
