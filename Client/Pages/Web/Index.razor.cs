@@ -16,17 +16,8 @@ namespace MyVideoResume.Client.Pages.Web;
 
 public partial class Index
 {
-    [Inject]
-    protected ResumeWebService Service { get; set; }
-
-    [Inject]
-    protected ILogger<Index> Console { get; set; }
-
-    List<ResumeSummaryItem> ResumeList { get; set; } = new List<ResumeSummaryItem>();
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        ResumeList = await Service.GetPublicResumes();
     }
 }

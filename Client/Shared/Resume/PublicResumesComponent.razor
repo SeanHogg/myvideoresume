@@ -1,0 +1,41 @@
+﻿@using MyVideoResume.Abstractions.Resume
+@inherits BaseComponent
+@using static MyVideoResume.Client.Shared.Resume.ResumePreviewComponent
+
+@if (ResumeList.Count > 0)
+{
+    <RadzenRow Style="padding-bottom:15px">
+        <RadzenColumn Style="max-width: 100%">
+            <RadzenCard>
+                <div class="searchComponent" style="overflow:auto;">
+                    <RadzenStack Orientation="Orientation.Horizontal">
+                        @foreach (var resume in ResumeList)
+                        {
+
+                            <RadzenColumn>
+                                <ResumePreviewComponent ResumeItem=@resume Mode="ResumePreviewMode.View"></ResumePreviewComponent>
+                            </RadzenColumn>
+
+                        }
+                    </RadzenStack>
+                </div>
+            </RadzenCard>
+        </RadzenColumn>
+    </RadzenRow>
+}
+@code{
+
+    [Inject]
+    protected ResumeWebService Service { get; set; }
+
+    [Inject]
+    protected ILogger<Index> Console { get; set; }
+
+    List<ResumeSummaryItem> ResumeList { get; set; } = new List<ResumeSummaryItem>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        ResumeList = await Service.GetPublicResumes();
+    }
+}
