@@ -82,10 +82,10 @@ public partial class BuilderPage
 
         try
         {
-            var temp = await Service.GetResume(ResumeId);
 
             if (ResumeId.ToLower() != "new")
             {
+                var temp = await Service.GetResume(ResumeId);
                 if (Security.User.Id == temp.UserId)
                     Resume = temp;
                 else
