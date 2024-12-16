@@ -29,7 +29,7 @@ public class ResumeService
         try
         {
             var query = _dataContext.ResumeInformation
-                .Include(x=> x.MetaResume).ThenInclude(y=>y.Basics)
+                .Include(x => x.MetaResume).ThenInclude(y => y.Basics)
                 .Include(x => x.MetaData)
                 .Include(x => x.UserProfile)
                 .Include(x => x.ResumeTemplate)
@@ -55,10 +55,32 @@ public class ResumeService
         return result;
     }
 
-    public async Task<ResponseResult> Save(string userId, ResumeInformationEntity resume)
+    public async Task<ResponseResult<ResumeInformationEntity>> Save(string userId, ResumeInformationEntity resume)
     {
+        var result = new ResponseResult<ResumeInformationEntity>() { Result = resume };
+        try
+        {
+            //let's see if the entity exists
+            var exists = _dataContext.ResumeInformation.FirstOrDefault(x => x.Id == resume.Id);
 
-        return new ResponseResult();
+            if (exists != null)
+            {
+                exists = resume;
+                _dataContext.ResumeInformation.Update(exists);
+            }
+            else
+            {
+                _dataContext.ResumeInformation.Add(resume);
+            }
+            _dataContext.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            result.ErrorMessage = "Error Saving.";
+            _logger.LogError(ex.Message, ex);
+        }
+
+        return result;
     }
 
     private IQueryable<ResumeInformationEntity> GetResume()
@@ -91,7 +113,7 @@ public class ResumeService
         {
             //Is it a slug?
             result = GetResume().FirstOrDefault(x => x.Slug == resumeId);
-            if (result== null)
+            if (result == null)
             {
                 result = GetResume().FirstOrDefault(x => x.Id == Guid.Parse(resumeId));
             }

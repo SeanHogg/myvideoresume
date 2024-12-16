@@ -13,6 +13,7 @@ using MyVideoResume.Data.Models.Resume;
 using MyVideoResume.Documents;
 using MyVideoResume.Services;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace MyVideoResume.Server.Controllers;
 
@@ -97,16 +98,15 @@ public partial class ResumeController : ControllerBase
         return result;
     }
 
-    [Authorize]
-    [HttpPost]
-    public async Task<ActionResult<ResponseResult>> Save(ResumeInformationEntity resume)
+    [HttpPost("Save")]
+    public async Task<ActionResult<ResponseResult<ResumeInformationEntity>>> Save([FromBody] string resume)
     {
-
-        var result = new ResponseResult();
+        var result = new ResponseResult<ResumeInformationEntity>();
         try
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            result = await _resumeService.Save(userId, resume);
+            var objectSerialized = JsonSerializer.Deserialize<ResumeInformationEntity>(resume);
+            result = await _resumeService.Save(userId, objectSerialized);
         }
         catch (Exception ex)
         {
@@ -115,7 +115,6 @@ public partial class ResumeController : ControllerBase
         return result;
 
     }
-
 
     [Authorize]
     [HttpPost("{resumeId}")]

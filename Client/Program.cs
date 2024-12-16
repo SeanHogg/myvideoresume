@@ -6,6 +6,10 @@ using Blazored.LocalStorage;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Services;
 using MyVideoResume.Client.Shared.Security.Recaptcha;
+using MyVideoResume.Web.Common;
+//using Refit;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using System;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -18,12 +22,20 @@ builder.Services.AddRadzenCookieThemeService(options =>
 });
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSingleton<RecaptchaService>();
-builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+//builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<DataContextService>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthenticationStateDeserialization();
 builder.Services.AddHttpClient("MyVideoResume.Server", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+//builder.Services.AddHeaderPropagation(options => options.Headers.Add("Authorization"));
+//builder.Services.AddRefitClient<IMyVideoResumeApi>()
+//                .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler() { AllowAutoRedirect = false })
+//                .ConfigureHttpClient(client =>
+//                {
+//                    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+//                })
+//                .AddHeaderPropagation();
 builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("MyVideoResume.Server"));
 builder.Services.AddScoped<SecurityWebService>();
 builder.Services.AddScoped<DashboardWebService>();

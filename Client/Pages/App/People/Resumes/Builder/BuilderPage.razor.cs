@@ -41,7 +41,8 @@ public partial class BuilderPage
 
     public int PercentageComplete { get; set; }
 
-    public string SelectedValue { get; set; } = DisplayPrivacy.ToPublic.ToString();
+    public string Privacy_ShowContactDetails { get; set; } = DisplayPrivacy.ToPublic.ToString();
+    public string Privacy_ShowResume { get; set; } = DisplayPrivacy.ToPublic.ToString();
 
     public SortedList<string, string> Privacy { get; set; }
 
@@ -55,7 +56,9 @@ public partial class BuilderPage
         //Email
         //if()
         //Privacy Settings
-        if (!string.IsNullOrEmpty(SelectedValue))
+        if (!string.IsNullOrEmpty(Privacy_ShowResume))
+            result += 10;
+        if (!string.IsNullOrEmpty(Privacy_ShowContactDetails))
             result += 10;
 
         //Basic Info
@@ -69,7 +72,22 @@ public partial class BuilderPage
 
         return result;
     }
-    protected async Task Submit(ResumeInformationEntity arg) => await Service.Save(arg);
+
+    protected async Task ChangePrivacy()
+    {
+
+        //Update the Privacy
+        if (!string.IsNullOrEmpty(Privacy_ShowResume))
+            Resume.Privacy_ShowResume = Enum.Parse<DisplayPrivacy>(Privacy_ShowResume);
+        if (!string.IsNullOrEmpty(Privacy_ShowContactDetails))
+            Resume.Privacy_ShowContactDetails = Enum.Parse<DisplayPrivacy>(Privacy_ShowContactDetails);
+
+    }
+
+    protected async Task Save()
+    {
+        var result = await Service.Save(Resume);
+    }
 
     protected override async Task OnInitializedAsync()
     {

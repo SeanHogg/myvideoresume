@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace MyVideoResume.Abstractions.Core;
 
-public class ResponseResult
+public class ResponseResult<T>
 {
     public string ErrorMessage { get; set; }
-    public String Result { get; set; }
+    public T Result { get; set; }
+}
+
+public class ResponseResult: ResponseResult<string>
+{
 }

@@ -8,19 +8,19 @@ using System.Linq;
 namespace MyVideoResume.Abstractions.Resume;
 public enum ResumeType
 {
-    JSONResumeFormat
+    JSONResumeFormat = 1
 }
 
 public enum DisplayPrivacy
 {
     [Description("Visible to Public")]
-    ToPublic,
+    ToPublic = 0,
     [Description("Visible to Recruiters")]
-    ToRecruiters,
+    ToRecruiters = 1,
     [Description("Visible to Connections")]
-    ToConnections,
+    ToConnections = 2,
     [Description("Visible to Self (Private)")]
-    ToSelf
+    ToSelf = 10
 }
 
 public class ResumeInformation : CommonBase

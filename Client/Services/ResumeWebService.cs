@@ -20,6 +20,10 @@ using MyVideoResume.Abstractions.Core;
 using static System.Net.WebRequestMethods;
 using MyVideoResume.Abstractions.Job;
 using MyVideoResume.Abstractions.Resume;
+using MyVideoResume.Client.Shared;
+using MyVideoResume.Web.Common;
+using System.Net.Http.Json;
+//using Refit;
 
 namespace MyVideoResume.Client.Services;
 
@@ -127,15 +131,17 @@ public partial class ResumeWebService
         return result;
     }
 
-    public async Task<ResponseResult> Save(ResumeInformationEntity resume)
+    public async Task<ResponseResult<ResumeInformationEntity>> Save(ResumeInformationEntity resume)
     {
-        var r = new ResponseResult();
+        var r = new ResponseResult<ResumeInformationEntity>();
         try
         {
-            var uri = new Uri($"{_navigationManager.BaseUri}api/resume/save");
-            _httpClient.Timeout = TimeSpan.FromMinutes(10);
-            var response = await _httpClient.PostAsJsonAsync<ResumeInformationEntity>(uri, resume);
-            r = await response.ReadAsync<ResponseResult>();
+            var uri = new Uri($"{_navigationManager.BaseUri}{Paths.Resume_API_Save}");
+
+            var jsonText = JsonSerializer.Serialize(resume);
+
+            var response = await _httpClient.PostAsJsonAsync<string>(uri, jsonText);
+            r = await response.ReadAsync<ResponseResult<ResumeInformationEntity>>();
         }
         catch (Exception ex)
         {
@@ -143,6 +149,23 @@ public partial class ResumeWebService
         }
         return r;
     }
+
+    //REFIT VERSION
+    //public async Task<ResponseResult<ResumeInformationEntity>> Save(ResumeInformationEntity resume)
+    //{
+    //    var r = new ResponseResult<ResumeInformationEntity>();
+    //    try
+    //    {
+    //        var api = RestService.For<IMyVideoResumeApi>(_navigationManager.BaseUri);
+    //        r = await api.ResumeEdit(resume);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logger.LogError(ex.Message, ex);
+    //    }
+    //    return r;
+    //}
+
 
     public async Task<ResponseResult> Match(string jobDescription, string resume)
     {

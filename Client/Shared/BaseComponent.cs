@@ -5,16 +5,10 @@ using Radzen;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.ComponentModel;
 using System.Linq;
+using MyVideoResume.Web.Common;
 
 namespace MyVideoResume.Client.Shared;
 
-public static class Paths
-{
-    public static readonly string Resume_CreateNew = "resumes/builder/new";
-    public static readonly string Resume_Edit = "resumes/builder/";
-    public static readonly string Resume_API_CreateFromFile = "api/resume/createFromFile";
-    public static readonly string Jobs = "jobs";
-}
 
 public static class EnumExtensions
 {

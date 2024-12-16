@@ -30,6 +30,7 @@
 	  <ProjectReference Include="..\MyVideoResume.AI\MyVideoResume.AI.csproj" />
 	  <ProjectReference Include="..\MyVideoResume.Data\MyVideoResume.Data.csproj" />
 	  <ProjectReference Include="..\MyVideoResume.Extensions\MyVideoResume.Extensions.csproj" />
+	  <ProjectReference Include="..\MyVideoResume.Web.Common\MyVideoResume.Web.Common.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="..\Server\Models\ApplicationAuthenticationState.cs" Link="Models\ApplicationAuthenticationState.cs" />
