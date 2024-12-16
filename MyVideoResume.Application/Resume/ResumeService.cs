@@ -65,8 +65,7 @@ public class ResumeService
 
             if (exists != null)
             {
-                exists = resume;
-                _dataContext.ResumeInformation.Update(exists);
+                _dataContext.Entry(exists).CurrentValues.SetValues(resume);
             }
             else
             {

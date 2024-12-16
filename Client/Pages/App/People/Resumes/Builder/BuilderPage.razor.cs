@@ -14,6 +14,7 @@ using MyVideoResume.Client.Pages.App.People.Resumes.Templates;
 using MyVideoResume.Client.Services;
 using MyVideoResume.Client.Shared;
 using MyVideoResume.Data.Models.Resume;
+using MyVideoResume.Web.Common;
 using Radzen;
 using Radzen.Blazor;
 
@@ -87,6 +88,10 @@ public partial class BuilderPage
     protected async Task Save()
     {
         var result = await Service.Save(Resume);
+        if (result.ErrorMessage.HasValue())
+            ShowSuccessNotification("Resume Saved", string.Empty);
+        else
+            ShowErrorNotification("Resume Failed", result.ErrorMessage);
     }
 
     protected override async Task OnInitializedAsync()
@@ -105,7 +110,11 @@ public partial class BuilderPage
             {
                 var temp = await Service.GetResume(ResumeId);
                 if (Security.User.Id == temp.UserId)
+                {
                     Resume = temp;
+                    Privacy_ShowResume = Resume.Privacy_ShowResume.ToString();
+                    Privacy_ShowContactDetails = Resume.Privacy_ShowContactDetails.ToString();
+                }
                 else
                     Resume = null;
 

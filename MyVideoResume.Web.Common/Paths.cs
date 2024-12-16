@@ -13,3 +13,11 @@ public static class Paths
     public const string Resume_API_Save = "api/resume/save";
     public const string Jobs = "jobs";
 }
+
+public static class Extensions
+{
+    public static bool HasValue(this string value)
+    {
+        return string.IsNullOrWhiteSpace(value);
+    }
+}

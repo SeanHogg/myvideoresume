@@ -56,6 +56,18 @@ public class BaseComponent : LayoutComponentBase
 
     [Inject] protected SecurityWebService Security { get; set; }
 
+    public void ShowSuccessNotification(string title, string message)
+    {
+        ShowNotification(title, message, NotificationSeverity.Success);
+    }
+    public void ShowErrorNotification(string title, string message) {
+
+        ShowNotification(title, message, NotificationSeverity.Error);
+    }
+    private void ShowNotification(string title, string message, NotificationSeverity severity)
+    {
+        NotificationService.Notify(new NotificationMessage { Severity = severity, Summary = title, Detail = message, Duration = 4000 });
+    }
     public void ShowTooltip(ElementReference elementReference, string content) => TooltipService.Open(elementReference, content, new TooltipOptions() { Position = TooltipPosition.Top });
 
     public void NavigateTo(string path)

@@ -106,6 +106,7 @@ public partial class ResumeController : ControllerBase
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var objectSerialized = JsonSerializer.Deserialize<ResumeInformationEntity>(resume);
+            objectSerialized.ResumeSerialized = resume;
             result = await _resumeService.Save(userId, objectSerialized);
         }
         catch (Exception ex)

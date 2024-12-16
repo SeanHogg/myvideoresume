@@ -49,12 +49,11 @@ public partial class Dashboard
     {
         if (!string.IsNullOrWhiteSpace(result.ErrorMessage))
         {
-            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error Summary", Detail = result.ErrorMessage, Duration = 4000 });
+            ShowErrorNotification("Error Summary", result.ErrorMessage);
         }
         else
         {
-            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Resume Deleted", Detail = result.ErrorMessage, Duration = 4000 });
-
+            ShowSuccessNotification("Resume Deleted", result.ErrorMessage);
             ResumeList = await Service.GetResumeSummaries();
             StateHasChanged();
         }
@@ -62,8 +61,7 @@ public partial class Dashboard
 
     async Task UploadCompletedHandler(string result)
     {
-        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Resume Created", Detail = result, Duration = 4000 });
-
+        ShowSuccessNotification("Resume Created", result);
         ResumeList = await Service.GetResumeSummaries();
     }
 }
