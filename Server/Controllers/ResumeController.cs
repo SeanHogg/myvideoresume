@@ -12,6 +12,7 @@ using MyVideoResume.Data.Models;
 using MyVideoResume.Data.Models.Resume;
 using MyVideoResume.Documents;
 using MyVideoResume.Services;
+using MyVideoResume.Web.Common;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -99,18 +100,17 @@ public partial class ResumeController : ControllerBase
     }
 
     [HttpPost("Save")]
-    public async Task<ActionResult<ResponseResult<ResumeInformationEntity>>> Save([FromBody] string resume)
+    public async Task<ActionResult<ResponseResult<ResumeInformationEntity>>> Save([FromBody] string resumeJson)
     {
         var result = new ResponseResult<ResumeInformationEntity>();
         try
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var objectSerialized = JsonSerializer.Deserialize<ResumeInformationEntity>(resume);
-            objectSerialized.ResumeSerialized = resume;
-            result = await _resumeService.Save(userId, objectSerialized);
+            result = await _resumeService.CreateResumeInformation(userId, resumeJson);
         }
         catch (Exception ex)
         {
+            result.ErrorMessage = "Error Saving";
             _logger.LogError(ex.Message, ex);
         }
         return result;
@@ -188,9 +188,9 @@ public partial class ResumeController : ControllerBase
 
     [Authorize]
     [HttpPost("CreateFromFile")]
-    public async Task<ActionResult<ResponseResult>> CreateFromFile(IFormFile file)
+    public async Task<ActionResult<ResponseResult<ResumeInformationEntity>>> CreateFromFile(IFormFile file)
     {
-        var result = new ResponseResult();
+        var result = new ResponseResult<ResumeInformationEntity>();
         try
         {
             if (file != null)
@@ -208,12 +208,17 @@ public partial class ResumeController : ControllerBase
                         }
                     case "application/pdf":
                         {
-                            result = await _engine.ResumeParseJSON(file);
-
-                            //Remove the Markdown from the Response
-                            var resume = result.Result;
-                            result = await _resumeService.CreateResume(id, resume);
-
+                            var tempresult = await _engine.ResumeParseJSON(file);
+                            if (!tempresult.ErrorMessage.HasValue())
+                            {
+                                //Remove the Markdown from the Response
+                                var resume = tempresult.Result;
+                                result = await _resumeService.CreateResume(id, resume);
+                            }
+                            else
+                            {
+                                result.ErrorMessage = tempresult.ErrorMessage;
+                            }
                             break;
                         }
                     case "application/msword":
@@ -228,7 +233,7 @@ public partial class ResumeController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex.Message, ex);
-            result.Result = ex.Message;
+            result.ErrorMessage = ex.Message;
         }
         return result;
     }

@@ -127,6 +127,7 @@ public partial class ResumeWebService
         catch (Exception ex)
         {
             _logger.LogError(ex.Message, ex);
+            result.ErrorMessage = "Error Deleting.";
         }
         return result;
     }
@@ -145,6 +146,7 @@ public partial class ResumeWebService
         }
         catch (Exception ex)
         {
+            r.ErrorMessage = "Failed Saving";
             _logger.LogError(ex.Message, ex);
         }
         return r;

@@ -15,6 +15,7 @@ using MyVideoResume.Client.Services;
 using MyVideoResume.Client.Shared.Resume;
 using MyVideoResume.Data;
 using MyVideoResume.Data.Models.Resume;
+using MyVideoResume.Web.Common;
 using Radzen;
 using Radzen.Blazor;
 
@@ -30,13 +31,6 @@ public partial class Dashboard
 
     List<ResumeSummaryItem> ResumeList { get; set; } = new List<ResumeSummaryItem>();
     ResumeUploadToJsonComponent ResumeUploadToJsonComponent { get; set; }
-    RadzenUpload uploadDD;
-
-    int progress;
-    bool showProgress;
-    bool showComplete;
-    string completionMessage;
-    bool cancelUpload = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,13 +41,13 @@ public partial class Dashboard
 
     async Task DeleteCompletedHandler(ResponseResult result)
     {
-        if (!string.IsNullOrWhiteSpace(result.ErrorMessage))
+        if (!result.ErrorMessage.HasValue())
         {
-            ShowErrorNotification("Error Summary", result.ErrorMessage);
+            ShowErrorNotification("Error Deleting Resume", string.Empty);
         }
         else
         {
-            ShowSuccessNotification("Resume Deleted", result.ErrorMessage);
+            ShowSuccessNotification("Resume Deleted", string.Empty);
             ResumeList = await Service.GetResumeSummaries();
             StateHasChanged();
         }
@@ -61,7 +55,7 @@ public partial class Dashboard
 
     async Task UploadCompletedHandler(string result)
     {
-        ShowSuccessNotification("Resume Created", result);
+        ShowSuccessNotification("Resume Created", string.Empty);
         ResumeList = await Service.GetResumeSummaries();
     }
 }

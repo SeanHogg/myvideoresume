@@ -38,22 +38,31 @@ public partial class ResumeViewer
     {
         try
         {
+            var tempTitlePart = "View";
             Resume = await Service.GetResume(Slug);
-            IsResumeDeleted = Resume.DeletedDateTime.HasValue;
+            
+            if (Resume == null || Resume.DeletedDateTime.HasValue)
+                IsResumeDeleted = true;
+
             if (IsResumeDeleted)
             {
-                ResumePageTitle = $"MyVideoResu.ME - Resume - Not Available";
+                tempTitlePart = "Not Available";
             }
             else
             {
-                ResumePageTitle = $"MyVideoResu.ME - Resume - {Resume.MetaResume.Basics.Name}";
+                if (Resume.MetaResume != null && Resume.MetaResume.Basics != null)
+                    tempTitlePart = Resume.MetaResume.Basics.Name;
+
                 if (Resume.ResumeTemplate != null)
                 {
                     ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
                     ComponentParameters = new Dictionary<string, object>() { { "resume", Resume } };
                 }
-                StateHasChanged();
             }
+
+            ResumePageTitle = $"MyVideoResu.ME - Resume - {tempTitlePart}";
+            StateHasChanged();
+
         }
         catch (Exception ex)
         {

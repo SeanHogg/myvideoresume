@@ -55,31 +55,10 @@ public class ResumeService
         return result;
     }
 
-    public async Task<ResponseResult<ResumeInformationEntity>> Save(string userId, ResumeInformationEntity resume)
+    private IQueryable<ResumeInformationEntity> GetReadonlyResume()
     {
-        var result = new ResponseResult<ResumeInformationEntity>() { Result = resume };
-        try
-        {
-            //let's see if the entity exists
-            var exists = _dataContext.ResumeInformation.FirstOrDefault(x => x.Id == resume.Id);
 
-            if (exists != null)
-            {
-                _dataContext.Entry(exists).CurrentValues.SetValues(resume);
-            }
-            else
-            {
-                _dataContext.ResumeInformation.Add(resume);
-            }
-            _dataContext.SaveChanges();
-        }
-        catch (Exception ex)
-        {
-            result.ErrorMessage = "Error Saving.";
-            _logger.LogError(ex.Message, ex);
-        }
-
-        return result;
+        return GetResume().AsNoTracking();
     }
 
     private IQueryable<ResumeInformationEntity> GetResume()
@@ -100,8 +79,7 @@ public class ResumeService
             .Include(x => x.MetaResume).ThenInclude(x => x.Skills)
             .Include(x => x.MetaData)
             .Include(x => x.UserProfile)
-            .Include(x => x.ResumeTemplate)
-            .AsNoTracking();
+            .Include(x => x.ResumeTemplate);
         return items;
     }
 
@@ -111,10 +89,10 @@ public class ResumeService
         try
         {
             //Is it a slug?
-            result = GetResume().FirstOrDefault(x => x.Slug == resumeId);
+            result = GetReadonlyResume().FirstOrDefault(x => x.Slug == resumeId);
             if (result == null)
             {
-                result = GetResume().FirstOrDefault(x => x.Id == Guid.Parse(resumeId));
+                result = GetReadonlyResume().FirstOrDefault(x => x.Id == Guid.Parse(resumeId));
             }
         }
         catch (Exception ex)
@@ -129,7 +107,7 @@ public class ResumeService
         var result = new List<ResumeInformationEntity>();
         try
         {
-            result = await GetResume().Where(x => x.UserId == userId).ToListAsync();
+            result = await GetReadonlyResume().Where(x => x.UserId == userId).ToListAsync();
         }
         catch (Exception ex)
         {
@@ -158,8 +136,11 @@ public class ResumeService
                         resume.Privacy_ShowResume = DisplayPrivacy.ToSelf;
                         resume.UserId = string.Empty;
                         resume.DeletedDateTime = DateTime.UtcNow;
-                        resume.MetaResume.UserId = string.Empty;
-                        resume.MetaResume.DeletedDateTime = DateTime.UtcNow;
+                        if (resume.MetaResume != null)
+                        {
+                            resume.MetaResume.UserId = string.Empty;
+                            resume.MetaResume.DeletedDateTime = DateTime.UtcNow;
+                        }
                         userProfile.ResumeItems.Remove(resume);
                         _dataContext.SaveChanges();
                         result.Result = "Operation Successful";
@@ -176,9 +157,30 @@ public class ResumeService
         return result;
     }
 
-    public async Task<ResponseResult> CreateResume(string userId, string resumeText)
+    public async Task<ResponseResult<ResumeInformationEntity>> CreateResumeInformation(string userId, string resumeText)
     {
-        var result = new ResponseResult() { };
+        var result = new ResponseResult<ResumeInformationEntity>() { };
+
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(userId)) //should validate that its a real user account...
+            {
+                var resumeInformation = JsonSerializer.Deserialize<ResumeInformationEntity>(resumeText);
+                var metaResume = JsonSerializer.Serialize<MetaResumeEntity>(resumeInformation.MetaResume);
+                result = await CreateResume(userId, metaResume);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message, ex);
+            result.ErrorMessage = ex.Message;
+        }
+        return result;
+    }
+
+    public async Task<ResponseResult<ResumeInformationEntity>> CreateResume(string userId, string resumeText)
+    {
+        var result = new ResponseResult<ResumeInformationEntity>() { };
 
         try
         {
@@ -197,16 +199,30 @@ public class ResumeService
                         standardTemplate = ResumeTemplateEntity.CreateStandardResumeTemplate();
                         standardTemplate.UserId = userId;
                         _dataContext.ResumeTemplates.Add(standardTemplate);
-                        _dataContext.SaveChanges();
+                        await _dataContext.SaveChangesAsync();
                     }
 
                     //Save the Resume to get an object to populate into 
                     var tempresume = JsonSerializer.Deserialize<MetaResumeEntity>(resumeText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                     var resumeInformation = new ResumeInformationEntity() { CreationDateTime = DateTime.UtcNow, UserId = userId, ResumeSerialized = resumeText, Name = tempresume.Basics.Name, Privacy_ShowResume = DisplayPrivacy.ToPublic, Privacy_ShowContactDetails = DisplayPrivacy.ToPublic, ResumeTemplate = standardTemplate, MetaResume = tempresume };
                     tempresume.UserId = userId;
-                    tempresume.CreationDateTime = DateTime.UtcNow;
-                    profile.ResumeItems.Add(resumeInformation);
-                    _dataContext.SaveChanges();
+                    if (!tempresume.CreationDateTime.HasValue)
+                        tempresume.CreationDateTime = DateTime.UtcNow;
+                    else
+                        tempresume.UpdateDateTime = DateTime.UtcNow;
+
+                    var existingResume = profile.ResumeItems.FirstOrDefault(x => x.Id == tempresume.Id);
+                    if (existingResume != null)
+                    {
+                        _dataContext.Entry(existingResume).CurrentValues.SetValues(tempresume);
+                    }
+                    else
+                    {
+                        profile.ResumeItems.Add(resumeInformation);
+                    }
+                    await _dataContext.SaveChangesAsync();
+
+                    result.Result = resumeInformation;
                 }
             }
         }

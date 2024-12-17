@@ -11,6 +11,7 @@ public static class Paths
     public const string Resume_Edit = "resumes/builder/";
     public const string Resume_API_CreateFromFile = "api/resume/createFromFile";
     public const string Resume_API_Save = "api/resume/save";
+    public const string Resume_API_Parse = "api/resume/parse";
     public const string Jobs = "jobs";
 }
 

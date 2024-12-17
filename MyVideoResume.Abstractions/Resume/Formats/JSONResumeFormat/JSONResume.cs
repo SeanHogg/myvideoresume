@@ -41,7 +41,7 @@ public class Basics
     public string Phone { get; set; }
     public string Url { get; set; }
     public string Summary { get; set; }
-    public Location Location { get; set; }
+    public Location? Location { get; set; }
 }
 
 public class Location

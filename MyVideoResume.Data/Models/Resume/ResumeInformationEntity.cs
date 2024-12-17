@@ -17,7 +17,8 @@ public class ResumeInformationEntity : ResumeInformation
     public MetaResumeEntity MetaResume { get; set; }
 
     [JsonIgnore]
-    public UserProfileEntity UserProfile { get; set; }
+    [DeleteBehavior(DeleteBehavior.NoAction)]
+    public UserProfileEntity? UserProfile { get; set; }
 
     [DeleteBehavior(DeleteBehavior.NoAction)]
     public List<MetaDataEntity> MetaData { get; set; }

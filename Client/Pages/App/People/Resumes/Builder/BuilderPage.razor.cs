@@ -50,27 +50,28 @@ public partial class BuilderPage
     protected int CalculatePercentComplete()
     {
         var result = 0;
+        if (Resume != null)
+        {
+            //Resume Name
+            if (!string.IsNullOrEmpty(Resume.Name))
+                result += 10;
+            //Email
+            //if()
+            //Privacy Settings
+            if (!string.IsNullOrEmpty(Privacy_ShowResume))
+                result += 10;
+            if (!string.IsNullOrEmpty(Privacy_ShowContactDetails))
+                result += 10;
 
-        //Resume Name
-        if (!string.IsNullOrEmpty(Resume.Name))
-            result += 10;
-        //Email
-        //if()
-        //Privacy Settings
-        if (!string.IsNullOrEmpty(Privacy_ShowResume))
-            result += 10;
-        if (!string.IsNullOrEmpty(Privacy_ShowContactDetails))
-            result += 10;
+            //Basic Info
+            //SLUG
+            //Summary
+            //Education
+            //Work
 
-        //Basic Info
-        //SLUG
-        //Summary
-        //Education
-        //Work
-
-        PercentageComplete = result;
-        StateHasChanged();
-
+            PercentageComplete = result;
+            StateHasChanged();
+        }
         return result;
     }
 
@@ -109,7 +110,7 @@ public partial class BuilderPage
             if (ResumeId.ToLower() != "new")
             {
                 var temp = await Service.GetResume(ResumeId);
-                if (Security.User.Id == temp.UserId)
+                if (temp!=null && Security.User.Id == temp.UserId)
                 {
                     Resume = temp;
                     Privacy_ShowResume = Resume.Privacy_ShowResume.ToString();
