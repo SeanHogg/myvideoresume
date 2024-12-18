@@ -175,7 +175,6 @@ public partial class ResumeWebService
         try
         {
             var uri = new Uri($"{_navigationManager.BaseUri}api/resume/match");
-            _httpClient.Timeout = TimeSpan.FromMinutes(10);
             var request = new JobMatchRequest() { Job = jobDescription, Resume = resume };
             var response = await _httpClient.PostAsJsonAsync<JobMatchRequest>(uri, request);
             r = await response.ReadAsync<ResponseResult>();

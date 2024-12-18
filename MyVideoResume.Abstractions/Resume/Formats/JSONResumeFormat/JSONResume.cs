@@ -34,13 +34,13 @@ public class Basics
     [JsonIgnore]
     public string? Id { get; set; } = Guid.NewGuid().ToString();
 
-    public string Name { get; set; }
-    public string Label { get; set; }
-    public string Image { get; set; }
-    public string Email { get; set; }
-    public string Phone { get; set; }
-    public string Url { get; set; }
-    public string Summary { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Label { get; set; } = string.Empty;
+    public string Image { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Phone { get; set; } = string.Empty;
+    public string Url { get; set; } = string.Empty;
+    public string Summary { get; set; } = string.Empty;
     public Location? Location { get; set; }
 }
 
@@ -48,11 +48,11 @@ public class Location
 {
     [JsonIgnore]
     public string? Id { get; set; } = Guid.NewGuid().ToString();
-    public string Address { get; set; }
-    public string City { get; set; }
-    public string Region { get; set; }
-    public string PostalCode { get; set; }
-    public string CountryCode { get; set; }
+    public string Address { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public string Region { get; set; } = string.Empty;
+    public string PostalCode { get; set; } = string.Empty;
+    public string CountryCode { get; set; } = string.Empty;
 }
 
 public class Work
