@@ -5,6 +5,7 @@ using MyVideoResume.Abstractions.Core;
 using MyVideoResume.Abstractions.Resume;
 using MyVideoResume.Data;
 using MyVideoResume.Data.Models.Resume;
+using MyVideoResume.Web.Common;
 using System.Text.Json;
 
 namespace MyVideoResume.Application.Resume;
@@ -178,7 +179,7 @@ public class ResumeService
         return result;
     }
 
-    public async Task<ResponseResult<ResumeInformationEntity>> CreateResume(string userId, string resumeText)
+    public async Task<ResponseResult<ResumeInformationEntity>> CreateResume(string userId, string resumeText, string? resumeItemId = null)
     {
         var result = new ResponseResult<ResumeInformationEntity>() { };
 
@@ -203,23 +204,39 @@ public class ResumeService
                     }
 
                     //Save the Resume to get an object to populate into 
-                    var tempresume = JsonSerializer.Deserialize<MetaResumeEntity>(resumeText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    var resumeInformation = new ResumeInformationEntity() { CreationDateTime = DateTime.UtcNow, UserId = userId, ResumeSerialized = resumeText, Name = tempresume.Basics.Name, Privacy_ShowResume = DisplayPrivacy.ToPublic, Privacy_ShowContactDetails = DisplayPrivacy.ToPublic, ResumeTemplate = standardTemplate, MetaResume = tempresume };
-                    tempresume.UserId = userId;
-                    if (!tempresume.CreationDateTime.HasValue)
-                        tempresume.CreationDateTime = DateTime.UtcNow;
+                    var tempMetaresume = JsonSerializer.Deserialize<MetaResumeEntity>(resumeText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    //Does the Meta Resume Exist?
+                    var existingMetaResume = _dataContext.Resumes.FirstOrDefault(x => x.Id == tempMetaresume.Id && userId == userId);
+                    if (existingMetaResume != null)
+                    {
+                        //EXISTING
+                        tempMetaresume.UpdateDateTime = DateTime.UtcNow;
+                        //_dataContext.Entry(existingMetaResume).CurrentValues.SetValues(tempMetaresume);
+                    }
                     else
-                        tempresume.UpdateDateTime = DateTime.UtcNow;
+                    {
+                        tempMetaresume.UserId = userId;
+                        tempMetaresume.CreationDateTime = DateTime.UtcNow;
+                        //_dataContext.Resumes.Add(tempMetaresume);
+                        //existingMetaResume = tempMetaresume;
+                    }
+                    _dataContext.InsertUpdateOrDeleteGraph(tempMetaresume, existingMetaResume);
+                    await _dataContext.SaveChangesAsync();
 
-                    var existingResume = profile.ResumeItems.FirstOrDefault(x => x.Id == tempresume.Id);
-                    if (existingResume != null)
+
+                    var resumeInformation = new ResumeInformationEntity() { CreationDateTime = DateTime.UtcNow, UserId = userId, ResumeSerialized = resumeText, Name = existingMetaResume.Basics.Name, Privacy_ShowResume = DisplayPrivacy.ToPublic, Privacy_ShowContactDetails = DisplayPrivacy.ToPublic, ResumeTemplate = standardTemplate };
+                    if (resumeItemId.HasValue())
                     {
-                        _dataContext.Entry(existingResume).CurrentValues.SetValues(tempresume);
+                        var tempResumeInformation = _dataContext.ResumeInformation.FirstOrDefault(x => x.Id == Guid.Parse(resumeItemId) && x.UserId == userId);
+                        if (tempResumeInformation != null)
+                        {
+                            _dataContext.InsertUpdateOrDeleteGraph(resumeInformation, tempResumeInformation);
+                            resumeInformation = tempResumeInformation;
+                        }
                     }
-                    else
-                    {
-                        profile.ResumeItems.Add(resumeInformation);
-                    }
+
+
+                    profile.ResumeItems.Add(resumeInformation);
                     await _dataContext.SaveChangesAsync();
 
                     result.Result = resumeInformation;
