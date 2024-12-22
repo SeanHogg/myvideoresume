@@ -114,6 +114,8 @@
 
         if (WorkItemSaveCompleted.HasDelegate)
             await WorkItemSaveCompleted.InvokeAsync(item);
+        if (WorkItemCreateCompleted.HasDelegate)
+            await WorkItemCreateCompleted.InvokeAsync(item);
 
     }
 }

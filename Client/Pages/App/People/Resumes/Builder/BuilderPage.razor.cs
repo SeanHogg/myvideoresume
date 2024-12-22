@@ -94,7 +94,10 @@ public partial class BuilderPage
     {
         Logger.LogInformation(workItem.Id);
     }
-
+    protected async Task WorkItemDeleted(Work workItem)
+    {
+        Logger.LogInformation(workItem.Id);
+    }
     protected async Task Save()
     {
         var result = await Service.Save(Resume);
