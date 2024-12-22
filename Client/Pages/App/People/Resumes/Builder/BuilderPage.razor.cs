@@ -66,9 +66,13 @@ public partial class BuilderPage
             //Basic Info
             //SLUG
             //Summary
-            //Education
-            //Work
-
+            if (Resume.MetaResume != null)
+            {
+                //Education
+                //Work
+                if (Resume.MetaResume.Work != null && Resume.MetaResume.Work.Count > 0)
+                    result += 10;
+            }
             PercentageComplete = result;
             StateHasChanged();
         }
@@ -84,6 +88,11 @@ public partial class BuilderPage
         if (!string.IsNullOrEmpty(Privacy_ShowContactDetails))
             Resume.Privacy_ShowContactDetails = Enum.Parse<DisplayPrivacy>(Privacy_ShowContactDetails);
 
+    }
+
+    protected async Task WorkItemCreated(Work workItem)
+    {
+        Logger.LogInformation(workItem.Id);
     }
 
     protected async Task Save()

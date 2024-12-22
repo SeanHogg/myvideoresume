@@ -2,7 +2,7 @@
 @using MyVideoResume.Data.Models.Resume
 @attribute [Authorize]
 @inherits BaseComponent
-<RadzenStack style="overflow-y: scroll; height:400px">
+<RadzenStack style="overflow-y: scroll; height:435px" id="workContainer">
     <RadzenDropZoneContainer TItem="Work" Data="WorkItems"
                              ItemRender="@OnItemRender"
                              ItemSelector="@ItemSelector"
@@ -16,26 +16,30 @@
             </RadzenDropZone>
         </ChildContent>
         <Template>
-            <ResumeWorkItemComponent Item=@context DeleteCompleted=@Delete></ResumeWorkItemComponent>
+            <ResumeWorkItemComponent Item=@context WorkItemDeleteCompleted=@Delete></ResumeWorkItemComponent>
         </Template>
     </RadzenDropZoneContainer>
 
 </RadzenStack>
-<RadzenButton Size="ButtonSize.ExtraSmall" Icon="add" ButtonStyle="ButtonStyle.Primary" Click="@CreateItem" />
+<RadzenButton Size="ButtonSize.ExtraSmall" Icon="add" ButtonStyle="ButtonStyle.Primary" Text="Add Work" Click="@CreateItem" />
+
+<script>
+    function scrollTopWork() {
+        var container = document.querySelector("#workContainer");
+        container.scrollTo(100,0);
+    }
+</script>
 
 @code {
+    [Parameter] public EventCallback<Work> WorkItemCreateCompleted { get; set; }
 
-    // Filter items by zone value
     Func<Work, RadzenDropZone<Work>, bool> ItemSelector = (item, zone) => true;
+    Func<RadzenDropZoneItemEventArgs<Work>, bool> CanDrop = request => true;
 
-    Func<RadzenDropZoneItemEventArgs<Work>, bool> CanDrop = request =>
+    void Delete(Work item)
     {
-        // Allow item drop only in the same zone, in "Deleted" zone or in the next/previous zone.
-        return request.FromZone == request.ToZone || (Status)request.ToZone.Value == Status.Deleted ||
-               Math.Abs((int)request.Item.Order - (int)request.ToZone.Value) == 1;
-    };
-
-    void Delete(Work item) { }
+        WorkItems.Remove(item);
+    }
 
     void OnItemRender(RadzenDropZoneItemRenderEventArgs<Work> args)
     {
@@ -73,30 +77,26 @@
         }
     }
 
-    // IList<Work> data;
-
     protected override void OnInitialized()
     {
         WorkItems = WorkItems.OrderByDescending(x => x.EndDate).ToList<Work>();
     }
 
-    private void CreateItem()
+    private async Task CreateItem()
     {
-        WorkItems.Insert(0, new Work()
+        var workItem = new Work()
             {
                 Id = Guid.NewGuid().ToString(),
                 Order = 0
-            });
+            };
+
+        WorkItems.Insert(0, workItem);
+
+        if (WorkItemCreateCompleted.HasDelegate)
+            await WorkItemCreateCompleted.InvokeAsync(workItem);
 
         // StateHasChanged();
-    }
-
-    public enum Status
-    {
-        NotStarted,
-        Started,
-        Completed,
-        Deleted
+        await JSRuntime.InvokeVoidAsync("scrollTopWork");
     }
 
     [Parameter] public List<Work> WorkItems { get; set; }

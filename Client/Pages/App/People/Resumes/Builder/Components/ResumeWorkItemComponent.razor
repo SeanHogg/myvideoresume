@@ -3,7 +3,10 @@
 @attribute [Authorize]
 @inherits BaseComponent
 <RadzenColumn Size=12>
-    <RadzenCard Variant="Variant.Outlined">
+    <RadzenCard Variant="Variant.Outlined" Style="margin-bottom:8px;">
+        <RadzenColumn Size="12" SizeMD="12">
+            <RadzenButton Style="float: right" Size="ButtonSize.ExtraSmall" Icon="delete_forever" ButtonStyle="ButtonStyle.Danger" Click="@Delete" />
+        </RadzenColumn>
         <RadzenColumn Size="12" SizeMD="4">
             <RadzenLabel Text="Business Name" Component="Work.Name" />
         </RadzenColumn>
@@ -15,7 +18,7 @@
             <RadzenLabel Text="Position/Title" Component="Work.Position" />
         </RadzenColumn>
         <RadzenColumn Size="12" SizeMD="12">
-            <RadzenTextArea Style="width: 100%;" Name="Work.Position" @bind-Value=@Item.Position />
+            <RadzenTextBox Style="width: 100%;" Name="Work.Position" @bind-Value=@Item.Position />
             <RadzenRequiredValidator Component="Work.Position" Text="Position is required" />
         </RadzenColumn>
         <RadzenColumn Size="12" SizeMD="12">
@@ -39,11 +42,11 @@
 
 @code {
     [Parameter] public Work Item { get; set; }
-    [Parameter] public EventCallback<Work> DeleteCompleted { get; set; }
+    [Parameter] public EventCallback<Work> WorkItemDeleteCompleted { get; set; }
     protected async Task Delete()
     {
-        if (DeleteCompleted.HasDelegate)
-            await DeleteCompleted.InvokeAsync(Item);
+        if (WorkItemDeleteCompleted.HasDelegate)
+            await WorkItemDeleteCompleted.InvokeAsync(Item);
     }
 
 }
