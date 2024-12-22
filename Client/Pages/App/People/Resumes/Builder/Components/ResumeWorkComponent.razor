@@ -1,0 +1,104 @@
+﻿@using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat
+@using MyVideoResume.Data.Models.Resume
+@attribute [Authorize]
+@inherits BaseComponent
+<RadzenStack style="overflow-y: scroll; height:400px">
+    <RadzenDropZoneContainer TItem="Work" Data="WorkItems"
+                             ItemRender="@OnItemRender"
+                             ItemSelector="@ItemSelector"
+                             CanDrop="@CanDrop"
+                             Drop="@OnDrop">
+        <ChildContent>
+            <RadzenDropZone>
+                <ChildContent>
+                    <RadzenText Text="Add Work History" TextStyle="TextStyle.Subtitle2" Visible=@(WorkItems.Count == 0) />
+                </ChildContent>
+            </RadzenDropZone>
+        </ChildContent>
+        <Template>
+            <ResumeWorkItemComponent Item=@context DeleteCompleted=@Delete></ResumeWorkItemComponent>
+        </Template>
+    </RadzenDropZoneContainer>
+
+</RadzenStack>
+<RadzenButton Size="ButtonSize.ExtraSmall" Icon="add" ButtonStyle="ButtonStyle.Primary" Click="@CreateItem" />
+
+@code {
+
+    // Filter items by zone value
+    Func<Work, RadzenDropZone<Work>, bool> ItemSelector = (item, zone) => true;
+
+    Func<RadzenDropZoneItemEventArgs<Work>, bool> CanDrop = request =>
+    {
+        // Allow item drop only in the same zone, in "Deleted" zone or in the next/previous zone.
+        return request.FromZone == request.ToZone || (Status)request.ToZone.Value == Status.Deleted ||
+               Math.Abs((int)request.Item.Order - (int)request.ToZone.Value) == 1;
+    };
+
+    void Delete(Work item) { }
+
+    void OnItemRender(RadzenDropZoneItemRenderEventArgs<Work> args)
+    {
+        // // Customize item appearance
+        // if (args.Item.Name == "Task2")
+        // {
+        //     args.Attributes["draggable"] = "false";
+        //     args.Attributes["style"] = "cursor:not-allowed";
+        //     args.Attributes["class"] = "rz-card rz-variant-flat rz-background-color-primary-lighter rz-color-on-primary-lighter";
+        // }
+        // else
+        // {
+        //     args.Attributes["class"] = "rz-card rz-variant-filled rz-background-color-primary-light rz-color-on-primary-light";
+        // }
+
+        // Do not render item if deleted
+        //args.Visible = args.Item. != Status.Deleted;
+    }
+
+    void OnDrop(RadzenDropZoneItemEventArgs<Work> args)
+    {
+        if (args.FromZone != args.ToZone)
+        {
+            // update item zone
+            //args.Item.Status = (Status)args.ToZone.Value;
+        }
+
+        if (args.ToItem != null && args.ToItem != args.Item)
+        {
+            // reorder items in same zone or place the item at specific index in new zone
+            WorkItems.Remove(args.Item);
+            var position = WorkItems.IndexOf(args.ToItem);
+            args.Item.Order = position;
+            WorkItems.Insert(position, args.Item);
+        }
+    }
+
+    // IList<Work> data;
+
+    protected override void OnInitialized()
+    {
+        WorkItems = WorkItems.OrderByDescending(x => x.EndDate).ToList<Work>();
+    }
+
+    private void CreateItem()
+    {
+        WorkItems.Insert(0, new Work()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Order = 0
+            });
+
+        // StateHasChanged();
+    }
+
+    public enum Status
+    {
+        NotStarted,
+        Started,
+        Completed,
+        Deleted
+    }
+
+    [Parameter] public List<Work> WorkItems { get; set; }
+
+}

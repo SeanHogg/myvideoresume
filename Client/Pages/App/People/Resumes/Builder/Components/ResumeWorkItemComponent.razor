@@ -1,0 +1,49 @@
+﻿@using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat
+@using MyVideoResume.Data.Models.Resume
+@attribute [Authorize]
+@inherits BaseComponent
+<RadzenColumn Size=12>
+    <RadzenCard Variant="Variant.Outlined">
+        <RadzenColumn Size="12" SizeMD="4">
+            <RadzenLabel Text="Business Name" Component="Work.Name" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="8">
+            <RadzenTextBox Style="width: 100%;" Name="Work.Name" @bind-Value=@Item.Name />
+            <RadzenRequiredValidator Component="Work.Name" Text="Business Name is required" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="12">
+            <RadzenLabel Text="Position/Title" Component="Work.Position" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="12">
+            <RadzenTextArea Style="width: 100%;" Name="Work.Position" @bind-Value=@Item.Position />
+            <RadzenRequiredValidator Component="Work.Position" Text="Position is required" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="12">
+            <RadzenLabel Text="Summary" Component="Work.Summary" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="12">
+            <RadzenTextArea Style="width: 100%;" Name="Work.Summary" @bind-Value=@Item.Summary />
+            <RadzenRequiredValidator Component="Work.Summary" Text="Summary is required" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="4">
+            <RadzenLabel Text="Url" Component="Work.Url" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="8">
+            <RadzenTextBox Style="width: 100%;" Name="Url" @bind-Value=@Item.Url />
+        </RadzenColumn>
+    </RadzenCard>
+</RadzenColumn>
+@* Add Delete Button
+    Add a Add Button
+*@
+
+@code {
+    [Parameter] public Work Item { get; set; }
+    [Parameter] public EventCallback<Work> DeleteCompleted { get; set; }
+    protected async Task Delete()
+    {
+        if (DeleteCompleted.HasDelegate)
+            await DeleteCompleted.InvokeAsync(Item);
+    }
+
+}

@@ -1,0 +1,41 @@
+﻿@using MyVideoResume.Abstractions.Resume
+@using MyVideoResume.Data.Models.Resume
+@attribute [Authorize]
+@inherits BaseComponent
+
+<RadzenColumn Size="12" SizeMD="12">
+    <RadzenLabel Text="Resume is Public?" Component="Privacy_ShowResume" />
+    <RadzenIcon Icon="help" MouseEnter="@(args => ShowTooltip(args, "Do you want your resume to be publicly visible / accessible?"))"></RadzenIcon>
+</RadzenColumn>
+<RadzenColumn Size="12" SizeMD="12">
+    <RadzenDropDown Change=@((args) => ChangePrivacy()) Style="width: 100%; max-width: 400px;" Name="Privacy_ShowResume" TValue="string" @bind-Value=@Privacy_ShowResume Data=@Privacy TextProperty="Value" ValueProperty="Key"></RadzenDropDown>
+    <RadzenRequiredValidator Component="Privacy_ShowResume" Text="Privacy Setting required." />
+</RadzenColumn>
+<RadzenColumn Size="12" SizeMD="12">
+    <RadzenLabel Text="Contact Details are Public?" Component="Privacy_ShowContactDetails" />
+    <RadzenIcon Icon="help" MouseEnter="@(args => ShowTooltip(args, "By default your resume will show your contact details (Email / Phone / Website)."))"></RadzenIcon>
+</RadzenColumn>
+<RadzenColumn Size="12" SizeMD="12">
+    <RadzenDropDown Change=@((args) => ChangePrivacy()) Style="width: 100%; max-width: 400px;" Name="Privacy_ShowContactDetails" TValue="string" @bind-Value=@Privacy_ShowContactDetails Data=@Privacy Placeholder="Privacy" TextProperty="Value" ValueProperty="Key"></RadzenDropDown>
+    <RadzenRequiredValidator Component="Privacy_ShowContactDetails" Text="Privacy Setting required." />
+</RadzenColumn>
+
+@code {
+    [Parameter] public ResumeInformationEntity Resume { get; set; }
+    public SortedList<string, string> Privacy { get; set; } = DisplayPrivacy.ToPublic.ToSortedList();
+    public string Privacy_ShowContactDetails { get; set; } = DisplayPrivacy.ToPublic.ToString();
+    public string Privacy_ShowResume { get; set; } = DisplayPrivacy.ToPublic.ToString();
+
+    protected async Task ChangePrivacy()
+    {
+
+        //Update the Privacy
+        if (!string.IsNullOrEmpty(Privacy_ShowResume))
+            Resume.Privacy_ShowResume = Enum.Parse<DisplayPrivacy>(Privacy_ShowResume);
+        if (!string.IsNullOrEmpty(Privacy_ShowContactDetails))
+            Resume.Privacy_ShowContactDetails = Enum.Parse<DisplayPrivacy>(Privacy_ShowContactDetails);
+
+    }
+
+
+}

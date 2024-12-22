@@ -132,7 +132,7 @@
                                     <RadzenText TextStyle="TextStyle.Overline">@item.Summary</RadzenText>
                                 </RadzenColumn>
                             </RadzenRow>
-                            @if (item.Highlights.Count > 0)
+                            @if (item.Highlights?.Count > 0)
                             {
                                 <RadzenRow>
                                     <RadzenColumn SizeSM="12">
@@ -269,19 +269,23 @@
 
     private string ToFrom(string to, string from)
     {
-        var endDateText = string.Empty;
+        var result = "";
+        if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
+        {
+            var endDateText = string.Empty;
 
-        var endDate = DateTime.UtcNow;
-        if (!DateTime.TryParse(from, out endDate))
-        {
-            endDate = DateTime.UtcNow;
-            endDateText = from;
+            var endDate = DateTime.UtcNow;
+            if (!DateTime.TryParse(from, out endDate))
+            {
+                endDate = DateTime.UtcNow;
+                endDateText = from;
+            }
+            else
+            {
+                endDateText = endDate.ToString("yyyy-MM");
+            }
+            result = $"{DateTime.Parse(to).ToString("yyyy-MM")} - {endDateText}";
         }
-        else
-        {
-            endDateText = endDate.ToString("yyyy-MM");
-        }
-        var result = $"{DateTime.Parse(to).ToString("yyyy-MM")} - {endDateText}";
         return result;
     }
 
@@ -298,21 +302,24 @@
 
     private string YearsMonths(string to, string from)
     {
-        var endDate = DateTime.UtcNow;
-        if (!DateTime.TryParse(from, out endDate))
-        {
-            endDate = DateTime.UtcNow;
-        }
-
-        var age = DateTime.Parse(to).CalculateAge(endDate);
         var result = "";
-        if (age.Years > 0 && age.Months > 0)
-            result = $"{@age.Years} years, {@age.Months} months";
-        else if (age.Years == 0 && age.Months > 0)
-            result = $"{@age.Months} months";
-        else
-            result = $"{@age.Years} years";
 
+        if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
+        {
+            var endDate = DateTime.UtcNow;
+            if (!DateTime.TryParse(from, out endDate))
+            {
+                endDate = DateTime.UtcNow;
+            }
+
+            var age = DateTime.Parse(to).CalculateAge(endDate);
+            if (age.Years > 0 && age.Months > 0)
+                result = $"{@age.Years} years, {@age.Months} months";
+            else if (age.Years == 0 && age.Months > 0)
+                result = $"{@age.Months} months";
+            else
+                result = $"{@age.Years} years";
+        }
         return result;
     }
 

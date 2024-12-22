@@ -45,7 +45,7 @@ public partial class BuilderPage
     public string Privacy_ShowContactDetails { get; set; } = DisplayPrivacy.ToPublic.ToString();
     public string Privacy_ShowResume { get; set; } = DisplayPrivacy.ToPublic.ToString();
 
-    public SortedList<string, string> Privacy { get; set; }
+    public SortedList<string, string> Privacy { get; set; } = DisplayPrivacy.ToPublic.ToSortedList();
 
     protected int CalculatePercentComplete()
     {
@@ -97,7 +97,6 @@ public partial class BuilderPage
 
     protected override async Task OnInitializedAsync()
     {
-        Privacy = DisplayPrivacy.ToPublic.ToSortedList();
 
         if (MenuService.SidebarExpanded)
         {
@@ -110,7 +109,7 @@ public partial class BuilderPage
             if (ResumeId.ToLower() != "new")
             {
                 var temp = await Service.GetResume(ResumeId);
-                if (temp!=null && Security.User.Id == temp.UserId)
+                if (temp != null && Security.User.Id == temp.UserId)
                 {
                     Resume = temp;
                     Privacy_ShowResume = Resume.Privacy_ShowResume.ToString();

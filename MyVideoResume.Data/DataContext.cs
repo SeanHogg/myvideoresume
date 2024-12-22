@@ -18,6 +18,15 @@ public partial class DataContext : DbContext
     {
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        #if DEBUG
+        optionsBuilder.EnableSensitiveDataLogging();
+        #endif
+
+        base.OnConfiguring(optionsBuilder);
+    }
+
     partial void OnModelBuilding(ModelBuilder builder);
 
     protected override void OnModelCreating(ModelBuilder builder)
