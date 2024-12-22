@@ -32,13 +32,17 @@
 
 @code {
     [Parameter] public EventCallback<Work> WorkItemCreateCompleted { get; set; }
+    [Parameter] public EventCallback<Work> WorkItemDeleteCompleted { get; set; }
 
     Func<Work, RadzenDropZone<Work>, bool> ItemSelector = (item, zone) => true;
     Func<RadzenDropZoneItemEventArgs<Work>, bool> CanDrop = request => true;
 
-    void Delete(Work item)
+    async Task Delete(Work workItem)
     {
-        WorkItems.Remove(item);
+        WorkItems.Remove(workItem);
+        if (WorkItemDeleteCompleted.HasDelegate)
+            await WorkItemDeleteCompleted.InvokeAsync(workItem);
+
     }
 
     void OnItemRender(RadzenDropZoneItemRenderEventArgs<Work> args)

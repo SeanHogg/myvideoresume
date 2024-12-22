@@ -32,7 +32,7 @@
             <RadzenLabel Text="Url" Component="Work.Url" />
         </RadzenColumn>
         <RadzenColumn Size="12" SizeMD="8">
-            <RadzenTextBox Style="width: 100%;" Name="Url" @bind-Value=@Item.Url />
+            <RadzenTextBox Style="width: 100%;" Name="Url" @bind-Value=@Item.Url onchange=@(Save()) />
         </RadzenColumn>
     </RadzenCard>
 </RadzenColumn>
@@ -42,11 +42,16 @@
 
 @code {
     [Parameter] public Work Item { get; set; }
+    [Parameter] public EventCallback<Work> WorkItemSaveCompleted { get; set; }
     [Parameter] public EventCallback<Work> WorkItemDeleteCompleted { get; set; }
     protected async Task Delete()
     {
         if (WorkItemDeleteCompleted.HasDelegate)
             await WorkItemDeleteCompleted.InvokeAsync(Item);
     }
-
+    protected async Task Save()
+    {
+        if (WorkItemSaveCompleted.HasDelegate)
+            await WorkItemSaveCompleted.InvokeAsync(Item);
+    }
 }
