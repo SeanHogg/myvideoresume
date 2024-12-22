@@ -126,7 +126,11 @@
                         <div style="padding:15px;">
                             <RadzenRow>
                                 <RadzenColumn SizeSM="12">
-                                    <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
+                                    @if(!string.IsNullOrWhiteSpace(item.Url)){
+                                        <a href="@item.Url"><RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText></a>
+                                    }else{
+                                        <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
+                                    }
                                     <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Position)</b></RadzenText>
                                     <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
                                     <RadzenText TextStyle="TextStyle.Overline">@item.Summary</RadzenText>
