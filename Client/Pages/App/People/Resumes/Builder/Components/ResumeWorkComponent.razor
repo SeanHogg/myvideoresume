@@ -16,7 +16,7 @@
             </RadzenDropZone>
         </ChildContent>
         <Template>
-            <ResumeWorkItemComponent Item=@context WorkItemDeleteCompleted=@Delete></ResumeWorkItemComponent>
+            <ResumeWorkItemComponent Item=@context WorkItemDeleteCompleted=@Delete WorkItemSaveCompleted=@Save></ResumeWorkItemComponent>
         </Template>
     </RadzenDropZoneContainer>
 
@@ -33,17 +33,12 @@
 @code {
     [Parameter] public EventCallback<Work> WorkItemCreateCompleted { get; set; }
     [Parameter] public EventCallback<Work> WorkItemDeleteCompleted { get; set; }
+    [Parameter] public EventCallback<Work> WorkItemSaveCompleted { get; set; }
+    [Parameter] public List<Work> WorkItems { get; set; }
 
     Func<Work, RadzenDropZone<Work>, bool> ItemSelector = (item, zone) => true;
     Func<RadzenDropZoneItemEventArgs<Work>, bool> CanDrop = request => true;
 
-    async Task Delete(Work workItem)
-    {
-        WorkItems.Remove(workItem);
-        if (WorkItemDeleteCompleted.HasDelegate)
-            await WorkItemDeleteCompleted.InvokeAsync(workItem);
-
-    }
 
     void OnItemRender(RadzenDropZoneItemRenderEventArgs<Work> args)
     {
@@ -86,7 +81,7 @@
         WorkItems = WorkItems.OrderByDescending(x => x.EndDate).ToList<Work>();
     }
 
-    private async Task CreateItem()
+    async Task CreateItem()
     {
         var workItem = new Work()
             {
@@ -103,6 +98,22 @@
         await JSRuntime.InvokeVoidAsync("scrollTopWork");
     }
 
-    [Parameter] public List<Work> WorkItems { get; set; }
 
+    async Task Delete(Work workItem)
+    {
+        WorkItems.Remove(workItem);
+        if (WorkItemDeleteCompleted.HasDelegate)
+            await WorkItemDeleteCompleted.InvokeAsync(workItem);
+
+    }
+
+    async Task Save(Work workItem)
+    {
+        var item = WorkItems.FirstOrDefault(x => x.Id == workItem.Id);
+        item = workItem;
+
+        if (WorkItemSaveCompleted.HasDelegate)
+            await WorkItemSaveCompleted.InvokeAsync(item);
+
+    }
 }
