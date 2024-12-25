@@ -15,12 +15,14 @@ public class ResumeService
     private readonly ILogger<ResumeService> _logger;
     private readonly DataContext _dataContext;
     private readonly IConfiguration _configuration;
+    private readonly AccountService _accountService;
 
-    public ResumeService(ILogger<ResumeService> logger, IConfiguration configuration, DataContext context)
+    public ResumeService(ILogger<ResumeService> logger, IConfiguration configuration, DataContext context, AccountService accountService)
     {
         _dataContext = context;
         _logger = logger;
         _configuration = configuration;
+        _accountService = accountService;
     }
 
     //Get All Public Resume Summaries
@@ -188,59 +190,75 @@ public class ResumeService
             if (!string.IsNullOrWhiteSpace(userId)) //should validate that its a real user account...
             {
                 var profile = _dataContext.UserProfiles.Include(x => x.ResumeItems).FirstOrDefault(x => x.UserId == userId);
-                if (profile != null)
+                if (profile == null)
                 {
-                    if (profile.ResumeItems == null)
-                        profile.ResumeItems = new List<ResumeInformationEntity>();
-
-                    // Create the standard template
-                    var standardTemplate = _dataContext.ResumeTemplates.FirstOrDefault(x => x.TransformerComponentName == "StandardTemplate");
-                    if (standardTemplate == null)
-                    {
-                        standardTemplate = ResumeTemplateEntity.CreateStandardResumeTemplate();
-                        standardTemplate.UserId = userId;
-                        _dataContext.ResumeTemplates.Add(standardTemplate);
-                        await _dataContext.SaveChangesAsync();
-                    }
-
-                    //Save the Resume to get an object to populate into 
-                    var tempMetaresume = JsonSerializer.Deserialize<MetaResumeEntity>(resumeText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    //Does the Meta Resume Exist?
-                    var existingMetaResume = _dataContext.Resumes.FirstOrDefault(x => x.Id == tempMetaresume.Id && userId == userId);
-                    if (existingMetaResume != null)
-                    {
-                        //EXISTING
-                        tempMetaresume.UpdateDateTime = DateTime.UtcNow;
-                        //_dataContext.Entry(existingMetaResume).CurrentValues.SetValues(tempMetaresume);
-                    }
-                    else
-                    {
-                        tempMetaresume.UserId = userId;
-                        tempMetaresume.CreationDateTime = DateTime.UtcNow;
-                        //_dataContext.Resumes.Add(tempMetaresume);
-                        //existingMetaResume = tempMetaresume;
-                    }
-                    _dataContext.InsertUpdateOrDeleteGraph(tempMetaresume, existingMetaResume);
-                    await _dataContext.SaveChangesAsync();
-
-
-                    var resumeInformation = new ResumeInformationEntity() { CreationDateTime = DateTime.UtcNow, UserId = userId, ResumeSerialized = resumeText, Name = existingMetaResume.Basics.Name, Privacy_ShowResume = DisplayPrivacy.ToPublic, Privacy_ShowContactDetails = DisplayPrivacy.ToPublic, ResumeTemplate = standardTemplate };
-                    if (resumeItemId.HasValue())
-                    {
-                        var tempResumeInformation = _dataContext.ResumeInformation.FirstOrDefault(x => x.Id == Guid.Parse(resumeItemId) && x.UserId == userId);
-                        if (tempResumeInformation != null)
-                        {
-                            _dataContext.InsertUpdateOrDeleteGraph(resumeInformation, tempResumeInformation);
-                            resumeInformation = tempResumeInformation;
-                        }
-                    }
-
-
-                    profile.ResumeItems.Add(resumeInformation);
-                    await _dataContext.SaveChangesAsync();
-
-                    result.Result = resumeInformation;
+                    profile = await _accountService.CreateProfile(userId);
                 }
+                if (profile.ResumeItems == null)
+                    profile.ResumeItems = new List<ResumeInformationEntity>();
+
+                // Create the standard template
+                var standardTemplate = _dataContext.ResumeTemplates.FirstOrDefault(x => x.TransformerComponentName == "StandardTemplate");
+                if (standardTemplate == null)
+                {
+                    standardTemplate = ResumeTemplateEntity.CreateStandardResumeTemplate();
+                    standardTemplate.UserId = userId;
+                    _dataContext.ResumeTemplates.Add(standardTemplate);
+                    await _dataContext.SaveChangesAsync();
+                }
+
+                //Save the Resume to get an object to populate into 
+                var tempMetaresume = JsonSerializer.Deserialize<MetaResumeEntity>(resumeText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                //Does the Meta Resume Exist?
+                var existingMetaResume = _dataContext.Resumes.FirstOrDefault(x => x.Id == tempMetaresume.Id && userId == userId);
+                if (existingMetaResume != null)
+                {
+                    //EXISTING
+                    tempMetaresume.UpdateDateTime = DateTime.UtcNow;
+                    //_dataContext.Entry(existingMetaResume).CurrentValues.SetValues(tempMetaresume);
+                }
+                else
+                {
+                    tempMetaresume.UserId = userId;
+                    tempMetaresume.CreationDateTime = DateTime.UtcNow;
+                    //_dataContext.Resumes.Add(tempMetaresume);
+                    //existingMetaResume = tempMetaresume;
+                }
+                tempMetaresume = _dataContext.InsertUpdateOrDeleteGraph(tempMetaresume, existingMetaResume);
+                await _dataContext.SaveChangesAsync();
+
+
+                var resumeInformation = new ResumeInformationEntity()
+                {
+                    CreationDateTime = DateTime.UtcNow,
+                    UserId = userId,
+                    ResumeSerialized = resumeText,
+                    Name = tempMetaresume.Basics.Name,
+                    Privacy_ShowResume = DisplayPrivacy.ToPublic,
+                    Privacy_ShowContactDetails = DisplayPrivacy.ToPublic,
+                    ResumeTemplate = standardTemplate,
+                    UserProfile = profile
+                };
+
+                if (resumeItemId.HasValue())
+                {
+                    var tempResumeInformation = _dataContext.ResumeInformation.FirstOrDefault(x => x.Id == Guid.Parse(resumeItemId) && x.UserId == userId);
+                    if (tempResumeInformation != null)
+                    {
+                        _dataContext.InsertUpdateOrDeleteGraph(resumeInformation, tempResumeInformation);
+                        resumeInformation = tempResumeInformation;
+                    }
+                }
+                else
+                    _dataContext.Add(resumeInformation);
+                await _dataContext.SaveChangesAsync();
+
+                //Associate the ResumeInfo with the MetaResume
+                tempMetaresume.ResumeInformation = resumeInformation;
+                resumeInformation.MetaResume = tempMetaresume;
+                await _dataContext.SaveChangesAsync();
+
+                result.Result = resumeInformation;
             }
         }
         catch (Exception ex)

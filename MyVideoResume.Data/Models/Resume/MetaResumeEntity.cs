@@ -19,7 +19,7 @@ public class MetaResumeEntity : JSONResume
     [JsonIgnore]
     [ForeignKey("Resume")]
     [DeleteBehavior(DeleteBehavior.Restrict)] 
-    public ResumeInformationEntity ResumeInformation { get; set; }
+    public ResumeInformationEntity? ResumeInformation { get; set; }
     
     public DateTime? CreationDateTime { get; set; }
     public DateTime? UpdateDateTime { get; set; }
