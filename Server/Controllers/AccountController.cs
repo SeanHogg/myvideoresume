@@ -18,11 +18,11 @@ public partial class AccountController : Controller
     private readonly IWebHostEnvironment env;
     private readonly ILogger<AccountController> logger;
     private readonly EmailService emailService;
-    private readonly DataContextService dataContextService;
     private readonly IConfiguration configuration;
+    private readonly AccountService accountService;
 
     public AccountController(IWebHostEnvironment env, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
-        RoleManager<ApplicationRole> roleManager, ILogger<AccountController> logger, EmailService emailService, DataContextService dataContext, IConfiguration configuration)
+        RoleManager<ApplicationRole> roleManager, ILogger<AccountController> logger, EmailService emailService, DataContextService dataContext, IConfiguration configuration, AccountService accountService)
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
@@ -30,8 +30,8 @@ public partial class AccountController : Controller
         this.env = env;
         this.logger = logger;
         this.emailService = emailService;
-        this.dataContextService = dataContext;
         this.configuration = configuration;
+        this.accountService = accountService;
     }
 
     #region Security
@@ -147,15 +147,8 @@ If you didn't request this code, you can safely ignore this email. Someone else 
         else
         {
             //Verify they have a User Profile
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var profile = dataContextService.Context.UserProfiles.FirstOrDefault(x => x.UserId == id);
-            if (profile == null)
-            {
-                var jobPreferences = new JobPreferencesEntity() { UserId = id, CreationDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow };
-                dataContextService.Context.JobPreferences.Add(jobPreferences);
-                dataContextService.Context.UserProfiles.Add(new UserProfileEntity() { FirstName = string.Empty, LastName = String.Empty, UserId = id, CreationDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow, JobPreferences = jobPreferences });
-                dataContextService.Context.SaveChanges();
-            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await accountService.CreateProfile(userId);
         }
         if (!string.IsNullOrWhiteSpace(redirectUrl))
             return Redirect(redirectUrl);

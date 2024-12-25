@@ -85,6 +85,7 @@ builder.Services.AddSingleton<DocumentProcessor>();
 builder.Services.AddSingleton<RecaptchaService>();
 builder.Services.AddSingleton<EmailService>();
 builder.Services.AddScoped<ResumeService>();
+builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<MenuService>();
 builder.Services.AddSingleton<IResumePromptEngine, ResumePromptEngine>();
 builder.Services.AddScoped<SecurityWebService>();

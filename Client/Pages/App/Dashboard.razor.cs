@@ -55,7 +55,15 @@ public partial class Dashboard
 
     async Task UploadCompletedHandler(string result)
     {
-        ShowSuccessNotification("Resume Created", string.Empty);
+        if (!result.HasValue())
+        {
+            ShowErrorNotification("Failed Creating Resume", string.Empty);
+        }
+        else
+        {
+            ShowSuccessNotification("Resume Created", string.Empty);
+        }
+
         ResumeList = await Service.GetResumeSummaries();
     }
 }
