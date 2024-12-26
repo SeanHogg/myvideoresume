@@ -86,6 +86,24 @@ public class ResumeService
         return items;
     }
 
+    private IQueryable<MetaResumeEntity> GetMetaResume()
+    {
+        var items = _dataContext.Resumes
+            .Include(x => x.Publications)
+            .Include(x => x.Projects)
+            .Include(x => x.Languages)
+            .Include(x => x.Work)
+            .Include(x => x.Awards)
+            .Include(x => x.References)
+            .Include(x => x.Basics)
+            .Include(x => x.Certificates)
+            .Include(x => x.Education)
+            .Include(x => x.Interests)
+            .Include(x => x.Volunteer)
+            .Include(x => x.Skills);
+        return items;
+    }
+
     public async Task<ResumeInformationEntity> GetResume(string resumeId)
     {
         var result = new ResumeInformationEntity();
@@ -166,11 +184,20 @@ public class ResumeService
 
         try
         {
-            if (!string.IsNullOrWhiteSpace(userId)) //should validate that its a real user account...
+            if (userId.HasValue() && resumeText.HasValue()) //should validate that its a real user account...
             {
                 var resumeInformation = JsonSerializer.Deserialize<ResumeInformationEntity>(resumeText);
-                var metaResume = JsonSerializer.Serialize<MetaResumeEntity>(resumeInformation.MetaResume);
-                result = await CreateResume(userId, metaResume);
+                if (resumeInformation != null)
+                {
+                    string? existingId = null;
+
+                    var tempResumeInformation = GetResumeInformation(userId, resumeInformation.Id.ToString());
+                    if (tempResumeInformation != null)
+                        existingId = resumeInformation.Id.ToString();
+
+                    var metaResume = JsonSerializer.Serialize<MetaResumeEntity>(resumeInformation.MetaResume);
+                    result = await CreateResume(userId, metaResume, existingId);
+                }
             }
         }
         catch (Exception ex)
@@ -179,6 +206,11 @@ public class ResumeService
             result.ErrorMessage = ex.Message;
         }
         return result;
+    }
+
+    private ResumeInformationEntity GetResumeInformation(string userId, string resumeItemId)
+    {
+        return _dataContext.ResumeInformation.FirstOrDefault(x => x.Id == Guid.Parse(resumeItemId) && x.UserId == userId);
     }
 
     public async Task<ResponseResult<ResumeInformationEntity>> CreateResume(string userId, string resumeText, string? resumeItemId = null)
@@ -210,7 +242,7 @@ public class ResumeService
                 //Save the Resume to get an object to populate into 
                 var tempMetaresume = JsonSerializer.Deserialize<MetaResumeEntity>(resumeText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 //Does the Meta Resume Exist?
-                var existingMetaResume = _dataContext.Resumes.FirstOrDefault(x => x.Id == tempMetaresume.Id && userId == userId);
+                var existingMetaResume = GetMetaResume().FirstOrDefault(x => x.Id == tempMetaresume.Id && userId == userId);
                 if (existingMetaResume != null)
                 {
                     //EXISTING
@@ -242,7 +274,7 @@ public class ResumeService
 
                 if (resumeItemId.HasValue())
                 {
-                    var tempResumeInformation = _dataContext.ResumeInformation.FirstOrDefault(x => x.Id == Guid.Parse(resumeItemId) && x.UserId == userId);
+                    var tempResumeInformation = GetResumeInformation(userId, resumeItemId);
                     if (tempResumeInformation != null)
                     {
                         _dataContext.InsertUpdateOrDeleteGraph(resumeInformation, tempResumeInformation);

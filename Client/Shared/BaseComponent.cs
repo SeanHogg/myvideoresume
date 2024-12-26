@@ -34,6 +34,8 @@ public static class EnumExtensions
     }
 }
 
+public class ResumeComponent : BaseComponent { }
+
 public class BaseComponent : LayoutComponentBase
 {
     [Inject] protected MenuService MenuService { get; set; }

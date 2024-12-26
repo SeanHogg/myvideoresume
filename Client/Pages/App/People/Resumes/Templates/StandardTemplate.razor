@@ -9,7 +9,7 @@
 {
     <RadzenRow>
         <RadzenColumn Style="max-width: 100%">
-            @if (IsOwner && Mode == DisplayMode.View)
+            @if (ShowEditOptions())
             {
                 <div style="float: right; padding-right: 35px">
                     <RadzenMenu Responsive="false">
@@ -21,11 +21,11 @@
             }
             <RadzenText Text=@Title() TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
             <RadzenStack AlignItems="AlignItems.Normal" Orientation="Orientation.Horizontal">
-                @if (Resume != null && Resume.Privacy_ShowContactDetails != DisplayPrivacy.ToSelf) //TO DO: check the user's role
+                @if (ShowContactOptions()) //TO DO: check the user's role
                 {
                     <RadzenText Text=@Resume.MetaResume.Basics.Email TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
                     <RadzenText Text=@Resume.MetaResume.Basics.Phone TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-                    <RadzenLink Path=@Resume.MetaResume.Basics.Url Text="My Website" Icon="globe" target="_blank" Visible=!string.IsNullOrEmpty(Resume.MetaResume.Basics.Url) />
+                    <RadzenLink Path=@Resume.MetaResume.Basics.Url Text="My Website" Icon="globe" target="_blank" Visible=Resume.MetaResume.Basics.Url.HasValue() />
                 }
             </RadzenStack>
         </RadzenColumn>
@@ -126,9 +126,12 @@
                         <div style="padding:15px;">
                             <RadzenRow>
                                 <RadzenColumn SizeSM="12">
-                                    @if(!string.IsNullOrWhiteSpace(item.Url)){
+                                    @if (!string.IsNullOrWhiteSpace(item.Url))
+                                    {
                                         <a href="@item.Url"><RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText></a>
-                                    }else{
+                                    }
+                                    else
+                                    {
                                         <RadzenText TextStyle="TextStyle.Body1">@item.Name</RadzenText>
                                     }
                                     <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Position)</b></RadzenText>
@@ -259,10 +262,10 @@
             </RadzenColumn>
         </RadzenRow>
     }
-    <RadzenRow Style="padding-bottom:75px">
+    @*     <RadzenRow Style="padding-bottom:75px">
         <RadzenColumn Style="max-width: 100%">
         </RadzenColumn>
-    </RadzenRow>
+    </RadzenRow> *@
 }
 @code {
     [Parameter] public ResumeInformationEntity Resume { get; set; }
@@ -270,6 +273,29 @@
     public RadzenTimeline Timeline { get; set; }
     public string ResumeName { get; set; }
     public bool IsOwner { get; set; } = false;
+
+    private bool ShowEditOptions()
+    {
+        var showSection = IsOwner && Mode == DisplayMode.View;
+        return showSection;
+    }
+    private bool ShowContactOptions()
+    {
+        //Check if the section isn't null
+        var showSection = false;
+        if (Resume.MetaResume.Basics != null)
+        {
+            if (IsOwner)
+                showSection = true;
+            else
+            {
+                if (Resume.Privacy_ShowContactDetails != DisplayPrivacy.ToSelf)
+                    showSection = true; //ToDO: validate based upon the User's Roles
+            }
+        }
+        return showSection;
+    }
+
 
     private string ToFrom(string to, string from)
     {
