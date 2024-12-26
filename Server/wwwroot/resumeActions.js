@@ -26,8 +26,11 @@ function copyToClipboard(jsonText) {
             navigator.clipboard.writeText(text);
         }
         else {
-            var text = document.getElementById("resumeJson").innerText;
-            navigator.clipboard.writeText(text);
+            var element = document.getElementById("resumeJson");
+            if (element) {
+                var text = element.innerText;
+                navigator.clipboard.writeText(text);
+            }
         }
     }
     catch (err) {
