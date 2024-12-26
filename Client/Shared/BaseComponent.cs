@@ -34,7 +34,14 @@ public static class EnumExtensions
     }
 }
 
-public class ResumeComponent : BaseComponent { }
+public class ResumeComponent : BaseComponent {
+
+    protected async Task DownloadJsonFile(string jsonResume)
+    {
+        await JSRuntime.InvokeVoidAsync("saveTextAsFile", jsonResume, $"JsonResume-{DateTime.Now.ToString("yyyy-MM-dd")}.json");
+    }
+
+}
 
 public class BaseComponent : LayoutComponentBase
 {

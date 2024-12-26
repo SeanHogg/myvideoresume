@@ -41,7 +41,7 @@ public partial class Dashboard
 
     async Task DeleteCompletedHandler(ResponseResult result)
     {
-        if (!result.ErrorMessage.HasValue())
+        if (result.ErrorMessage.HasValue())
         {
             ShowErrorNotification("Error Deleting Resume", string.Empty);
         }

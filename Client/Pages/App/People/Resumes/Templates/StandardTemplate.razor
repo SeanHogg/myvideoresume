@@ -3,7 +3,7 @@
 @using AgeCalculator
 @using AgeCalculator.Extensions
 @using MyVideoResume.Abstractions.Resume
-@inherits BaseComponent
+@inherits ResumeComponent
 
 @if (Resume != null && Resume.MetaResume != null)
 {
@@ -15,6 +15,7 @@
                     <RadzenMenu Responsive="false">
                         <RadzenMenuItem Icon="more_horiz">
                             <RadzenMenuItem Text="Edit" Path=@Paths.Jobs Icon="edit" Click=@(()=> NavigateTo($"{Paths.Resume_Edit}{Resume.Id.ToString()}"))></RadzenMenuItem>
+                            <RadzenMenuItem Text="Json" Icon="download" Click=@(()=> DownloadJsonFile(Resume.ResumeSerialized))></RadzenMenuItem>
                         </RadzenMenuItem>
                     </RadzenMenu>
                 </div>
@@ -267,6 +268,9 @@
         </RadzenColumn>
     </RadzenRow> *@
 }
+
+<script src="resumeActions.js"></script>
+
 @code {
     [Parameter] public ResumeInformationEntity Resume { get; set; }
     [Parameter] public DisplayMode Mode { get; set; } = DisplayMode.View;
