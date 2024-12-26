@@ -21,17 +21,18 @@
 }
 
 function copyToClipboard(jsonText) {
+    var text = "";
     try {
         if (jsonText) {
-            navigator.clipboard.writeText(text);
+            text = jsonText;
         }
         else {
             var element = document.getElementById("resumeJson");
             if (element) {
-                var text = element.innerText;
-                navigator.clipboard.writeText(text);
+                text = element.innerText;
             }
         }
+        navigator.clipboard.writeText(text);
     }
     catch (err) {
         console.error('Failed to copy: ', err);
