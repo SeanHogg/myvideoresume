@@ -7,6 +7,8 @@ namespace MyVideoResume.Web.Common;
 
 public static class Paths
 {
+    public const string Dashboard_View = "/dashboard";
+    public const string Resume_View = "/resumes";
     public const string Resume_CreateNew = "resumes/builder/new";
     public const string Resume_Edit = "resumes/builder/";
     public const string Resume_API_CreateFromFile = "api/resume/createFromFile";

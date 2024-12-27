@@ -20,15 +20,11 @@ using Radzen.Blazor;
 
 namespace MyVideoResume.Client.Pages.App.People.Resumes.Builder;
 
-
-
 public partial class BuilderPage
 {
     [Parameter] public String ResumeId { get; set; }
 
     [Inject] ILogger<BuilderPage> Logger { get; set; }
-
-    [Inject] protected ResumeWebService Service { get; set; }
 
     public ResumeInformationEntity Resume { get; set; } = new ResumeInformationEntity()
     {
@@ -81,23 +77,23 @@ public partial class BuilderPage
 
     protected async Task ChangePrivacy()
     {
-
         //Update the Privacy
         if (!string.IsNullOrEmpty(Privacy_ShowResume))
             Resume.Privacy_ShowResume = Enum.Parse<DisplayPrivacy>(Privacy_ShowResume);
         if (!string.IsNullOrEmpty(Privacy_ShowContactDetails))
             Resume.Privacy_ShowContactDetails = Enum.Parse<DisplayPrivacy>(Privacy_ShowContactDetails);
-
     }
 
     protected async Task WorkItemCreated(Work workItem)
     {
         Logger.LogInformation(workItem.Id);
     }
+
     protected async Task WorkItemDeleted(Work workItem)
     {
         Logger.LogInformation(workItem.Id);
     }
+
     protected async Task Save()
     {
         var result = await Service.Save(Resume);

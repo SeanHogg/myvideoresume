@@ -35,6 +35,7 @@ public partial class Dashboard
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
         if (Security.IsAuthenticated())
             ResumeList = await Service.GetResumeSummaries();
     }

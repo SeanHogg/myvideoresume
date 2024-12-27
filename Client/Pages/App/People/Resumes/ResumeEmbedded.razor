@@ -1,4 +1,4 @@
-@page "/embedded/{slug}"@using MyVideoResume.Client.Pages.App.People.Resumes.Templates@inherits BaseComponent@layout EmbeddedLayout<PageTitle>@ResumePageTitle</PageTitle>@if (IsResumeDeleted)
+@page "/embedded/{slug}"@using MyVideoResume.Client.Pages.App.People.Resumes.Templates@inherits ResumeComponent@layout EmbeddedLayout<PageTitle>@ResumePageTitle</PageTitle>@if (IsResumeDeleted)
 {    <RadzenRow>        <RadzenColumn Size="12">            <RadzenText Text="No Longer Available" TextStyle="Radzen.Blazor.TextStyle.DisplayH1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>        </RadzenColumn>    </RadzenRow>}
 else
 {

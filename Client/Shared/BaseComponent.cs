@@ -34,7 +34,9 @@ public static class EnumExtensions
     }
 }
 
-public class ResumeComponent : BaseComponent {
+public class ResumeComponent : BaseComponent
+{
+    [Inject] protected ResumeWebService Service { get; set; }
 
     protected async Task DownloadJsonFile(string jsonResume)
     {
@@ -69,7 +71,8 @@ public class BaseComponent : LayoutComponentBase
     {
         ShowNotification(title, message, NotificationSeverity.Success);
     }
-    public void ShowErrorNotification(string title, string message) {
+    public void ShowErrorNotification(string title, string message)
+    {
 
         ShowNotification(title, message, NotificationSeverity.Error);
     }
@@ -78,6 +81,11 @@ public class BaseComponent : LayoutComponentBase
         NotificationService.Notify(new NotificationMessage { Severity = severity, Summary = title, Detail = message, Duration = 4000 });
     }
     public void ShowTooltip(ElementReference elementReference, string content) => TooltipService.Open(elementReference, content, new TooltipOptions() { Position = TooltipPosition.Top });
+
+    public void NavigateToLogin(string redirectPath)
+    {
+        NavigationManager.NavigateTo($"login?redirectUrl={redirectPath}");
+    }
 
     public void NavigateTo(string path)
     {

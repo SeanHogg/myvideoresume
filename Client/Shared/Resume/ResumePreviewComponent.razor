@@ -12,8 +12,8 @@
  *@            <RadzenStack Gap="0">
                 <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Name</RadzenText>
                 <RadzenText style="color: #262526" TextStyle="TextStyle.H3"><b>@(ResumeItem.ResumeName)</b></RadzenText>
-                <RadzenText Visible=@DisplayItem style ="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">ID</RadzenText>
-                <RadzenText Visible=@DisplayItem style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeItem.Id)</b></RadzenText>
+                <RadzenText Visible=@DisplayItem() style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">ID</RadzenText>
+                <RadzenText Visible=@DisplayItem() style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeItem.Id)</b></RadzenText>
                 <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Creation</RadzenText>
                 <RadzenText style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeItem.CreationDateTimeFormatted)</b></RadzenText>
             </RadzenStack>
@@ -22,7 +22,7 @@
     <RadzenCard class="rz-shadow-0 rz-border-radius-0" style="margin: 5px calc(-1 * var(--rz-card-padding)); background-color: #0e44cc; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
         <RadzenText TextStyle="TextStyle.H6" style="color:white; "><strong>Details</strong></RadzenText>
         <RadzenRow RowGap="0">
-            <RadzenColumn SizeSM="12" Visible=@DisplayItem>
+            <RadzenColumn SizeSM="12" Visible=@DisplayItem()>
                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Template</RadzenText>
                 <RadzenText TextStyle="TextStyle.Body1" style="color:white; "><b> @(ResumeItem.ResumeTemplateName)</b></RadzenText>
                 <RadzenText TextStyle="TextStyle.Overline" class=" rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Public</RadzenText>
@@ -37,8 +37,8 @@
         </RadzenRow>
     </RadzenCard>
     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="0">
-        <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Text" Icon="delete" Text="Delete" Click=Delete Visible=@DisplayItem />
-        <RadzenButton ButtonStyle="ButtonStyle.Dark" Variant="Variant.Text" Icon="edit" Text="Edit" Visible=@DisplayItem Click=@(()=> NavigateTo("resumes/builder", ResumeItem.Id)) />
+        <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Text" Icon="delete" Text="Delete" Click=Delete Visible=@DisplayItem() />
+        <RadzenButton ButtonStyle="ButtonStyle.Dark" Variant="Variant.Text" Icon="edit" Text="Edit" Visible=@DisplayItem() Click=@(()=> NavigateTo("resumes/builder", ResumeItem.Id)) />
         <RadzenButton ButtonStyle="ButtonStyle.Dark" Variant="Variant.Text" Icon="preview" Text="View" Click=@(()=> NavigateTo("resumes", ResumeItem.Id)) />
     </RadzenStack>
 </RadzenCard>
@@ -58,7 +58,22 @@
     [Parameter]
     public ResumePreviewMode Mode { get; set; } = ResumePreviewMode.View;
 
-    public bool DisplayItem { get; set; } = false;
+    public bool DisplayItem()
+    {
+        var result = false;
+        switch (Mode)
+        {
+            case ResumePreviewMode.View:
+                result = false;
+                break;
+            case ResumePreviewMode.Edit:
+                result = ResumeItem.UserId == Security.User.Id;
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
 
     public string ResumeCreationDate { get; set; }
 
@@ -74,17 +89,6 @@
                     CreationDateTimeFormatted = DateTime.UtcNow.ToString("yyyy-MM-dd")
                 };
 
-        switch (Mode)
-        {
-            case ResumePreviewMode.View:
-                DisplayItem = false;
-                break;
-            case ResumePreviewMode.Edit:
-                DisplayItem = ResumeItem.UserId == Security.User.Id;
-                break;
-            default:
-                break;
-        }
     }
 
     protected async Task Delete()
