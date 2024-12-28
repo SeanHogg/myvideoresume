@@ -31,14 +31,14 @@
             </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
-    @if (Resume.MetaResume.Work != null || Resume.MetaResume.Volunteer != null)
+    @if (ShowWorkSection() || ShowVolunteerSection())
     {
         <RadzenRow Style="padding-bottom:15px">
             <RadzenColumn Style="max-width: 100%">
                 <div class="searchComponent">
                     <RadzenTabs>
                         <Tabs>
-                            @if (Resume.MetaResume.Work != null)
+                            @if (ShowWorkSection())
                             {
                                 <RadzenTabsItem Text="Work">
                                     <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
@@ -62,7 +62,7 @@
                                     </RadzenColumn>
                                 </RadzenTabsItem>
                             }
-                            @if (Resume.MetaResume.Volunteer != null)
+                            @if (ShowVolunteerSection())
                             {
                                 <RadzenTabsItem Text="Volunteer">
                                     <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
@@ -277,6 +277,16 @@
     public RadzenTimeline Timeline { get; set; }
     public string ResumeName { get; set; }
     public bool IsOwner { get; set; } = false;
+
+    private bool ShowWorkSection()
+    {
+        return Resume.MetaResume.Work != null && Resume.MetaResume.Work.Count > 0;
+    }
+
+    private bool ShowVolunteerSection()
+    {
+        return Resume.MetaResume.Volunteer != null && Resume.MetaResume.Volunteer.Count > 0;
+    }
 
     private bool ShowEditOptions()
     {
