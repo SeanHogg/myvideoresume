@@ -5,32 +5,29 @@
 @inherits BaseComponent
 @inject ResumeWebService Service
 
-<RadzenCard style="background-color:white; width: 350px">
+<RadzenCard style="background-color:white;">
     <RadzenCard class="rz-shadow-0 rz-border-radius-0" style="margin: 5px calc(-1 * var(--rz-card-padding));background-color:white; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start">
-            @*             <RadzenImage Path="@ResumeEntity?.UserId" Style="width: 100px; height: 100px; border-radius: 50%;" />
- *@            <RadzenStack Gap="0">
-                <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Name</RadzenText>
-                <RadzenText style="color: #262526" TextStyle="TextStyle.H3"><b>@(ResumeItem.ResumeName)</b></RadzenText>
-                <RadzenText Visible=@DisplayItem() style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">ID</RadzenText>
-                <RadzenText Visible=@DisplayItem() style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeItem.Id)</b></RadzenText>
-                <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Creation</RadzenText>
-                <RadzenText style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeItem.CreationDateTimeFormatted)</b></RadzenText>
-            </RadzenStack>
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="0">
+            <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Name</RadzenText>
+            <RadzenText style="color: #262526; text-overflow:ellipsis; white-space: nowrap; overflow: hidden;" TextStyle="TextStyle.H3" title="@(ResumeItem.ResumeName)">@(ResumeItem.ResumeName)</RadzenText>
+            <RadzenText Visible=@DisplayItem() style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">ID</RadzenText>
+            <RadzenText Visible=@DisplayItem() style="color: #262526" TextStyle="TextStyle.Body1">@(ResumeItem.Id)</RadzenText>
+            <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Creation</RadzenText>
+            <RadzenText style="color: #262526" TextStyle="TextStyle.Body1"><b>@(ResumeItem.CreationDateTimeFormatted)</b></RadzenText>
         </RadzenStack>
     </RadzenCard>
     <RadzenCard class="rz-shadow-0 rz-border-radius-0" style="margin: 5px calc(-1 * var(--rz-card-padding)); background-color: #0e44cc; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
         <RadzenText TextStyle="TextStyle.H6" style="color:white; "><strong>Details</strong></RadzenText>
         <RadzenRow RowGap="0">
-            <RadzenColumn SizeSM="12" Visible=@DisplayItem()>
+            <RadzenColumn Visible=@DisplayItem()>
                 <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Template</RadzenText>
                 <RadzenText TextStyle="TextStyle.Body1" style="color:white; "><b> @(ResumeItem.ResumeTemplateName)</b></RadzenText>
                 <RadzenText TextStyle="TextStyle.Overline" class=" rz-display-flex rz-mt-4 rz-mb-0" style="color:white; ">Public</RadzenText>
                 <RadzenText TextStyle="TextStyle.Body1" style="color:white; "><b>@(ResumeItem.IsPublic)</b></RadzenText>
             </RadzenColumn>
-            <RadzenColumn SizeSM="12">
+            <RadzenColumn>
                 <RadzenText TextStyle="TextStyle.Overline" style="color:white; " class="rz-display-flex rz-mt-4 rz-mb-0">Summary</RadzenText>
-                <RadzenText style="color:white; " TextStyle="TextStyle.Body1"><b>@(ResumeItem.ResumeSummary)</b></RadzenText>
+                <RadzenText style="color:white; text-overflow:ellipsis; white-space:normal; overflow: hidden; height:240px" TextStyle="TextStyle.Body1" title="@(ResumeItem.ResumeSummary)">@(ResumeItem.ResumeSummary)</RadzenText>
                 @*                 <RadzenText style="color:white; " TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Freight</RadzenText>
                 <RadzenText style="color:white; " TextStyle="TextStyle.Body1"><b>@(ResumeEntity?.Basics?.Summary)</b></RadzenText>
  *@            </RadzenColumn>
