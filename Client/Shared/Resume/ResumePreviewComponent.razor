@@ -9,7 +9,7 @@
     <RadzenCard class="rz-shadow-0 rz-border-radius-0" style="margin: 5px calc(-1 * var(--rz-card-padding));background-color:white; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
         <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Start" Gap="0">
             <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Name</RadzenText>
-            <RadzenText style="color: #262526; text-overflow:ellipsis; white-space: nowrap; overflow: hidden;" TextStyle="TextStyle.H3" title="@(ResumeItem.ResumeName)">@(ResumeItem.ResumeName)</RadzenText>
+            <div style=" max-width: 250px; "><RadzenText style="color: #262526; text-overflow:ellipsis; white-space: nowrap; overflow: hidden;" TextStyle="TextStyle.H3" title="@(ResumeItem.ResumeName)">@(ResumeItem.ResumeName)</RadzenText></div>
             <RadzenText Visible=@DisplayItem() style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">ID</RadzenText>
             <RadzenText Visible=@DisplayItem() style="color: #262526" TextStyle="TextStyle.Body1">@(ResumeItem.Id)</RadzenText>
             <RadzenText style="color: #262526" TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Creation</RadzenText>

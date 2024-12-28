@@ -3,7 +3,7 @@
 @attribute [Authorize]
 @inherits BaseComponent
 <RadzenStack style="overflow-y: scroll; height:435px" id="workContainer">
-    <RadzenDropZoneContainer TItem="Work" Data="WorkItems"
+    <RadzenDropZoneContainer data-bind="@WorkItems" TItem="Work" Data="WorkItems"
                              ItemRender="@OnItemRender"
                              ItemSelector="@ItemSelector"
                              CanDrop="@CanDrop"
