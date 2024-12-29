@@ -103,6 +103,38 @@ public partial class BuilderPage
             ShowErrorNotification("Resume Failed", result.ErrorMessage);
     }
 
+    List<Work> GetWorkItems() {
+
+        Resume.MetaResume.Work = Resume.MetaResume.Work.OrderByDescending(x => x.EndDate).ToList();
+
+        return Resume.MetaResume.Work;
+    }
+
+    async Task CreateItem()
+    {
+        var workItem = new Work()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Order = 0
+        };
+
+        Resume.MetaResume.Work.Insert(0, workItem);
+
+        StateHasChanged();
+        await JSRuntime.InvokeVoidAsync("scrollToWork");
+    }
+
+    async Task Delete(Work workItem)
+    {
+        Resume.MetaResume.Work.Remove(workItem);
+    }
+
+    async Task Save(Work workItem)
+    {
+        var item = Resume.MetaResume.Work.FirstOrDefault(x => x.Id == workItem.Id);
+        item = workItem;
+    }
+
     protected override async Task OnInitializedAsync()
     {
 
