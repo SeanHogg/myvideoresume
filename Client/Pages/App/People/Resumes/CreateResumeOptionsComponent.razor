@@ -3,8 +3,9 @@
 <div style="float:right">
     <RadzenSplitButton Icon="add_circle" Click=@(args => OnClick(args)) Text="Create Resume" ButtonStyle="ButtonStyle.Danger">
         <ChildContent>
-            <RadzenSplitButtonItem Icon="upload" Text="Upload PDF" Value="pdf" />
-            <RadzenSplitButtonItem Icon="add_circle" Text="Resume Builder" Value="2" />
+            <RadzenSplitButtonItem Icon="upload_file" Text="Upload PDF" Value="pdf" />
+            <RadzenSplitButtonItem Icon="upload" Text="Upload JSON" Value="json" />
+            <RadzenSplitButtonItem Icon="construction" Text="Resume Builder" Value="builder" />
         </ChildContent>
     </RadzenSplitButton>
 </div>
@@ -25,7 +26,7 @@
         }
         else
         {
-            if (args.Value == "pdf")
+            if (args.Value == "pdf" || args.Value == "json")
             {
                 var result = await DialogService.OpenAsync("Upload File to Create Resume", ds =>
     @<RadzenCard Variant="Variant.Outlined">
@@ -41,6 +42,11 @@
                     // info = "Password reset successfully. Please check your email for further instructions.";
                 }
             }
+        }
+
+        if (args.Value == "builder")
+        {
+            NavigateTo(Paths.Resume_CreateNew);
         }
 
     }
