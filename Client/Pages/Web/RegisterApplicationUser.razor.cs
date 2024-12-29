@@ -24,8 +24,11 @@ public partial class RegisterApplicationUser
     {
         if (firstRender)
         {
-            token = await JSRuntime.InvokeAsync<string>("runCaptcha");
-            StateHasChanged();
+            if (Configuration.GetValue<bool>("Security:IsCaptchaEnabled"))
+            {
+                token = await JSRuntime.InvokeAsync<string>("runCaptcha");
+                StateHasChanged();
+            }
         }
     }
 

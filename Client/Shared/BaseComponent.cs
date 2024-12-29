@@ -84,8 +84,10 @@ public class BaseComponent : LayoutComponentBase
 
     public void NavigateToLogin(string redirectPath)
     {
-        NavigationManager.NavigateTo($"login?redirectUrl={redirectPath}");
+        NavigationManager.NavigateTo(NavigateToLoginPath(redirectPath));
     }
+
+    public string NavigateToLoginPath(string redirectPath) { return $"login?redirectUrl={redirectPath}"; }
 
     public void NavigateTo(string path)
     {
