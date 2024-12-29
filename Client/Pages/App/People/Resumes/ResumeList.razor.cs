@@ -52,4 +52,10 @@ public partial class ResumeList
         if (Security.IsAuthenticated())
             ResumeItems = await Service.GetResumeSummaryItems();
     }
+
+    protected async Task ResumeCreated(string result)
+    {
+        if (result.HasValue())
+            ResumeItems = await Service.GetResumeSummaryItems();
+    }
 }

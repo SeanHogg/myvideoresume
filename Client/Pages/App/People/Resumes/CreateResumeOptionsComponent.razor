@@ -1,9 +1,63 @@
 ﻿@inherits BaseComponent
 
 <div style="float:right">
-    <RadzenButton ButtonStyle="ButtonStyle.Danger" Text="Create Resume" Icon="add_circle" Click="@(args => NavigateTo(Paths.Resume_CreateNew))"></RadzenButton>
+    <RadzenSplitButton Icon="add_circle" Click=@(args => OnClick(args)) Text="Create Resume" ButtonStyle="ButtonStyle.Danger">
+        <ChildContent>
+            <RadzenSplitButtonItem Icon="upload" Text="Upload PDF" Value="pdf" />
+            <RadzenSplitButtonItem Icon="add_circle" Text="Resume Builder" Value="2" />
+        </ChildContent>
+    </RadzenSplitButton>
 </div>
 
 @code {
+    [Parameter] public EventCallback<string> ResumeCreated { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    protected async Task OnClick(RadzenSplitButtonItem args)
+    {
+        if (args == null || Security.IsNotAuthenticated())
+        {
+            NavigateTo(Paths.Resume_CreateNew);
+        }
+        else
+        {
+            if (args.Value == "pdf")
+            {
+                var result = await DialogService.OpenAsync("Upload File to Create Resume", ds =>
+    @<RadzenCard Variant="Variant.Outlined">
+        <ResumeUploadToJsonComponent Url=@Paths.Resume_API_CreateFromFile UploadCompleted=@UploadCompletedHandler></ResumeUploadToJsonComponent>
+    </RadzenCard>
+
+    );
+
+                if (result == true)
+                {
+                    // infoVisible = true;
+
+                    // info = "Password reset successfully. Please check your email for further instructions.";
+                }
+            }
+        }
+
+    }
+    async Task UploadCompletedHandler(string result)
+    {
+        if (!result.HasValue())
+        {
+            ShowErrorNotification("Failed Creating Resume", string.Empty);
+        }
+        else
+        {
+            DialogService.Close();
+            ShowSuccessNotification("Resume Created", string.Empty);
+        }
+
+        if (ResumeCreated.HasDelegate)
+            await ResumeCreated.InvokeAsync(result);
+
+    }
 }

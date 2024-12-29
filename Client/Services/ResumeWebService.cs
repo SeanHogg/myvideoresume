@@ -69,6 +69,7 @@ public partial class ResumeWebService
             var uri = new Uri($"{_navigationManager.BaseUri}api/resume/GetSummaryItems");
             var response = await _httpClient.GetAsync(uri);
             result = await response.ReadAsync<List<ResumeSummaryItem>>();
+            result = result.OrderByDescending(x => x.CreationDateTimeFormatted).ToList();
         }
         catch (Exception ex)
         {

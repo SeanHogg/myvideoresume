@@ -20,20 +20,26 @@
                             <RadzenMenuItem Text="Create Resume" Path=@Paths.Resume_CreateNew Icon="video_call"></RadzenMenuItem>
                         </RadzenMenuItem>
                     </RadzenMenu>
-                    <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
-                        <ChildContent>
-                            <RadzenProfileMenuItem Path="account/settings" Icon="manage_accounts" Text="My Account" title="My Account" />
-                            <RadzenProfileMenuItem Path="dashboard" Icon="manage_accounts" Text="Dashboard" />
-                            <RadzenProfileMenuItem Path="admin/application-users" Icon="person" Text="Users" Visible="@Security.IsInRole("admin")" />
-                            <RadzenProfileMenuItem Path="admin/application-roles" Icon="security" Text="Roles" Visible="@Security.IsInRole("admin")" />
-                            <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new" />
-                        </ChildContent>
-                        <Template>
-                            <RadzenGravatar Email="@Security.User?.Name" />
-                        </Template>
-                    </RadzenProfileMenu>
+                    <AuthorizeView>
+                        <Authorized>
+                            <RadzenProfileMenu Click="@ProfileMenuClick">
+                                <ChildContent>
+                                    <RadzenProfileMenuItem Path="account/settings" Icon="manage_accounts" Text="My Account" title="My Account" />
+                                    <RadzenProfileMenuItem Path="dashboard" Icon="manage_accounts" Text="Dashboard" />
+                                    <RadzenProfileMenuItem Path="admin/application-users" Icon="person" Text="Users" Visible="@Security.IsInRole("admin")" />
+                                    <RadzenProfileMenuItem Path="admin/application-roles" Icon="security" Text="Roles" Visible="@Security.IsInRole("admin")" />
+                                    <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new" />
+                                </ChildContent>
+                                <Template>
+                                    <RadzenGravatar Email="@Security.User?.Name" />
+                                </Template>
+                            </RadzenProfileMenu>
+                        </Authorized>
+                        <NotAuthorized>
+                            <RadzenLink Icon="login" Path="Login" Text=" Sign In" />
+                        </NotAuthorized>
+                    </AuthorizeView>
                     <RadzenAppearanceToggle DarkTheme="standard-dark" />
-                    <RadzenLink Icon="login" Path="Login" Text=" Sign In" Visible="@Security.IsNotAuthenticated()" />
                 </RadzenStack>
             </RadzenColumn>
         </RadzenRow>

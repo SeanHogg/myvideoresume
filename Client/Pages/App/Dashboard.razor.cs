@@ -30,7 +30,6 @@ public partial class Dashboard
     protected ILogger<Dashboard> Console { get; set; }
 
     List<ResumeSummaryItem> ResumeList { get; set; } = new List<ResumeSummaryItem>();
-    ResumeUploadToJsonComponent ResumeUploadToJsonComponent { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
