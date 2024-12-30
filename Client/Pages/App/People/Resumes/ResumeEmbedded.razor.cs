@@ -32,6 +32,8 @@ public partial class ResumeEmbedded
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         try
         {
             Resume = await Service.GetResume(Slug);
@@ -55,7 +57,5 @@ public partial class ResumeEmbedded
         {
             Logger.LogError(ex.Message, ex);
         }
-
-        await base.OnInitializedAsync();
     }
 }

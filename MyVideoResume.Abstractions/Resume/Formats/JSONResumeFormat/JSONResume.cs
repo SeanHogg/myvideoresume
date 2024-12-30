@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat;
 
@@ -66,6 +67,21 @@ public class Work
     public string StartDate { get; set; }
     public string EndDate { get; set; }
     public List<string> Highlights { get; set; }
+    [JsonIgnore]
+    public string HighlightsFlattened
+    {
+        get => String.Join(Environment.NewLine, Highlights);
+        set
+        {
+            Highlights.Clear();
+            string[] val;
+            if (value.Contains("\n"))
+                val = value.Split("\n");
+            else
+                val = value.Split(Environment.NewLine);
+            Highlights.AddRange(val);
+        }
+    }
     public string Url { get; set; }
 }
 

@@ -63,6 +63,7 @@ public partial class SentimentAnalysisTool
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         try
         {
             resume = await localStorage.GetItemAsync<string>("textresume");
@@ -75,6 +76,5 @@ public partial class SentimentAnalysisTool
         {
             Logger.LogError(ex.Message, ex);
         }
-        await base.OnInitializedAsync();
     }
 }

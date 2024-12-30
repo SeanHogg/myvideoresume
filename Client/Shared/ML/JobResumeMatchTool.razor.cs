@@ -43,6 +43,7 @@ public partial class JobResumeMatchTool
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         try
         {
             Resume = await localStorage.GetItemAsync<string>("textresume");
@@ -51,6 +52,5 @@ public partial class JobResumeMatchTool
         {
             Logger.LogError(ex.Message, ex);
         }
-        await base.OnInitializedAsync();
     }
 }

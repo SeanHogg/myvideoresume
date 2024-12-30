@@ -103,7 +103,8 @@ public partial class BuilderPage
             ShowErrorNotification("Resume Failed", result.ErrorMessage);
     }
 
-    List<Work> GetWorkItems() {
+    List<Work> GetWorkItems()
+    {
 
         Resume.MetaResume.Work = Resume.MetaResume.Work.OrderByDescending(x => x.EndDate).ToList();
 
@@ -124,6 +125,18 @@ public partial class BuilderPage
         await JSRuntime.InvokeVoidAsync("scrollToWork");
     }
 
+    async Task CreateWorkHighlightItem(Work item)
+    {
+        if (item.Highlights == null) { item.Highlights = new List<string>(); }
+        item.Highlights.Add(string.Empty);
+    }
+
+    async Task DeleteWorkHighlightItem(Work item, string value)
+    {
+        item.Highlights.Remove(value);
+    }
+
+
     async Task Delete(Work workItem)
     {
         Resume.MetaResume.Work.Remove(workItem);
@@ -135,8 +148,14 @@ public partial class BuilderPage
         item = workItem;
     }
 
+    async Task SaveWorkHighlightItem(string originalItem, Work item)
+    {
+        //args.
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
 
         if (MenuService.SidebarExpanded)
         {
@@ -145,7 +164,6 @@ public partial class BuilderPage
 
         try
         {
-
             if (ResumeId.ToLower() != "new")
             {
                 var temp = await Service.GetResume(ResumeId);
@@ -165,7 +183,6 @@ public partial class BuilderPage
                         ComponentType = ResolveComponent(Resume.ResumeTemplate.TransformerComponentName, Resume.ResumeTemplate.Namespace);
                         ComponentParameters = new Dictionary<string, object>() { { "resume", Resume }, { "mode", StandardTemplate.DisplayMode.Edit } };
                     }
-                    StateHasChanged();
                 }
             }
         }
@@ -176,7 +193,6 @@ public partial class BuilderPage
 
         CalculatePercentComplete();
 
-        await base.OnInitializedAsync();
     }
 
 }

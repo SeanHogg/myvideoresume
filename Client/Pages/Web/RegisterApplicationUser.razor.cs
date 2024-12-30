@@ -34,6 +34,7 @@ public partial class RegisterApplicationUser
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         user = new Data.Models.ApplicationUser();
     }
 
