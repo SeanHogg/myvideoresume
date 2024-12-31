@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -67,7 +68,7 @@ public class Work
     public string StartDate { get; set; }
     public string EndDate { get; set; }
     public List<string> Highlights { get; set; }
-    [JsonIgnore]
+    [JsonIgnore, NotMapped]
     public string HighlightsFlattened
     {
         get => String.Join(Environment.NewLine, Highlights);
