@@ -183,7 +183,7 @@
                                     <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
                                 </RadzenColumn>
                             </RadzenRow>
-                            @if (item.Courses.Count > 0)
+                            @if (item.Courses!=null && item.Courses.Count > 0)
                             {
                                 <RadzenRow>
                                     <RadzenColumn SizeSM="12">
@@ -220,12 +220,15 @@
                                     <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
                                 </RadzenColumn>
                             </RadzenRow>
-                            <RadzenRow>
-                                <RadzenColumn SizeSM="12">
-                                    <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Summary</RadzenText>
-                                    <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Summary)</b></RadzenText>
-                                </RadzenColumn>
-                            </RadzenRow>
+                            @if (item.Summary.HasValue())
+                            {
+                                <RadzenRow>
+                                    <RadzenColumn SizeSM="12">
+                                        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Summary</RadzenText>
+                                        <RadzenText TextStyle="TextStyle.Body1"><b> @(item.Summary)</b></RadzenText>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            }
                         </div>
                     }
                 </RadzenCard>

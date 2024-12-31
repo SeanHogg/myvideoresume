@@ -116,7 +116,6 @@ public partial class BuilderPage
         var workItem = new Work()
         {
             Id = Guid.NewGuid().ToString(),
-            Order = 0
         };
 
         Resume.MetaResume.Work.Insert(0, workItem);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MyVideoResume.Abstractions.Core;
@@ -34,10 +35,8 @@ public class ResumePromptEngine : OpenAIPromptEngine, IResumePromptEngine
     public async Task<ResponseResult> ResumeParseJSON(IFormFile file)
     {
 
-        var prompt = @"you are a resume parser assistant. Respond with no formatting.
-
-I need you to parse the resume into the following JSON format:
-
+        var prompt = @"You are a resume parser assistant. I need you to parse the resume into JSON format. Do not summarize the content of the resume. Respond with no formatting.";
+        var jsonFormat = @"
 {
   ""basics"": {
     ""name"": ""John Doe"",
@@ -98,7 +97,7 @@ I need you to parse the resume into the following JSON format:
     ""title"": ""Award"",
     ""date"": ""2014-11-01"",
     ""awarder"": ""Company"",
-    ""summary"": ""There is no spoon.""
+    ""summary"": ""Description…""
   }],
   ""certificates"": [{
     ""name"": ""Certificate"",
@@ -155,7 +154,10 @@ I need you to parse the resume into the following JSON format:
             if (file != null)
             {
                 var content = _documentProcessor.PdfToString(file.OpenReadStream());
-                var conversion = await this.Process(prompt, content);
+                var userInput = $"JSON: {jsonFormat}";
+                var userJobInput = $"RESUME: {content}";
+                var conversion = await this.Process(prompt, new[] { userInput, userJobInput });
+
                 result = conversion;
             }
         }

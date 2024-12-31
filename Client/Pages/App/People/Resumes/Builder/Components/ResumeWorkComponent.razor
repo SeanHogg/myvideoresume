@@ -105,7 +105,6 @@
             // reorder items in same zone or place the item at specific index in new zone
             WorkItems.Remove(args.Item);
             var position = WorkItems.IndexOf(args.ToItem);
-            args.Item.Order = position;
             WorkItems.Insert(position, args.Item);
         }
     }
@@ -120,7 +119,6 @@
         var workItem = new Work()
             {
                 Id = Guid.NewGuid().ToString(),
-                Order = 0
             };
 
         WorkItems.Insert(0, workItem);
