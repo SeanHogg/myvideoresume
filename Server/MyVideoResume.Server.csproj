@@ -24,6 +24,7 @@
 		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
 		<PackageReference Include="Serilog.Sinks.MSSqlServer" Version="8.1.0" />
 		<PackageReference Include="Serilog.Sinks.NewRelic.Logs" Version="1.3.0" />
+		<PackageReference Include="Splitio" Version="7.10.0" />
 		<ProjectReference Include="..\Client\MyVideoResume.Client.csproj" />
 		<ProjectReference Include="..\MyVideoResume.Abstractions\MyVideoResume.Abstractions.csproj" />
 		<ProjectReference Include="..\MyVideoResume.AI.Web\MyVideoResume.AI.Web.csproj" />

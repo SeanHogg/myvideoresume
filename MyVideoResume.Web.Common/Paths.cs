@@ -7,6 +7,7 @@ namespace MyVideoResume.Web.Common;
 
 public static class Paths
 {
+    public const string FeatureFlags_API = "api/featureflag";
     public const string Dashboard_View = "/dashboard";
     public const string Resume_View = "/resumes";
     public const string Resume_CreateNew = "resumes/builder/new";

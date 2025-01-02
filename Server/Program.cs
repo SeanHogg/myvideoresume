@@ -21,6 +21,7 @@ using MyVideoResume.Application;
 using Microsoft.Extensions.DependencyInjection;
 using Scalar.AspNetCore;
 using MyVideoResume.Workers;
+using MyVideoResume.Application.FeatureFlag;
 
 var builder = WebApplication.CreateBuilder(args);
 //Logging
@@ -40,7 +41,7 @@ var loggerConfiguration = new LoggerConfiguration()
 #else
 .WriteTo.Async(c => c.Console())
 .WriteTo.Async(c => c.File($"Logs/logs{DateTime.Now.ToEpochTime()}.txt"))
-.WriteTo.MSSqlServer(connectionString: loggingConnectionString, sinkOptions: new Serilog.Sinks.MSSqlServer.MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true })
+//.WriteTo.MSSqlServer(connectionString: loggingConnectionString, sinkOptions: new Serilog.Sinks.MSSqlServer.MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true })
 #endif
 ;
 
@@ -88,6 +89,9 @@ builder.Services.AddScoped<ResumeService>();
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<MenuService>();
 builder.Services.AddSingleton<IResumePromptEngine, ResumePromptEngine>();
+builder.Services.AddSingleton<IFeatureFlagService, SplitFeatureFlagService>();
+builder.Services.AddScoped<FeatureFlagClientService>();
+builder.Services.AddScoped<FeatureFlagWebService>();
 builder.Services.AddScoped<SecurityWebService>();
 builder.Services.AddScoped<ResumeWebService>();
 builder.Services.AddScoped<DashboardWebService>();

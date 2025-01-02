@@ -5,14 +5,14 @@
         <ChildContent>
             <RadzenSplitButtonItem Icon="upload_file" Text="Upload PDF" Value="pdf" />
             <RadzenSplitButtonItem Icon="upload" Text="Upload JSON" Value="json" />
-            <RadzenSplitButtonItem Icon="construction" Text="Resume Builder" Value="builder" />
+            <RadzenSplitButtonItem Icon="construction" Text="Resume Builder" Value="builder" Visible=@Service.IsResumeBuilderEnabled />
         </ChildContent>
     </RadzenSplitButton>
 </div>
 
 @code {
+    [Inject] public FeatureFlagClientService Service { get; set; }
     [Parameter] public EventCallback<string> ResumeCreated { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -20,7 +20,7 @@
 
     protected async Task OnClick(RadzenSplitButtonItem args)
     {
-        if (args == null || Security.IsNotAuthenticated())
+        if (args == null || Security.IsNotAuthenticated() && Service.IsResumeBuilderEnabled)
         {
             NavigateTo(Paths.Resume_CreateNew);
         }
@@ -37,20 +37,16 @@
 
                 if (result == true)
                 {
-                    // infoVisible = true;
-
-                    // info = "Password reset successfully. Please check your email for further instructions.";
                 }
             }
 
-
-            if (args.Value == "builder")
+            if (args.Value == "builder" && Service.IsResumeBuilderEnabled)
             {
                 NavigateTo(Paths.Resume_CreateNew);
             }
         }
-
     }
+
     async Task UploadCompletedHandler(string result)
     {
         if (!result.HasValue())

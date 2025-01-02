@@ -14,7 +14,7 @@
                 <div style="float: right; padding-right: 35px">
                     <RadzenMenu Responsive="false">
                         <RadzenMenuItem Icon="more_horiz">
-                            <RadzenMenuItem Text="Edit" Path=@Paths.Jobs Icon="edit" Click=@(()=> NavigateTo($"{Paths.Resume_Edit}{Resume.Id.ToString()}"))></RadzenMenuItem>
+                            <RadzenMenuItem Text="Edit" Path=@Paths.Jobs Icon="edit" Click=@(()=> Edit()) Visible=@Service.IsResumeBuilderEnabled></RadzenMenuItem>
                             <RadzenMenuItem Text="Json" Icon="download" Click=@(()=> DownloadJsonFile(Resume.ResumeSerialized))></RadzenMenuItem>
                         </RadzenMenuItem>
                     </RadzenMenu>
@@ -183,7 +183,7 @@
                                     <RadzenText TextStyle="TextStyle.Body2">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
                                 </RadzenColumn>
                             </RadzenRow>
-                            @if (item.Courses!=null && item.Courses.Count > 0)
+                            @if (item.Courses != null && item.Courses.Count > 0)
                             {
                                 <RadzenRow>
                                     <RadzenColumn SizeSM="12">
@@ -275,11 +275,19 @@
 <script src="resumeActions.js"></script>
 
 @code {
+    [Inject] public FeatureFlagClientService Service { get; set; }
+
     [Parameter] public ResumeInformationEntity Resume { get; set; }
     [Parameter] public DisplayMode Mode { get; set; } = DisplayMode.View;
     public RadzenTimeline Timeline { get; set; }
     public string ResumeName { get; set; }
     public bool IsOwner { get; set; } = false;
+
+    private void Edit()
+    {
+        if (Service.IsResumeBuilderEnabled)
+            NavigateTo($"{Paths.Resume_Edit}{Resume.Id.ToString()}");
+    }
 
     private bool ShowWorkSection()
     {
