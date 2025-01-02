@@ -10,6 +10,7 @@ using MyVideoResume.Web.Common;
 //using Refit;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System;
+using MyVideoResume.Client.Services.FeatureFlag;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

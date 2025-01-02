@@ -2,8 +2,9 @@
 @inherits BaseComponent
 
 <div style="float:right">
-    <RadzenSplitButton Icon="add_circle" Click=@(args => OnClick(args)) Text="Create Resume" ButtonStyle="ButtonStyle.Danger">
+    <RadzenSplitButton Icon="add_circle" Click=@(args => OnClick(args)) Text="Create Job" ButtonStyle="ButtonStyle.Danger">
         <ChildContent>
+            <RadzenSplitButtonItem Icon="backup" Text="From Website" Value="url" />
             <RadzenSplitButtonItem Icon="upload_file" Text="Upload PDF" Value="pdf" />
             <RadzenSplitButtonItem Icon="upload" Text="Upload JSON" Value="json" />
             <RadzenSplitButtonItem Icon="construction" Text="Resume Builder" Value="builder" Visible=@Service.IsResumeBuilderEnabled />
@@ -13,7 +14,7 @@
 
 @code {
     [Inject] public FeatureFlagClientService Service { get; set; }
-    [Parameter] public EventCallback<string> ResumeCreated { get; set; }
+    [Parameter] public EventCallback<string> JobCreated { get; set; }
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -68,8 +69,8 @@
             ShowSuccessNotification("Resume Created", string.Empty);
         }
 
-        if (ResumeCreated.HasDelegate)
-            await ResumeCreated.InvokeAsync(result);
+        if (JobCreated.HasDelegate)
+            await JobCreated.InvokeAsync(result);
 
     }
 }

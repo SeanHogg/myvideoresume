@@ -1,10 +1,9 @@
-﻿@using AgeCalculator
+﻿@using MyVideoResume.Data.Models.Resume
+@using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat
+@using AgeCalculator
 @using AgeCalculator.Extensions
 @using MyVideoResume.Abstractions.Resume
-@using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat
-@using MyVideoResume.Client.Services.FeatureFlag
-@using MyVideoResume.Data.Models.Resume
-@inherits ResumeComponent
+@inherits StandardTemplate
 
 @if (Resume != null && Resume.MetaResume != null)
 {
@@ -32,68 +31,6 @@
             </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
-    @if (ShowWorkSection() || ShowVolunteerSection())
-    {
-        <RadzenRow Style="padding-bottom:15px">
-            <RadzenColumn Style="max-width: 100%">
-                <div class="searchComponent">
-                    <RadzenTabs>
-                        <Tabs>
-                            @if (ShowWorkSection())
-                            {
-                                <RadzenTabsItem Text="Work">
-                                    <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
-                                        <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
-                                            <Items>
-                                                @foreach (var item in Resume.MetaResume.Work.OrderByDescending(x => x.EndDate).ToList())
-                                                {
-                                                    <RadzenTimelineItem PointStyle="PointStyle.Dark">
-                                                        <LabelContent>
-                                                            <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                                                        </LabelContent>
-                                                        <ChildContent>
-                                                            <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Name</RadzenText>
-                                                            <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
-
-                                                        </ChildContent>
-                                                    </RadzenTimelineItem>
-                                                }
-                                            </Items>
-                                        </RadzenTimeline>
-                                    </RadzenColumn>
-                                </RadzenTabsItem>
-                            }
-                            @if (ShowVolunteerSection())
-                            {
-                                <RadzenTabsItem Text="Volunteer">
-                                    <RadzenColumn Size="12" SizeXS="12" SizeSM="12" SizeMD="5" SizeLG="3" SizeXL="3" SizeXX="3" style="overflow:auto;">
-                                        <RadzenTimeline @ref=Timeline Orientation="Orientation.Horizontal" LinePosition="LinePosition.Center" Reverse="false">
-                                            <Items>
-                                                @foreach (var item in Resume.MetaResume.Volunteer.OrderByDescending(x => x.EndDate).ToList())
-                                                {
-                                                    <RadzenTimelineItem PointStyle="PointStyle.Dark">
-                                                        <LabelContent>
-                                                            <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-m-0 rz-color-primary">@ToFrom(item.StartDate, item.EndDate)</RadzenText>
-                                                        </LabelContent>
-                                                        <ChildContent>
-                                                            <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-m-0">@item.Organization</RadzenText>
-                                                            <RadzenText TextStyle="TextStyle.Overline" class="rz-m-0">@YearsMonths(item.StartDate, item.EndDate)</RadzenText>
-
-                                                        </ChildContent>
-                                                    </RadzenTimelineItem>
-                                                }
-                                            </Items>
-                                        </RadzenTimeline>
-                                    </RadzenColumn>
-                                </RadzenTabsItem>
-                            }
-                        </Tabs>
-
-                    </RadzenTabs>
-                </div>
-            </RadzenColumn>
-        </RadzenRow>
-    }
     <RadzenRow>
         <RadzenColumn Style="max-width: 100%">
             <RadzenText Text="Summary" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
@@ -272,121 +209,8 @@
 <script src="resumeActions.js"></script>
 
 @code {
-    [Inject] public FeatureFlagClientService Service { get; set; }
-    [Parameter] public ResumeInformationEntity Resume { get; set; }
-    public enum DisplayMode { Edit, View }
-    [Parameter] public DisplayMode Mode { get; set; } = DisplayMode.View;
-    protected RadzenTimeline Timeline { get; set; }
-    protected string ResumeName { get; set; }
-    protected bool IsOwner { get; set; } = false;
-
-    protected void Edit()
-    {
-        if (Service.IsResumeBuilderEnabled)
-            NavigateTo($"{Paths.Resume_Edit}{Resume.Id.ToString()}");
-    }
-
-    protected bool ShowWorkSection()
-    {
-        return Resume.MetaResume.Work != null && Resume.MetaResume.Work.Count > 0;
-    }
-
-    protected bool ShowVolunteerSection()
-    {
-        return Resume.MetaResume.Volunteer != null && Resume.MetaResume.Volunteer.Count > 0;
-    }
-
-    public bool ShowEditOptions()
-    {
-        var showSection = IsOwner && Mode == DisplayMode.View;
-        return showSection;
-    }
-
-    protected bool ShowContactOptions()
-    {
-        //Check if the section isn't null
-        var showSection = false;
-        if (Resume.MetaResume.Basics != null)
-        {
-            if (IsOwner)
-                showSection = true;
-            else
-            {
-                if (Resume.Privacy_ShowContactDetails != DisplayPrivacy.ToSelf)
-                    showSection = true; //ToDO: validate based upon the User's Roles
-            }
-        }
-        return showSection;
-    }
-
-
-    protected string ToFrom(string to, string from)
-    {
-        var result = "";
-        if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
-        {
-            var endDateText = string.Empty;
-
-            var endDate = DateTime.UtcNow;
-            if (!DateTime.TryParse(from, out endDate))
-            {
-                endDate = DateTime.UtcNow;
-                endDateText = from;
-            }
-            else
-            {
-                endDateText = endDate.ToString("yyyy-MM");
-            }
-            result = $"{DateTime.Parse(to).ToString("yyyy-MM")} - {endDateText}";
-        }
-        return result;
-    }
-
-    protected string Title()
-    {
-        if (Resume.MetaResume.Basics == null)
-            Resume.MetaResume.Basics = new Basics();
-
-        if (string.IsNullOrEmpty(Resume.MetaResume.Basics.Name))
-            Resume.MetaResume.Basics.Name = Resume.Name;
-
-        return Resume.MetaResume.Basics.Name;
-    }
-
-    protected string YearsMonths(string to, string from)
-    {
-        var result = "";
-
-        if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
-        {
-            var endDate = DateTime.UtcNow;
-            if (!DateTime.TryParse(from, out endDate))
-            {
-                endDate = DateTime.UtcNow;
-            }
-
-            var age = DateTime.Parse(to).CalculateAge(endDate);
-            if (age.Years > 0 && age.Months > 0)
-                result = $"{@age.Years} years, {@age.Months} months";
-            else if (age.Years == 0 && age.Months > 0)
-                result = $"{@age.Months} months";
-            else
-                result = $"{@age.Years} years";
-        }
-        return result;
-    }
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
-        if (Resume != null)
-        {
-            if (!string.IsNullOrEmpty(Resume.UserId))
-            {
-                if (Security.User.Id == Resume.UserId)
-                    IsOwner = true;
-            }
-        }
     }
 }

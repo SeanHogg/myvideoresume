@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.ComponentModel;
 using System.Linq;
 using MyVideoResume.Web.Common;
+using MyVideoResume.Client.Services.FeatureFlag;
 
 namespace MyVideoResume.Client.Shared;
 
@@ -37,6 +38,8 @@ public static class EnumExtensions
 public class ResumeComponent : BaseComponent
 {
     [Inject] protected ResumeWebService Service { get; set; }
+    [Inject] protected FeatureFlagClientService FeatureFlagService { get; set; }
+
 
     protected async Task DownloadJsonFile(string jsonResume)
     {

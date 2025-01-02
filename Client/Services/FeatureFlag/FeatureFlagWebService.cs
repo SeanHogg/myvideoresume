@@ -17,7 +17,7 @@ using MyVideoResume.Data;
 using MyVideoResume.Abstractions.Resume;
 using MyVideoResume.Web.Common;
 
-namespace MyVideoResume.Client.Services;
+namespace MyVideoResume.Client.Services.FeatureFlag;
 
 public partial class FeatureFlagWebService
 {
@@ -26,9 +26,9 @@ public partial class FeatureFlagWebService
     private readonly HttpClient _httpClient;
     public FeatureFlagWebService(NavigationManager navigationManager, IHttpClientFactory factory, ILogger<FeatureFlagWebService> logger)
     {
-        this._navigationManager = navigationManager;
-        this._httpClient = factory.CreateClient("MyVideoResume.Server");
-        this._logger = logger;
+        _navigationManager = navigationManager;
+        _httpClient = factory.CreateClient("MyVideoResume.Server");
+        _logger = logger;
     }
 
     public async Task<Dictionary<string, bool>> GetFeatureFlags()

@@ -14,7 +14,7 @@ using Radzen;
 using MyVideoResume.Data.Models;
 using MyVideoResume.Client.Shared.Security.Recaptcha;
 
-namespace MyVideoResume.Client.Services;
+namespace MyVideoResume.Client.Services.FeatureFlag;
 
 public partial class FeatureFlagClientService
 {
