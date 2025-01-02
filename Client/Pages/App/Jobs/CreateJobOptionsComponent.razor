@@ -22,23 +22,23 @@
 
     protected async Task OnClick(RadzenSplitButtonItem args)
     {
-        if ((args == null || Security.IsNotAuthenticated()) && Service.IsResumeBuilderEnabled)
+        if (Security.IsNotAuthenticated())
         {
-            NavigateTo(Paths.Resume_CreateNew);
+            var param = new Dictionary<string, object>();
+            param.Add("Path", Paths.Jobs_View);
+            var result = await DialogService.OpenAsync<UnAuthorizedComponent>("Create Account", param);
         }
         else
         {
-            if (Security.IsNotAuthenticated())
+            if ((args == null || args?.Value == "builder") && Service.IsResumeBuilderEnabled)
             {
-                var param = new Dictionary<string, object>();
-                param.Add("Path", Paths.Jobs_View);
-                var result = await DialogService.OpenAsync<UnAuthorizedComponent>("Create Account", param);
+                NavigateTo(Paths.Resume_CreateNew);
             }
             else
             {
-                if (args == null || args.Value == "pdf" || args.Value == "json")
+                if (args == null || args?.Value == "pdf" || args?.Value == "json")
                 {
-                    var result = await DialogService.OpenAsync("Upload File to Create Resume", ds =>
+                    var result = await DialogService.OpenAsync("Upload File to Create Job", ds =>
     @<RadzenCard Variant="Variant.Outlined">
         <ResumeUploadToJsonComponent Url=@Paths.Resume_API_CreateFromFile UploadCompleted=@UploadCompletedHandler></ResumeUploadToJsonComponent>
     </RadzenCard>
@@ -47,11 +47,6 @@
                     if (result == true)
                     {
                     }
-                }
-
-                if (args.Value == "builder" && Service.IsResumeBuilderEnabled)
-                {
-                    NavigateTo(Paths.Resume_CreateNew);
                 }
             }
         }

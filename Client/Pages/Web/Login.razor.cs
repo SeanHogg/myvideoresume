@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 using Radzen.Blazor;
+using MyVideoResume.Web.Common;
 
 namespace MyVideoResume.Client.Pages.Web;
 
@@ -29,6 +30,8 @@ public partial class Login
         info = query.Get("info");
 
         redirectUrl = query.Get("redirectUrl");
+        if (!redirectUrl.HasValue())
+            redirectUrl = Paths.Dashboard_View;
 
         errorVisible = !string.IsNullOrEmpty(error);
 
