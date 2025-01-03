@@ -29,18 +29,16 @@ namespace MyVideoResume.Client.Services;
 
 public partial class ResumeWebService
 {
-    private readonly DataContext _dataContext;
     private readonly HttpClient _httpClient;
     private readonly NavigationManager _navigationManager;
     private readonly SecurityWebService _securityService;
     private readonly ILogger<DashboardWebService> _logger;
 
-    public ResumeWebService(NavigationManager navigationManager, IHttpClientFactory factory, ILogger<DashboardWebService> logger, DataContext dataContext, SecurityWebService securityService)
+    public ResumeWebService(NavigationManager navigationManager, IHttpClientFactory factory, ILogger<DashboardWebService> logger, SecurityWebService securityService)
     {
         this._httpClient = factory.CreateClient("MyVideoResume.Server");
         this._navigationManager = navigationManager;
         this._logger = logger;
-        this._dataContext = dataContext;
         this._securityService = securityService;
     }
 
@@ -69,6 +67,7 @@ public partial class ResumeWebService
             var uri = new Uri($"{_navigationManager.BaseUri}api/resume/GetSummaryItems");
             var response = await _httpClient.GetAsync(uri);
             result = await response.ReadAsync<List<ResumeSummaryItem>>();
+            result = result.OrderByDescending(x => x.CreationDateTimeFormatted).ToList();
         }
         catch (Exception ex)
         {

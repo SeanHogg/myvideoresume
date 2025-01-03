@@ -1,0 +1,70 @@
+﻿@using MyVideoResume.Client.Services.FeatureFlag
+@inherits BaseComponent
+
+<div style="float:right">
+    <RadzenSplitButton Icon="add_circle" Click=@(args => OnClick(args)) Text="Create Resume" ButtonStyle="ButtonStyle.Danger">
+        <ChildContent>
+            <RadzenSplitButtonItem Icon="upload_file" Text="Upload PDF" Value="pdf" />
+            <RadzenSplitButtonItem Icon="upload" Text="Upload JSON" Value="json" />
+            <RadzenSplitButtonItem Icon="construction" Text="Resume Builder" Value="builder" Visible=@Service.IsResumeBuilderEnabled />
+        </ChildContent>
+    </RadzenSplitButton>
+</div>
+
+@code {
+    [Inject] public FeatureFlagClientService Service { get; set; }
+    [Parameter] public EventCallback<string> ResumeCreated { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    protected async Task OnClick(RadzenSplitButtonItem args)
+    {
+        if (Security.IsNotAuthenticated())
+        {
+            var param = new Dictionary<string, object>();
+            param.Add("Path", Paths.Resume_View);
+            var result = await DialogService.OpenAsync<UnAuthorizedComponent>("Create Account", param);
+        }
+        else
+        {
+            if ((args == null || args?.Value == "builder") && Service.IsResumeBuilderEnabled)
+            {
+                NavigateTo(Paths.Resume_CreateNew);
+            }
+            else
+            {
+                if (args == null || args?.Value == "pdf" || args?.Value == "json")
+                {
+                    var result = await DialogService.OpenAsync("Upload File to Create Resume", ds =>
+    @<RadzenCard Variant="Variant.Outlined">
+        <ResumeUploadToJsonComponent Url=@Paths.Resume_API_CreateFromFile UploadCompleted=@UploadCompletedHandler></ResumeUploadToJsonComponent>
+    </RadzenCard>
+    );
+
+                    if (result == true)
+                    {
+                    }
+                }
+            }
+        }
+    }
+
+    async Task UploadCompletedHandler(string result)
+    {
+        if (!result.HasValue())
+        {
+            ShowErrorNotification("Failed Creating Resume", string.Empty);
+        }
+        else
+        {
+            DialogService.Close();
+            ShowSuccessNotification("Resume Created", string.Empty);
+        }
+
+        if (ResumeCreated.HasDelegate)
+            await ResumeCreated.InvokeAsync(result);
+
+    }
+}

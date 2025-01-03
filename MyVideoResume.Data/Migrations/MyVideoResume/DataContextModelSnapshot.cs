@@ -38,9 +38,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<Guid?>("MetaResumeEntityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
                     b.Property<string>("Summary")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -94,7 +91,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -129,11 +125,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -154,11 +146,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Area")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.PrimitiveCollection<string>("Courses")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EndDate")
@@ -172,11 +162,7 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<Guid?>("MetaResumeEntityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
                     b.Property<string>("Score")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StartDate")
@@ -184,11 +170,9 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudyType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -209,7 +193,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(450)");
 
                     b.PrimitiveCollection<string>("Keywords")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MetaResumeEntityId")
@@ -218,9 +201,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -249,9 +229,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
 
                     b.Property<Guid?>("MetaResumeEntityId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -314,7 +291,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(max)");
 
                     b.PrimitiveCollection<string>("Highlights")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MetaResumeEntityId")
@@ -324,15 +300,11 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
                     b.Property<string>("StartDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -359,9 +331,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
                     b.Property<string>("Publisher")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -375,7 +344,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -402,9 +370,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
                     b.Property<string>("Reference")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -427,7 +392,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(450)");
 
                     b.PrimitiveCollection<string>("Keywords")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Level")
@@ -440,9 +404,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -466,14 +427,10 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(max)");
 
                     b.PrimitiveCollection<string>("Highlights")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MetaResumeEntityId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
 
                     b.Property<string>("Organization")
                         .IsRequired()
@@ -492,7 +449,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -517,7 +473,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(max)");
 
                     b.PrimitiveCollection<string>("Highlights")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("MetaResumeEntityId")
@@ -526,9 +481,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
 
                     b.Property<string>("Position")
                         .IsRequired()
@@ -543,7 +495,6 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1491,7 +1442,8 @@ namespace MyVideoResume.Data.Migrations.MyVideoResume
                 {
                     b.Navigation("MetaData");
 
-                    b.Navigation("MetaResume");
+                    b.Navigation("MetaResume")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MyVideoResume.Data.Models.UserProfileEntity", b =>
