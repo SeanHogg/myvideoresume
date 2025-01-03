@@ -32,7 +32,7 @@ public class ResumePromptEngine : OpenAIPromptEngine, IResumePromptEngine
     public async Task<ResponseResult> ResumeParseJSON(string resumeText)
     {
 
-        var prompt = @"You are a resume parser assistant. I need you to parse the resume into JSON format. Do not summarize the content of the resume. Respond with no formatting.";
+        var prompt = @"You are a resume parser assistant. I need you to parse the resume into JSON format. Do NOT summarize the content of the resume. Respond with no formatting.";
         var jsonFormat = @"
 {
   ""basics"": {
@@ -164,7 +164,7 @@ public class ResumePromptEngine : OpenAIPromptEngine, IResumePromptEngine
 
     public async Task<ResponseResult> JobResumeMatch(JobMatchRequest request)
     {
-        var prompt = "You are an AI Assistant that helps people match thier Resume to a Job Description.";
+        var prompt = "You are an AI Assistant that helps people match their Resume to a Job Description.";
         var userInput = $"Resume: {request.Resume}";
         var userJobInput = $"Job Description: {request.Job}";
         var result = await this.Process(prompt, new[] { userInput, userJobInput });
