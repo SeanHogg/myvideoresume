@@ -1,7 +1,5 @@
 using System.ComponentModel;
 using System.Net.Http;
-using BlazorBootstrap;
-using BlazorTemplater;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -22,17 +20,21 @@ using Radzen.Blazor;
 
 namespace MyVideoResume.Client.Pages.App.People.Resumes.Builder;
 
-public partial class BuilderPage
+public partial class BuilderPageV2
 {
     [Parameter] public String ResumeId { get; set; }
 
-    [Inject] ILogger<BuilderPage> Logger { get; set; }
+    [Inject] ILogger<BuilderPageV2> Logger { get; set; }
+
+    public ResumeInformationEntity Resume { get; set; } = new ResumeInformationEntity()
+    {
+        MetaData = new List<MetaDataEntity>(),
+        MetaResume = new MetaResumeEntity() { Basics = new() { Location = new() }, Awards = new(), Certificates = new(), Education = new List<Education>(), Interests = new(), Languages = new List<LanguageItem>(), Projects = new List<Project>(), Publications = new List<Publication>(), References = new List<ReferenceItem>(), Skills = new List<Skill>(), Volunteer = new List<Volunteer>(), Work = new List<Work>() }
+    };
 
     public Type ComponentType { get; set; }
 
     public Dictionary<string, object> ComponentParameters { get; set; }
-
-    public string ResumeText { get; set; }
 
     public int PercentageComplete { get; set; }
 
@@ -182,21 +184,6 @@ public partial class BuilderPage
                     }
                 }
             }
-            ResumeText = new ComponentRenderer<BasicTemplate>()
-       .AddService<MenuService>(MenuService)
-       .AddService<NavigationManager>(NavigationManager)
-       .AddService<AuthenticationStateProvider>(AuthenticationStateProvider)
-       .AddService<HttpClient>(Http)
-       .AddService<IJSRuntime>(JSRuntime)
-       .AddService<DialogService>(DialogService)
-       .AddService<TooltipService>(TooltipService)
-       .AddService<ContextMenuService>(ContextMenuService)
-       .AddService<NotificationService>(NotificationService)
-       .AddService<SecurityWebService>(Security)
-           .Set(c => c.Resume, Resume)
-           .Render();
-
-
         }
         catch (Exception ex)
         {

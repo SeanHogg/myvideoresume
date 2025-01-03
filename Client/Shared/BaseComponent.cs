@@ -7,6 +7,11 @@ using System.ComponentModel;
 using System.Linq;
 using MyVideoResume.Web.Common;
 using MyVideoResume.Client.Services.FeatureFlag;
+using MyVideoResume.Data.Models.Resume;
+using System.Text.Json;
+using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat;
+using AgeCalculator.Extensions;
+using MyVideoResume.Client.Pages.App.People.Resumes.Templates;
 
 namespace MyVideoResume.Client.Shared;
 
@@ -35,17 +40,17 @@ public static class EnumExtensions
     }
 }
 
-public class ResumeComponent : BaseComponent
+public class ResumeComponent : BasicTemplate
 {
     [Inject] protected ResumeWebService Service { get; set; }
     [Inject] protected FeatureFlagClientService FeatureFlagService { get; set; }
 
-
-    protected async Task DownloadJsonFile(string jsonResume)
+    protected async Task DownloadJsonFile(ResumeInformationEntity resume) 
     {
+        var metaResume = resume.MetaResume;
+        var jsonResume = JsonSerializer.Serialize<JSONResume>(metaResume);
         await JSRuntime.InvokeVoidAsync("saveTextAsFile", jsonResume, $"JsonResume-{DateTime.Now.ToString("yyyy-MM-dd")}.json");
     }
-
 }
 
 public class BaseComponent : LayoutComponentBase

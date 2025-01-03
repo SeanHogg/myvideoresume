@@ -15,8 +15,8 @@
                 <div style="float: right; padding-right: 35px">
                     <RadzenMenu Responsive="false">
                         <RadzenMenuItem Icon="more_horiz">
-                            <RadzenMenuItem Text="Edit" Path=@Paths.Jobs_View Icon="edit" Click=@(()=> Edit()) Visible=@Service.IsResumeBuilderEnabled></RadzenMenuItem>
-                            <RadzenMenuItem Text="Json" Icon="download" Click=@(()=> DownloadJsonFile(Resume.ResumeSerialized))></RadzenMenuItem>
+                            <RadzenMenuItem Text="Edit" Path=@Paths.Jobs_View Icon="edit" Click=@(()=> Edit()) Visible=@FeatureFlagService.IsResumeBuilderEnabled></RadzenMenuItem>
+                            <RadzenMenuItem Text="Json" Icon="download" Click=@(()=> DownloadJsonFile(Resume))></RadzenMenuItem>
                         </RadzenMenuItem>
                     </RadzenMenu>
                 </div>
@@ -272,8 +272,6 @@
 <script src="resumeActions.js"></script>
 
 @code {
-    [Inject] public FeatureFlagClientService Service { get; set; }
-    [Parameter] public ResumeInformationEntity Resume { get; set; }
     public enum DisplayMode { Edit, View }
     [Parameter] public DisplayMode Mode { get; set; } = DisplayMode.View;
     protected RadzenTimeline Timeline { get; set; }
@@ -282,7 +280,7 @@
 
     protected void Edit()
     {
-        if (Service.IsResumeBuilderEnabled)
+        if (FeatureFlagService.IsResumeBuilderEnabled)
             NavigateTo($"{Paths.Resume_Edit}{Resume.Id.ToString()}");
     }
 
@@ -320,61 +318,7 @@
     }
 
 
-    protected string ToFrom(string to, string from)
-    {
-        var result = "";
-        if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
-        {
-            var endDateText = string.Empty;
 
-            var endDate = DateTime.UtcNow;
-            if (!DateTime.TryParse(from, out endDate))
-            {
-                endDate = DateTime.UtcNow;
-                endDateText = from;
-            }
-            else
-            {
-                endDateText = endDate.ToString("yyyy-MM");
-            }
-            result = $"{DateTime.Parse(to).ToString("yyyy-MM")} - {endDateText}";
-        }
-        return result;
-    }
-
-    protected string Title()
-    {
-        if (Resume.MetaResume.Basics == null)
-            Resume.MetaResume.Basics = new Basics();
-
-        if (string.IsNullOrEmpty(Resume.MetaResume.Basics.Name))
-            Resume.MetaResume.Basics.Name = Resume.Name;
-
-        return Resume.MetaResume.Basics.Name;
-    }
-
-    protected string YearsMonths(string to, string from)
-    {
-        var result = "";
-
-        if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
-        {
-            var endDate = DateTime.UtcNow;
-            if (!DateTime.TryParse(from, out endDate))
-            {
-                endDate = DateTime.UtcNow;
-            }
-
-            var age = DateTime.Parse(to).CalculateAge(endDate);
-            if (age.Years > 0 && age.Months > 0)
-                result = $"{@age.Years} years, {@age.Months} months";
-            else if (age.Years == 0 && age.Months > 0)
-                result = $"{@age.Months} months";
-            else
-                result = $"{@age.Years} years";
-        }
-        return result;
-    }
 
     protected override async Task OnInitializedAsync()
     {

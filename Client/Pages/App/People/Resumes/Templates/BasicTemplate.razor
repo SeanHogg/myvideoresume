@@ -3,34 +3,11 @@
 @using AgeCalculator
 @using AgeCalculator.Extensions
 @using MyVideoResume.Abstractions.Resume
-@inherits StandardTemplate
+@inherits BaseComponent
+@layout EmptyLayout
 
 @if (Resume != null && Resume.MetaResume != null)
 {
-    <RadzenRow>
-        <RadzenColumn Style="max-width: 100%">
-            @if (ShowEditOptions())
-            {
-                <div style="float: right; padding-right: 35px">
-                    <RadzenMenu Responsive="false">
-                        <RadzenMenuItem Icon="more_horiz">
-                            <RadzenMenuItem Text="Edit" Path=@Paths.Jobs_View Icon="edit" Click=@(()=> Edit()) Visible=@Service.IsResumeBuilderEnabled></RadzenMenuItem>
-                            <RadzenMenuItem Text="Json" Icon="download" Click=@(()=> DownloadJsonFile(Resume.ResumeSerialized))></RadzenMenuItem>
-                        </RadzenMenuItem>
-                    </RadzenMenu>
-                </div>
-            }
-            <RadzenText Text=@Title() TextStyle="Radzen.Blazor.TextStyle.DisplayH2" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-            <RadzenStack AlignItems="AlignItems.Normal" Orientation="Orientation.Horizontal">
-                @if (ShowContactOptions()) //TO DO: check the user's role
-                {
-                    <RadzenText Text=@Resume.MetaResume.Basics.Email TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-                    <RadzenText Text=@Resume.MetaResume.Basics.Phone TextStyle="Radzen.Blazor.TextStyle.Body1" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
-                    <RadzenLink Path=@Resume.MetaResume.Basics.Url Text="My Website" Icon="globe" target="_blank" Visible=Resume.MetaResume.Basics.Url.HasValue() />
-                }
-            </RadzenStack>
-        </RadzenColumn>
-    </RadzenRow>
     <RadzenRow>
         <RadzenColumn Style="max-width: 100%">
             <RadzenText Text="Summary" TextStyle="Radzen.Blazor.TextStyle.DisplayH5" TagName="Radzen.Blazor.TagName.Auto"></RadzenText>
@@ -206,11 +183,66 @@
     }
 }
 
-<script src="resumeActions.js"></script>
-
 @code {
-    protected override async Task OnInitializedAsync()
+    [Parameter] public ResumeInformationEntity Resume { get; set; } = new ResumeInformationEntity()
     {
-        await base.OnInitializedAsync();
+        MetaData = new List<MetaDataEntity>(),
+        MetaResume = new MetaResumeEntity() { Basics = new() { Location = new() }, Awards = new(), Certificates = new(), Education = new List<Education>(), Interests = new(), Languages = new List<LanguageItem>(), Projects = new List<Project>(), Publications = new List<Publication>(), References = new List<ReferenceItem>(), Skills = new List<Skill>(), Volunteer = new List<Volunteer>(), Work = new List<Work>() }
+    };
+
+    protected string ToFrom(string to, string from)
+    {
+        var result = "";
+        if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
+        {
+            var endDateText = string.Empty;
+
+            var endDate = DateTime.UtcNow;
+            if (!DateTime.TryParse(from, out endDate))
+            {
+                endDate = DateTime.UtcNow;
+                endDateText = from;
+            }
+            else
+            {
+                endDateText = endDate.ToString("yyyy-MM");
+            }
+            result = $"{DateTime.Parse(to).ToString("yyyy-MM")} - {endDateText}";
+        }
+        return result;
+    }
+
+    protected string Title()
+    {
+        if (Resume.MetaResume.Basics == null)
+            Resume.MetaResume.Basics = new Basics();
+
+        if (string.IsNullOrEmpty(Resume.MetaResume.Basics.Name))
+            Resume.MetaResume.Basics.Name = Resume.Name;
+
+        return Resume.MetaResume.Basics.Name;
+    }
+
+    protected string YearsMonths(string to, string from)
+    {
+        var result = "";
+
+        if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
+        {
+            var endDate = DateTime.UtcNow;
+            if (!DateTime.TryParse(from, out endDate))
+            {
+                endDate = DateTime.UtcNow;
+            }
+
+            var age = DateTime.Parse(to).CalculateAge(endDate);
+            if (age.Years > 0 && age.Months > 0)
+                result = $"{@age.Years} years, {@age.Months} months";
+            else if (age.Years == 0 && age.Months > 0)
+                result = $"{@age.Months} months";
+            else
+                result = $"{@age.Years} years";
+        }
+        return result;
     }
 }

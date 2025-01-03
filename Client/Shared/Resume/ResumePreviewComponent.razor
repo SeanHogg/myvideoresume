@@ -2,8 +2,7 @@
 @using MyVideoResume.Abstractions.Resume
 @using MyVideoResume.Abstractions.Resume.Formats.JSONResumeFormat
 @using MyVideoResume.Data.Models.Resume
-@inherits BaseComponent
-@inject ResumeWebService Service
+@inherits ResumeComponent
 
 <RadzenCard style="background-color:white;">
     <RadzenCard class="rz-shadow-0 rz-border-radius-0" style="margin: 5px calc(-1 * var(--rz-card-padding));background-color:white; cursor: pointer" @onclick=@(()=> NavigateTo("resumes", ResumeItem.Id.ToString()))>
@@ -35,7 +34,7 @@
     </RadzenCard>
     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="0">
         <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Text" Icon="delete" Text="Delete" Click=Delete Visible=@DisplayItem() />
-        <RadzenButton ButtonStyle="ButtonStyle.Dark" Variant="Variant.Text" Icon="edit" Text="Edit" Visible=@DisplayItem() Click=@(()=> NavigateTo("resumes/builder", ResumeItem.Id)) />
+        <RadzenButton ButtonStyle="ButtonStyle.Dark" Variant="Variant.Text" Icon="edit" Text="Edit" Visible=@FeatureFlagService.IsResumeBuilderEnabled Click=@(()=> NavigateTo("resumes/builder", ResumeItem.Id)) />
         <RadzenButton ButtonStyle="ButtonStyle.Dark" Variant="Variant.Text" Icon="preview" Text="View" Click=@(()=> NavigateTo("resumes", ResumeItem.Id)) />
     </RadzenStack>
 </RadzenCard>
